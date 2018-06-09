@@ -1,0 +1,131 @@
+@import "../../css/units.css";
+@import "../../css/colors.css";
+
+.puzzle-pane {
+    /* Makes columns for the sprite library selector + and the stage selector */
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    background-color: #f9f9f9;
+    border-top-right-radius: $space;
+    border-top-left-radius: $space;
+    border-color: #dbdbdb;
+    border-width: 1px;
+    border-style: solid;
+    border-bottom: 0;
+}
+
+.puzzle-info {
+    flex-grow: 1;
+    position: relative;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.puzzle-header {
+    height: $sprite-info-height;
+    padding: 0.75rem;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background-color: white;
+    color: $text-primary;
+    border-top-left-radius: $space;
+    border-top-right-radius: $space;
+    border-bottom: 1px solid #eaeaea;
+}
+
+/* In prep for renaming sprite-selector-item to sprite */
+.sprite {
+    /*
+        Our goal is to fit sprites evenly in a row without leftover space.
+        Flexbox's `space between` property gets us close, but doesn't flow
+        well when the # of items per row > 1 and less than the max per row.
+
+        Solving by explicitly calc'ing the width of each sprite. Setting
+        `border-box` simplifies things, because content, padding and
+        border-width all are included in the width, leaving us only to subtract
+        the left + right margins.
+
+        @todo: make room for the scrollbar
+    */
+    box-sizing: border-box;
+    min-width: 4rem;
+    min-height: 4rem; /* @todo: calc height same as width */
+    margin-right: $space;
+    margin-bottom: $space;
+    float: left;
+}
+
+
+.scroll-wrapper {
+    /*
+       Sets the sprite-selector items as a scrollable pane
+
+        @todo: Safari: pane doesn't stretch to fill height;
+        @todo: Adding `position: relative` still doesn't fix Safari scrolling pane, and
+              also introduces a new bug in Chrome when vertically resizing window down,
+              then back up, introduces white space in the outside the page container.
+    */
+    height: calc(100% - $sprite-info-height);
+    overflow-y: scroll;
+    padding: $space;
+}
+
+.settings,.save-answer,.shotscreen {
+    box-sizing: content-box;
+    width: 1.25rem;
+    height: 1.25rem;
+    padding: 0.375rem;
+    border-radius: 0.25rem;
+    user-select: none;
+    user-drag: none;
+    cursor: pointer;
+    transition: 0.2s ease-out;
+}
+
+.add-button {
+    position: absolute;
+    bottom: 0.75rem;
+    right: 1rem;
+    z-index: 1; /* TODO overlaps the stage, this doesn't work, fix! */
+    float:right;
+}
+
+.puzzle-header-right{
+    float:right;
+}
+
+.block-count{
+    width: 5rem;
+    height: 2.4rem;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    line-height: 2rem;
+    color: #fff;
+    margin: 1rem;
+    background: url('./icon--block.svg') no-repeat;
+}
+
+.block-count.error{
+    background-image: url('./icon--block-error.svg');
+}
+
+.msg-icon{
+    width: 24px;
+    height: 24px;
+    bottom: 0.75rem;
+    right: 1rem;
+}
+
+.help-pane {
+    text-align: center;
+}
+
+.help-pane > span {
+    display: inline-block;
+}
+
+.tutorialIcon,.hintIcon,.answerIcon{
+    width: 32px;
+    height: 32px;
+    margin: .2rem 1rem;
+}

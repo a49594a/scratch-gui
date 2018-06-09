@@ -12,6 +12,9 @@ import TagButton from '../../containers/tag-button.jsx';
 
 import styles from './library.css';
 
+//added by yj
+const ASSET_SERVER = Blockey.ASSET_SERVER;
+
 const ALL_TAG_TITLE = 'All';
 const tagListPrefix = [{title: ALL_TAG_TITLE}];
 
@@ -158,7 +161,9 @@ class LibraryComponent extends React.Component {
                 >
                     {this.getFilteredData().map((dataItem, index) => {
                         const scratchURL = dataItem.md5 ?
-                            `https://cdn.assets.scratch.mit.edu/internalapi/asset/${dataItem.md5}/get/` :
+                            //modified by yj
+                            `${ASSET_SERVER}/Project/GetAsset?name=${dataItem.md5}` :
+                            //`https://cdn.assets.scratch.mit.edu/internalapi/asset/${dataItem.md5}/get/` :
                             dataItem.rawURL;
                         return (
                             <LibraryItem

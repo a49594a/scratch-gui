@@ -1,0 +1,30 @@
+.container ul {
+    margin: 6px;
+    padding: 4px 4px 0px 4px;
+    border: solid 2px #ccc;
+    border-radius: 24px;
+}
+
+.container ul li {
+    border: 1px solid #aaa;
+    display: inline-block;
+    list-style: none;
+    border-radius: 100%;
+    background-color: #ccc;
+    margin: 4px 8px;
+}
+
+.container ul li.solved {
+    border: 1px solid #CC9900;
+    background-color: #FFBF00;
+}
+
+.container ul li a {
+    display: block;
+    width: 16px;
+    height: 16px;
+}
+
+.container ul li.active,.container ul li:hover {
+    transform: scale(1.5);
+}

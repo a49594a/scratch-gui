@@ -1,0 +1,34 @@
+@import "../../css/colors.css";
+@import "../../css/units.css";
+@import "../../css/typography.css";
+
+.controls-container {
+    display: flex;
+}
+
+button.start,button.reset {
+    border: 1px solid #CC9900;
+    border-radius: 0.25rem;
+    padding: 0.4rem 0.4rem;
+    font-weight: bold;
+    font-size: .8rem;
+    cursor: pointer;
+    background: #FFBF00;
+    color: white;
+    margin-right:.2rem;
+}
+
+button.preventComplete {
+    background: #ff0000;
+}
+
+button.start:hover,button.reset:hover {
+    box-shadow: 0 0 2px 2px #ffbf00;
+}
+
+.start-icon,.reset-icon {
+    margin-left: .125rem;
+    width: 1rem;
+    height: 1rem;
+    vertical-align: middle;
+}

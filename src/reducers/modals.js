@@ -13,18 +13,27 @@ const MODAL_PREVIEW_INFO = 'previewInfo';
 const MODAL_SOUND_LIBRARY = 'soundLibrary';
 const MODAL_SPRITE_LIBRARY = 'spriteLibrary';
 const MODAL_SOUND_RECORDER = 'soundRecorder';
+//by yj
+const MODAL_PUZZLE_LOADING = 'puzzleLoading';
+const MODAL_PUZZLE_RESOLVED = 'puzzleResolved';
+const MODAL_PUZZLE_HELP = 'puzzleHelp';
 
 const MODAL_TIPS_LIBRARY = 'tipsLibrary';
 
 
 const initialState = {
+    //by yj
+    [MODAL_PUZZLE_LOADING]: true,
+    [MODAL_PUZZLE_RESOLVED]: false,
+    [MODAL_PUZZLE_HELP]: false,
+
     [MODAL_BACKDROP_LIBRARY]: false,
     [MODAL_CAMERA_CAPTURE]: false,
     [MODAL_COSTUME_LIBRARY]: false,
     [MODAL_EXTENSION_LIBRARY]: false,
     [MODAL_IMPORT_INFO]: false,
     [MODAL_LOADING_PROJECT]: false,
-    [MODAL_PREVIEW_INFO]: true,
+    [MODAL_PREVIEW_INFO]: false,//by yj true->false
     [MODAL_SOUND_LIBRARY]: false,
     [MODAL_SPRITE_LIBRARY]: false,
     [MODAL_SOUND_RECORDER]: false,
@@ -135,6 +144,27 @@ const closeSoundRecorder = function () {
 const closeTipsLibrary = function () {
     return closeModal(MODAL_TIPS_LIBRARY);
 };
+
+//by yj
+const openPuzzleLoading = function () {
+    return openModal(MODAL_PUZZLE_LOADING);
+};
+const closePuzzleLoading = function () {
+    return closeModal(MODAL_PUZZLE_LOADING);
+};
+const openPuzzleResolved = function () {
+    return openModal(MODAL_PUZZLE_RESOLVED);
+};
+const closePuzzleResolved = function () {
+    return closeModal(MODAL_PUZZLE_RESOLVED);
+};
+const openPuzzleHelp = function () {
+    return openModal(MODAL_PUZZLE_HELP);
+};
+const closePuzzleHelp = function () {
+    return closeModal(MODAL_PUZZLE_HELP);
+};
+
 export {
     reducer as default,
     initialState as modalsInitialState,
@@ -159,5 +189,13 @@ export {
     closeSpriteLibrary,
     closeSoundLibrary,
     closeSoundRecorder,
-    closeTipsLibrary
+    closeTipsLibrary,
+    
+    //by yj
+    openPuzzleLoading,
+    closePuzzleLoading,
+    openPuzzleResolved,
+    closePuzzleResolved,
+    openPuzzleHelp,
+    closePuzzleHelp
 };

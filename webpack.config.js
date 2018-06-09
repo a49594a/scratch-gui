@@ -22,7 +22,8 @@ const base = {
     },
     output: {
         library: 'GUI',
-        filename: '[name].js'
+        filename: '[name].js',
+        publicPath: '/Content/scratch-puzzle5/'
     },
     externals: {
         React: 'react',
@@ -95,6 +96,7 @@ module.exports = [
         entry: {
             'lib.min': ['react', 'react-dom'],
             'gui': './src/playground/index.jsx',
+            'puzzle': './src/playground/puzzle.jsx',
             'blocksonly': './src/playground/blocks-only.jsx',
             'compatibilitytesting': './src/playground/compatibility-testing.jsx',
             'player': './src/playground/player.jsx'
@@ -199,7 +201,7 @@ module.exports = [
                         loader: 'file-loader',
                         options: {
                             outputPath: 'static/assets/',
-                            publicPath: '/static/assets/'
+                            publicPath: '/Content/scratch-puzzle5/static/assets/'
                         }
                     }
                 ])

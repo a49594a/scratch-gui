@@ -17,6 +17,9 @@ import toolboxReducer, {toolboxInitialState} from './toolbox';
 import vmReducer, {vmInitialState} from './vm';
 import throttle from 'redux-throttle';
 
+//by yj
+import puzzleReducer from './puzzle';
+
 const guiMiddleware = compose(applyMiddleware(throttle(300, {leading: true, trailing: true})));
 
 const guiInitialState = {
@@ -59,6 +62,9 @@ const initFullScreen = function (currentState) {
     );
 };
 const guiReducer = combineReducers({
+    //by yj
+    puzzle: puzzleReducer,
+    
     assetDrag: assetDragReducer,
     blockDrag: blockDragReducer,
     cards: cardsReducer,
