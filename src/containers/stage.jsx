@@ -295,6 +295,9 @@ class Stage extends React.Component {
         this.dragCanvas.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
     }
     onStartDrag (x, y) {
+        //by yj
+        if(this.props.vm.runtime.puzzle)return;
+
         if (this.state.dragId) return;
         const drawableId = this.renderer.pick(x, y);
         if (drawableId === null) return;
