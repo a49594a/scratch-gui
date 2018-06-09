@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import HelpModalComponent from '../components/puzzle-help-modal/help-modal.jsx';
 
 import { closePuzzleHelp } from '../reducers/modals';
+import ScratchBlocks from 'scratch-blocks';
 
 class HelpModal extends React.Component {
     constructor(props) {
@@ -35,7 +36,7 @@ class HelpModal extends React.Component {
     setAnswerBlocks(blocks) {
         this.answerBlocks = blocks;
         if (this.state.forType == 'Mission.Answer' && this.answerBlocks) {
-            let workspace = Blockly.inject(this.answerBlocks, {
+            let workspace = ScratchBlocks.inject(this.answerBlocks, {
                 media: '/Content/ide5/scratch-vm/dist/media/',
                 toolbox: '<xml style="display: none"></xml>',
                 scrollbars: true,
@@ -58,10 +59,10 @@ class HelpModal extends React.Component {
 
             workspace.clear();
             workspace.getFlyout().hide();
-            var dom = Blockly.Xml.textToDom(this.props.puzzleData.answers[0].content);
+            var dom = ScratchBlocks.Xml.textToDom(this.props.puzzleData.answers[0].content);
             workspace.scrollX -= 240;
             workspace.scrollY += 20;
-            window.Blockly.Xml.domToWorkspace(dom, workspace);
+            ScratchBlocks.Xml.domToWorkspace(dom, workspace);
             this.answersWorkspace = workspace;
         }
     }

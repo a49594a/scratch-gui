@@ -15,6 +15,7 @@ import {
 } from '../reducers/editor-tab';
 
 import { openPuzzleResolved, closePuzzleLoading } from '../reducers/modals';
+import ScratchBlocks from 'scratch-blocks';
 
 import PuzzleLoaderHOC from '../lib/puzzle-loader-hoc.jsx';
 import vmListenerHOC from '../lib/vm-listener-hoc.jsx';
@@ -89,7 +90,7 @@ class GUI extends React.Component {
     setPuzzleResolved() {
         if (this.props.vm.runtime.puzzle.preventComplete) return;
 
-        var xmlText = Blockly.Xml.domToPrettyText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
+        var xmlText = ScratchBlocks.Xml.domToPrettyText(ScratchBlocks.Xml.workspaceToDom(ScratchBlocks.mainWorkspace));
         $.ajax({
             url: "/Mission/SetResolved2",
             type: "POST",
@@ -164,6 +165,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+    //by yj
+    onOpenPuzzleResolved: () => dispatch(openPuzzleResolved()),
+
     onExtensionButtonClick: () => dispatch(openExtensionLibrary()),
     onActivateTab: tab => dispatch(activateTab(tab)),
     onActivateCostumesTab: () => dispatch(activateTab(COSTUMES_TAB_INDEX)),

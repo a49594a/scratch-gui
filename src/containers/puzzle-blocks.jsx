@@ -142,8 +142,8 @@ class Blocks extends React.Component {
         this.workspace.dispose();
         clearTimeout(this.toolboxUpdateTimeout);
     }
-    
-    updateToolbox () {
+
+    updateToolbox() {
         this.toolboxUpdateTimeout = false;
 
         const categoryId = this.workspace.toolbox_.getSelectedCategoryId();
@@ -167,7 +167,7 @@ class Blocks extends React.Component {
         queue.forEach(fn => fn());
     }
 
-    withToolboxUpdates (fn) {
+    withToolboxUpdates(fn) {
         // if there is a queued toolbox update, we need to wait
         if (this.toolboxUpdateTimeout) {
             this.toolboxUpdateQueue.push(fn);
@@ -264,19 +264,31 @@ class Blocks extends React.Component {
             this.setState({ workspaceMetrics });
         }
     }
-    onScriptGlowOn (data) {
-        this.workspace.glowStack(data.id, true);
+    onScriptGlowOn(data) {
+        //by yj
+        if (this.workspace.getBlockById(data.id)) {
+            this.workspace.glowStack(data.id, true);
+        }
     }
-    onScriptGlowOff (data) {
-        this.workspace.glowStack(data.id, false);
+    onScriptGlowOff(data) {
+        //by yj
+        if (this.workspace.getBlockById(data.id)) {
+            this.workspace.glowStack(data.id, false);
+        }
     }
-    onBlockGlowOn (data) {
-        this.workspace.glowBlock(data.id, true);
+    onBlockGlowOn(data) {
+        //by yj
+        if (this.workspace.getBlockById(data.id)) {
+            this.workspace.glowBlock(data.id, true);
+        }
     }
-    onBlockGlowOff (data) {
-        this.workspace.glowBlock(data.id, false);
+    onBlockGlowOff(data) {
+        //by yj
+        if (this.workspace.getBlockById(data.id)) {
+            this.workspace.glowBlock(data.id, false);
+        }
     }
-    onVisualReport (data) {
+    onVisualReport(data) {
         this.workspace.reportValue(data.id, data.value);
     }
     onWorkspaceUpdate(data) {
@@ -288,7 +300,7 @@ class Blocks extends React.Component {
                 const toolboxXML = makePuzzleToolboxXML(toolboxTarget);
                 this.props.updateToolboxState(toolboxXML);
             }
-            else if(this.props.vm.editingTarget){
+            else if (this.props.vm.editingTarget) {
                 const target = this.props.vm.editingTarget;
                 const dynamicBlocksXML = this.props.vm.runtime.getBlocksXML();
                 const toolboxXML = makeToolboxXML(target.isStage, target.id, dynamicBlocksXML);
@@ -375,7 +387,7 @@ class Blocks extends React.Component {
             this.props.updateToolboxState(toolboxXML);
         }*/
 
-        
+
         // select JSON from each block info object then reject the pseudo-blocks which don't have JSON, like separators
         // this actually defines blocks and MUST run regardless of the UI state
         this.ScratchBlocks.defineBlocksWithJsonArray(blocksInfo.map(blockInfo => blockInfo.json).filter(x => x));
