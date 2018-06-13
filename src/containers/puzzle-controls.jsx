@@ -79,6 +79,7 @@ class Controls extends React.Component {
         this.props.vm.resetPuzzle();
 
         let puzzle = this.props.vm.runtime.puzzle;
+        puzzle.attemptCount++;
         puzzle.preventComplete = (puzzle.maxBlockCount > 0 && puzzle.blockCount > puzzle.maxBlockCount);
 
         analytics.event({

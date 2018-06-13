@@ -1,16 +1,16 @@
 import classNames from 'classnames';
-import {connect} from 'react-redux';
-import {FormattedMessage} from 'react-intl';
+import { connect } from 'react-redux';
+import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 import Box from '../box/box.jsx';
 import Button from '../button/button.jsx';
-import {ComingSoonTooltip} from '../coming-soon/coming-soon.jsx';
+import { ComingSoonTooltip } from '../coming-soon/coming-soon.jsx';
 import LanguageSelector from '../../containers/language-selector.jsx';
 import ProjectLoader from '../../containers/project-loader.jsx';
 import Menu from '../../containers/menu.jsx';
-import {MenuItem, MenuSection} from '../menu/menu.jsx';
+import { MenuItem, MenuSection } from '../menu/menu.jsx';
 import ProjectSaver from '../../containers/project-saver.jsx';
 import MissionSelector from '../puzzle-mission-selector/mission-selector.jsx';
 
@@ -39,15 +39,15 @@ const MenuBarItemTooltip = ({
     id,
     place = 'bottom'
 }) => (
-    <ComingSoonTooltip
-        className={classNames(styles.comingSoon, className)}
-        place={place}
-        tooltipClassName={styles.comingSoonTooltip}
-        tooltipId={id}
-    >
-        {children}
-    </ComingSoonTooltip>
-);
+        <ComingSoonTooltip
+            className={classNames(styles.comingSoon, className)}
+            place={place}
+            tooltipClassName={styles.comingSoonTooltip}
+            tooltipId={id}
+        >
+            {children}
+        </ComingSoonTooltip>
+    );
 
 MenuBarItemTooltip.propTypes = {
     children: PropTypes.node,
@@ -56,7 +56,7 @@ MenuBarItemTooltip.propTypes = {
     place: PropTypes.oneOf(['top', 'bottom', 'left', 'right'])
 };
 
-const MenuItemTooltip = ({id, children, className}) => (
+const MenuItemTooltip = ({ id, children, className }) => (
     <ComingSoonTooltip
         className={classNames(styles.comingSoon, className)}
         place="right"
@@ -79,15 +79,15 @@ const MenuBarMenu = ({
     open,
     place = 'right'
 }) => (
-    <Menu
-        className={styles.menu}
-        open={open}
-        place={place}
-        onRequestClose={onRequestClose}
-    >
-        {children}
-    </Menu>
-);
+        <Menu
+            className={styles.menu}
+            open={open}
+            place={place}
+            onRequestClose={onRequestClose}
+        >
+            {children}
+        </Menu>
+    );
 
 MenuBarMenu.propTypes = {
     children: PropTypes.node,
@@ -114,48 +114,36 @@ const MenuBar = props => (
         </div>
         <MissionSelector className={styles.missionSelector} puzzleData={props.puzzleData} />
         <div className={styles.accountInfoWrapper}>
-            <MenuBarItemTooltip id="mystuff">
-                <div
-                    className={classNames(
-                        styles.menuBarItem,
-                        styles.hoverable,
-                        styles.mystuffButton
-                    )}
-                >
-                    <img
-                        className={styles.mystuffIcon}
-                        src={mystuffIcon}
-                    />
-                </div>
-            </MenuBarItemTooltip>
-            <MenuBarItemTooltip
+            <div
                 id="account-nav"
                 place="left"
             >
-                <div
-                    className={classNames(
-                        styles.menuBarItem,
-                        styles.hoverable,
-                        styles.accountNavMenu
-                    )}
-                >
-                    <img
-                        className={styles.profileIcon}
-                        src={profileIcon}
-                    />
-                    <span>scratch-cat</span>
-                    <img
-                        className={styles.dropdownCaretIcon}
-                        src={dropdownCaret}
-                    />
-                </div>
-            </MenuBarItemTooltip>
+                <a href="/User">
+                    <div
+                        className={classNames(
+                            styles.menuBarItem,
+                            styles.hoverable,
+                            styles.accountNavMenu
+                        )}
+                    >
+                        <img
+                            className={styles.profileIcon}
+                            src={Blockey.INIT_DATA.logedInUser.thumbUrl}
+                        />
+                        <span>{Blockey.INIT_DATA.logedInUser.username}</span>
+                        <img
+                            className={styles.dropdownCaretIcon}
+                            src={dropdownCaret}
+                        />
+                    </div>
+                </a>
+            </div>
         </div>
     </Box>
 );
 
 MenuBar.propTypes = {
-//    onGiveFeedback: PropTypes.func.isRequired
+    //    onGiveFeedback: PropTypes.func.isRequired
 };
 
 /*const mapStateToProps = () => ({});

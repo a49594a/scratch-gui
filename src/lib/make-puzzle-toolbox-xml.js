@@ -735,11 +735,11 @@ const blockOrders = [
     },
     {
         categoryTag: '<category name="Music" colour="#FFD500" secondaryColour="#CC9900">',
-        blocks: ['music.playDrumForBeats', 'music.restForBeats', 'music.playNoteForBeats', 'music.setInstrument', 'sound_changevolumeby', 'sound_setvolumeto', 'sound_volume', 'music.changeTempo', 'music.setTempo', 'music.getTempo'],
+        blocks: ['music_playDrumForBeats', 'music_restForBeats', 'music_playNoteForBeats', 'music_setInstrument', 'sound_changevolumeby', 'sound_setvolumeto', 'sound_volume', 'music_changeTempo', 'music_setTempo', 'music_getTempo'],
     },
     {
         categoryTag: '<category name="画笔" colour="#FFD500" secondaryColour="#CC9900">',
-        blocks: ['pen.clear', 'pen.stamp', 'pen.penDown', 'pen.penUp', 'pen.setPenColorToColor', 'pen.changePenHueBy', 'pen.setPenHueToNumber', 'pen.changePenShadeBy', 'pen.setPenShadeToNumber', 'pen.changePenSizeBy', 'pen.setPenSizeTo', 'pen.print'],
+        blocks: ['pen_clear', 'pen_stamp', 'pen_penDown', 'pen_penUp', 'pen_setPenColorToColor', 'pen_changePenHueBy', 'pen_setPenHueToNumber', 'pen_changePenShadeBy', 'pen_setPenShadeToNumber', 'pen_changePenSizeBy', 'pen_setPenSizeTo', 'pen_print'],
     },
     {
         categoryTag: '<category name="事件" colour="#FFD500" secondaryColour="#CC9900">',

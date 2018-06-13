@@ -394,11 +394,19 @@ class Blocks extends React.Component {
 
         // update the toolbox view: this can be skipped if we're not looking at a target, etc.
         const runtime = this.props.vm.runtime;
-        const target = runtime.getEditingTarget() || runtime.getTargetForStage();
-        if (target) {
-            const dynamicBlocksXML = runtime.getBlocksXML();
-            const toolboxXML = makeToolboxXML(target.isStage, target.id, dynamicBlocksXML);
+        
+        const toolboxTarget = runtime.getSpriteTargetByName("@Toolbox");
+        if (toolboxTarget) {
+            const toolboxXML = makePuzzleToolboxXML(toolboxTarget);
             this.props.updateToolboxState(toolboxXML);
+        }
+        else {
+            const target = runtime.getEditingTarget() || runtime.getTargetForStage();
+            if (target) {
+                const dynamicBlocksXML = runtime.getBlocksXML();
+                const toolboxXML = makeToolboxXML(target.isStage, target.id, dynamicBlocksXML);
+                this.props.updateToolboxState(toolboxXML);
+            }
         }
     }
     handleBlocksInfoUpdate(blocksInfo) {

@@ -369,6 +369,17 @@ const injectPuzzleBlocks = function (ScratchBlocks, VM) {
         }
     };
 
+    ScratchBlocks.Blocks['puzzle_attemptcount'] = {
+        init: function () {
+            this.jsonInit({
+                "message0": "重置次数",
+                "category": ScratchBlocks.Categories.more,
+                "checkboxInFlyout": true,
+                "extensions": ["colours_more", "output_number"]
+            });
+        }
+    };
+
     ScratchBlocks.Blocks['puzzle_stepinterval'] = {
         init: function () {
             this.jsonInit({
@@ -490,7 +501,7 @@ const injectPuzzleBlocks = function (ScratchBlocks, VM) {
     ScratchBlocks.Msg["y position"] = "y坐标";
     ScratchBlocks.Msg["direction"] = "方向";
 
-    ScratchBlocks.Msg["stamp"] = "图章";
+    /*ScratchBlocks.Msg["stamp"] = "图章";
     ScratchBlocks.Msg["pen down"] = "落笔";
     ScratchBlocks.Msg["pen up"] = "抬笔";
     ScratchBlocks.Msg["set pen color to %1"] = "将画笔颜色设定为 %1";
@@ -500,7 +511,7 @@ const injectPuzzleBlocks = function (ScratchBlocks, VM) {
     ScratchBlocks.Msg["set pen shade to %1"] = "将画笔色度设定为 %1";
     ScratchBlocks.Msg["change pen size by %1"] = "将画笔大小增加 %1";
     ScratchBlocks.Msg["set pen size to %1"] = "将画笔大小设定为 %1";
-    ScratchBlocks.Msg["print %1"] = "打印 %1";
+    ScratchBlocks.Msg["print %1"] = "打印 %1";*/
 
     ScratchBlocks.Msg["touching %1?"] = "碰到 %1?";
     ScratchBlocks.Msg["touching color %1?"] = "碰到颜色 %1?";

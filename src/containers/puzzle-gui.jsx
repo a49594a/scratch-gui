@@ -76,6 +76,7 @@ class GUI extends React.Component {
         if (this.props.puzzleData) {
             this.props.vm.runtime.puzzle = {
                 maxBlockCount: this.props.puzzleData.maxBlockCount,
+                attemptCount: 0,
                 stepInterval: this.props.puzzleData.stepInterval,
                 setResolved: this.setPuzzleResolved.bind(this),
                 isRuning: false,
