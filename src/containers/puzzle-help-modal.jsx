@@ -15,7 +15,7 @@ class HelpModal extends React.Component {
             'handleOK',
             'handleCancel',
             'handleSelect',
-            'setAnswerBlocks',
+            'setContent',
         ]);
 
         let puzzle = this.props.vm.runtime.puzzle;
@@ -26,6 +26,9 @@ class HelpModal extends React.Component {
         };
     }
     componentDidMount() {
+        window.get_cc_verification_code = function (vid) {
+            return Blockey.ccVerificationCode;
+        }
     }
     componentWillUnmount() {
         if (this.answersWorkspace) {
@@ -33,10 +36,27 @@ class HelpModal extends React.Component {
             this.answersWorkspace = null;
         }
     }
-    setAnswerBlocks(blocks) {
-        this.answerBlocks = blocks;
-        if (this.state.forType == 'Mission.Answer' && this.answerBlocks) {
-            let workspace = ScratchBlocks.inject(this.answerBlocks, {
+    setContent(elContent) {
+        this.elContent = elContent;
+        if (!this.elContent) return;
+        
+        let puzzleData = this.props.puzzleData;
+        let forType = this.state.forType;
+        let forOrder = this.state.forOrder;
+        let helps = null;
+        if (forType == 'Mission.Course') helps = puzzleData.courses;
+        if (forType == 'Mission.Hint') helps = puzzleData.hints;
+        if (forType == 'Mission.Answer') helps = puzzleData.answers;
+        let help = helps[forOrder - 1];
+        if (help.contentType == 'text/html') {
+            $(this.elContent).html(help.content);
+        }
+        else if (help.contentType == 'video/bokecc') {
+            Blockey.ccVerificationCode = "Mission," + puzzleData.id + "," + Blockey.INIT_DATA.logedInUser.id;
+            $(this.elContent).html('<script src="http://p.bokecc.com/player?autoStart=true&width=100%&height=600&vid=' + help.content + '" type="text/javascript"></script>');
+        }
+        else if (help.contentType == 'xml/scratch') {
+            let workspace = ScratchBlocks.inject(this.elContent, {
                 media: '/Content/ide5/scratch-vm/dist/media/',
                 toolbox: '<xml style="display: none"></xml>',
                 scrollbars: true,
@@ -92,7 +112,7 @@ class HelpModal extends React.Component {
                 forType={this.state.forType}
                 forOrder={this.state.forOrder}
                 sidebarVisible={this.state.sidebarVisible}
-                setAnswerBlocks={this.setAnswerBlocks}
+                setContent={this.setContent}
             />
         );
     }

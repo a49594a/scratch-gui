@@ -17,7 +17,7 @@ const HelpModal = function (props) {
         forType,
         forOrder,
         sidebarVisible,
-        setAnswerBlocks,
+        setContent,
         ...componentProps
     } = props;
     let puzzle = vm.runtime.puzzle;
@@ -26,6 +26,7 @@ const HelpModal = function (props) {
     if (forType == 'Mission.Hint') helps = puzzleData.hints;
     if (forType == 'Mission.Answer') helps = puzzleData.answers;
     let help = helps[forOrder - 1];
+    Blockey.ccVerificationCode = "Mission," + puzzleData.id + "," + Blockey.INIT_DATA.logedInUser.id;
     return (
         <ReactModal
             isOpen
@@ -35,7 +36,7 @@ const HelpModal = function (props) {
             shouldCloseOnOverlayClick={true}
         >
             <Box className={styles.body}>
-                {sidebarVisible ? (
+                {sidebarVisible && helps.length > 1 ? (
                     <div className={classNames(styles.sidebar, "col-md-3")}>
                         <ul className={classNames(styles.nav)}>
                             {helps.map(help => (
@@ -51,14 +52,8 @@ const HelpModal = function (props) {
                         <span className={classNames(styles.btnToggle)}>&lt;</span>
                     </div>
                 ) : null}
-                <div className={sidebarVisible ? styles.contentWithSidebar : styles.content}>
-                    {help.contentType == 'text/html' ? (
-                        <div dangerouslySetInnerHTML={{ __html: help.content }} />
-                    ) : help.contentType == 'video/bokecc' ? (
-                        <div />
-                    ) : help.contentType == 'xml/scratch' ? (
-                        <Box className={styles.answerBlocks} componentRef={setAnswerBlocks} />
-                    ) : null}
+                <div className={sidebarVisible && helps.length > 1 ? styles.contentWithSidebar : styles.content}>
+                    <Box className={help.contentType == 'xml/scratch' ? styles.answerBlocks : ""} componentRef={setContent} />
                 </div>
                 <div className={styles.clearBoth}></div>
             </Box>

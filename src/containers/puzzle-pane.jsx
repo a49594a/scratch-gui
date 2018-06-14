@@ -38,10 +38,12 @@ class PuzzlePane extends React.Component {
     componentDidMount() {
         this.props.vm.addListener('PUZZLE_BLOCKS_CHANGED', this.onPuzzleBlocksChanged);
         this.props.vm.addListener('PUZZLE_ANSWER_SAVED', this.handleAnswerClick);
+        this.props.vm.addListener('PUZZLE_LOADED', this.handleTutorialClick);
     }
     componentWillUnmount() {
         this.props.vm.removeListener('PUZZLE_BLOCKS_CHANGED', this.onPuzzleBlocksChanged);
         this.props.vm.removeListener('PUZZLE_ANSWER_SAVED', this.handleAnswerClick);
+        this.props.vm.removeListener('PUZZLE_LOADED', this.handleTutorialClick);
     }
     onPuzzleBlocksChanged(e) {
         let puzzle = this.props.vm.runtime.puzzle;
@@ -52,6 +54,9 @@ class PuzzlePane extends React.Component {
         })
     }
     handleTutorialClick() {
+        let puzzleData = this.props.puzzleData;
+        if (!(puzzleData.courses && puzzleData.courses.length > 0)) return;
+
         let puzzle = this.props.vm.runtime.puzzle;
         puzzle.helpForType = "Mission.Course";
         puzzle.helpForOrder = puzzle.helpForOrder || 1;

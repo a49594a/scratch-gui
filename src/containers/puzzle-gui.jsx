@@ -85,6 +85,7 @@ class GUI extends React.Component {
             var target = this.props.vm.runtime.getSpriteTargetByName(this.props.puzzleData.defaultSprite);
             if (target) this.props.vm.setEditingTarget(target.id);
             this.props.vm.resetPuzzle();
+            this.props.vm.emit("PUZZLE_LOADED");
             this.setState({ loading: false });
         }
     }
