@@ -178,6 +178,6 @@ GUIComponent.propTypes = {
 };
 GUIComponent.defaultProps = {
     //by yj 修改此处调整资源路径（blockly中的图片和声音）
-    basePath: '/Content/ide5/scratch-puzzle/build/'
+    basePath: '/Content/scratch-puzzle5/'
 };
 export default injectIntl(GUIComponent);

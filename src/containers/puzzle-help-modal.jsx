@@ -39,7 +39,7 @@ class HelpModal extends React.Component {
     setContent(elContent) {
         this.elContent = elContent;
         if (!this.elContent) return;
-        
+
         let puzzleData = this.props.puzzleData;
         let forType = this.state.forType;
         let forOrder = this.state.forOrder;
@@ -57,7 +57,7 @@ class HelpModal extends React.Component {
         }
         else if (help.contentType == 'xml/scratch') {
             let workspace = ScratchBlocks.inject(this.elContent, {
-                media: '/Content/ide5/scratch-vm/dist/media/',
+                media: '/Content/scratch-puzzle5/static/blocks-media/',
                 toolbox: '<xml style="display: none"></xml>',
                 scrollbars: true,
                 zoom: {
