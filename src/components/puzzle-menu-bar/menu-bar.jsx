@@ -112,7 +112,9 @@ const MenuBar = props => (
                 /></a>
             </div>
         </div>
-        <MissionSelector className={styles.missionSelector} puzzleData={props.puzzleData} />
+        {props.puzzleData.missions.length > 1 ? (
+            <MissionSelector className={styles.missionSelector} puzzleData={props.puzzleData} />
+        ) : null}
         <div className={styles.accountInfoWrapper}>
             <div
                 id="account-nav"
