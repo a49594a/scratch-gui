@@ -29,6 +29,7 @@ import saveAnswerIcon from './icon--save-answer.svg';
 import shotscreenIcon from './icon--shotscreen.svg';
 
 import PuzzleHelpModal from '../../containers/puzzle-help-modal.jsx';
+import PuzzleSettingsModal from '../../containers/puzzle-settings-modal.jsx';
 /*
  * Pane that contains the sprite selector, sprite info, stage selector,
  * and the new sprite, costume and backdrop buttons
@@ -70,6 +71,11 @@ const PuzzlePane = function (props) {
                     vm={vm}
                     puzzleData={puzzleData}
                 />
+            ) : null}
+            {props.puzzleSettingsVisible ? (
+                <PuzzleSettingsModal
+                    vm={vm}
+                    puzzleData={puzzleData} />
             ) : null}
             <Box className={styles.puzzleInfo}>
                 <Box className={styles.puzzleHeader}>

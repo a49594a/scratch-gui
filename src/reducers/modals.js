@@ -17,6 +17,7 @@ const MODAL_SOUND_RECORDER = 'soundRecorder';
 const MODAL_PUZZLE_LOADING = 'puzzleLoading';
 const MODAL_PUZZLE_RESOLVED = 'puzzleResolved';
 const MODAL_PUZZLE_HELP = 'puzzleHelp';
+const MODAL_PUZZLE_SETTINGS = 'puzzleSettings';
 
 const MODAL_TIPS_LIBRARY = 'tipsLibrary';
 
@@ -26,6 +27,7 @@ const initialState = {
     [MODAL_PUZZLE_LOADING]: true,
     [MODAL_PUZZLE_RESOLVED]: false,
     [MODAL_PUZZLE_HELP]: false,
+    [MODAL_PUZZLE_SETTINGS]: false,
 
     [MODAL_BACKDROP_LIBRARY]: false,
     [MODAL_CAMERA_CAPTURE]: false,
@@ -164,6 +166,12 @@ const openPuzzleHelp = function () {
 const closePuzzleHelp = function () {
     return closeModal(MODAL_PUZZLE_HELP);
 };
+const openPuzzleSettings = function () {
+    return openModal(MODAL_PUZZLE_SETTINGS);
+};
+const closePuzzleSettings = function () {
+    return closeModal(MODAL_PUZZLE_SETTINGS);
+};
 
 export {
     reducer as default,
@@ -197,5 +205,7 @@ export {
     openPuzzleResolved,
     closePuzzleResolved,
     openPuzzleHelp,
-    closePuzzleHelp
+    closePuzzleHelp,
+    openPuzzleSettings,
+    closePuzzleSettings
 };

@@ -15,7 +15,7 @@ import { connect } from 'react-redux';
 import PuzzlePaneComponent from '../components/puzzle-pane/puzzle-pane.jsx';
 //import spriteLibraryContent from '../lib/libraries/sprites.json';
 
-import { openPuzzleHelp } from '../reducers/modals';
+import { openPuzzleHelp, openPuzzleSettings } from '../reducers/modals';
 
 class PuzzlePane extends React.Component {
     constructor(props) {
@@ -78,8 +78,23 @@ class PuzzlePane extends React.Component {
         this.props.onOpenPuzzleHelp();
     }
     handleShotscreenClick() {
+        this.props.vm.runtime.renderer.draw();
+        var imgData = this.props.vm.runtime.renderer.gl.canvas.toDataURL('image/png');
+        var postData = {
+            id: this.props.puzzleData.id,
+            img: imgData
+        };
+        $.ajax({
+            url: "/WebApi/Puzzle/saveShotscreen",
+            type: "POST",
+            dataType: "JSON",
+            data: postData,
+        }).done(function (e) {
+            alert("舞台截图保存成功！");
+        });
     }
     handleSettingsClick() {
+        this.props.onOpenPuzzleSettings();
     }
     handleSaveAnswerClick() {
         this.props.vm.emit("PUZZLE_SAVE_ANSWER");
@@ -133,11 +148,14 @@ const mapStateToProps = state => ({
     puzzleHelpVisible: state.scratchGui.modals.puzzleHelp,
     helpForType: state.scratchGui.helpForType,
     helpForOrder: state.scratchGui.helpForOrder,
+    puzzleSettingsVisible: state.scratchGui.modals.puzzleSettings,
 });
 const mapDispatchToProps = dispatch => ({
     //by yj
     onClosePuzzleHelp: () => dispatch(closePuzzleHelp()),
     onOpenPuzzleHelp: () => dispatch(openPuzzleHelp()),
+    onClosePuzzleSettings: () => dispatch(closePuzzleSettings()),
+    onOpenPuzzleSettings: () => dispatch(openPuzzleSettings()),
 });
 
 export default connect(
