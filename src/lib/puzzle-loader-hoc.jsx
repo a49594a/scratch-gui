@@ -87,7 +87,7 @@ const PuzzleLoaderHOC = function (WrappedComponent) {
         loadPuzzle(projectId) {
             return new Promise(function (resolve, reject) {
                 $.ajax({
-                    url: "/Puzzle/Get",
+                    url: "/WebApi/Puzzle/Get",
                     type: "POST",
                     data: { id: projectId },
                     success: function (data) {
