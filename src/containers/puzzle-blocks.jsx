@@ -226,10 +226,17 @@ class Blocks extends React.Component {
                 dataType: "JSON",
                 data: postData,
             }).done(function (e) {
-                this.props.puzzleData.answers.push({
+                var answer = {
                     contentType: 'xml/scratch',
                     content: xmlString
-                });
+                };
+                var puzzleData = this.props.puzzleData;
+                if (puzzleData.answers.length == 0) {
+                    puzzleData.answers.push(answer);
+                }
+                else {
+                    puzzleData.answers[0] = answer;
+                }
                 this.props.vm.emit("PUZZLE_ANSWER_SAVED");
             }.bind(this));
         }
@@ -394,7 +401,7 @@ class Blocks extends React.Component {
 
         // update the toolbox view: this can be skipped if we're not looking at a target, etc.
         const runtime = this.props.vm.runtime;
-        
+
         const toolboxTarget = runtime.getSpriteTargetByName("@Toolbox");
         if (toolboxTarget) {
             const toolboxXML = makePuzzleToolboxXML(toolboxTarget);
