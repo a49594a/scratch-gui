@@ -145,6 +145,9 @@ class Stage extends React.Component {
         };
     }
     handleDoubleClick (e) {
+        //by yj
+        if(this.props.vm.runtime.puzzle)return;
+
         const {x, y} = getEventXY(e);
         // Set editing target from cursor position, if clicking on a sprite.
         const mousePosition = [x - this.rect.left, y - this.rect.top];
