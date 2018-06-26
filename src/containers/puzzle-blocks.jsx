@@ -460,6 +460,7 @@ class Blocks extends React.Component {
             customProceduresVisible,
             extensionLibraryVisible,
             options,
+            stageSize,
             vm,
             puzzleData,
             isVisible,
@@ -509,6 +510,7 @@ class Blocks extends React.Component {
 }
 
 Blocks.propTypes = {
+    anyModalVisible: PropTypes.bool,
     customProceduresVisible: PropTypes.bool,
     extensionLibraryVisible: PropTypes.bool,
     isVisible: PropTypes.bool,

@@ -66,6 +66,7 @@ const GUIComponent = props => {
         puzzleData,
         puzzleLoadingVisible,
         puzzleResolvedVisible,
+        onOpenPuzzleResolved,
 
         activeTabIndex,
         basePath,
@@ -180,6 +181,7 @@ const GUIComponent = props => {
                                     options={{
                                         media: `${basePath}static/blocks-media/`
                                     }}
+                                    stageSize={stageSize}
                                     vm={vm}
                                     puzzleData={puzzleData}
                                 />
@@ -193,6 +195,9 @@ const GUIComponent = props => {
     }}</MediaQuery>);
 };
 GUIComponent.propTypes = {
+    //by yj
+    onOpenPuzzleResolved: PropTypes.func,
+    
     activeTabIndex: PropTypes.number,
     backdropLibraryVisible: PropTypes.bool,
     backpackOptions: PropTypes.shape({
