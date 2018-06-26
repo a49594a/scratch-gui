@@ -60,6 +60,7 @@ class GUI extends React.Component {
                 // error page gets rendered if project failed to load
                 this.setState({ loadingError: true, errorMessage: e });
             });
+        this.props.vm.initialized = true;
     }
     componentWillReceiveProps(nextProps) {
         if (this.props.projectData !== nextProps.projectData) {
