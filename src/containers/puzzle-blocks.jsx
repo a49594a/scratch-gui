@@ -14,6 +14,7 @@ import BlocksComponent from '../components/blocks/blocks.jsx';
 import ExtensionLibrary from './extension-library.jsx';
 import CustomProcedures from './custom-procedures.jsx';
 import errorBoundaryHOC from '../lib/error-boundary-hoc.jsx';
+import { STAGE_DISPLAY_SIZES } from '../lib/layout-constants';
 
 import { connect } from 'react-redux';
 import { updateToolbox } from '../reducers/toolbox';
@@ -53,6 +54,7 @@ class Blocks extends React.Component {
             'onWorkspaceUpdate',
             'onWorkspaceMetricsChange',
             'setBlocks',
+            'setLocale',
             //by yj
             "puzzleBlockListener",
             "puzzleFlyoutBlockListener",
@@ -73,7 +75,7 @@ class Blocks extends React.Component {
         const workspaceConfig = defaultsDeep({},
             Blocks.defaultOptions,
             this.props.options,
-            { toolbox: this.props.toolboxXML }
+            { toolbox: /*by yj this.props.toolboxXML*/ this.getToolboxXML() }
         );
         this.workspace = this.ScratchBlocks.inject(this.blocks, workspaceConfig);
 
@@ -90,7 +92,7 @@ class Blocks extends React.Component {
         addFunctionListener(this.workspace, 'zoom', this.onWorkspaceMetricsChange);
 
         this.attachVM();
-        this.props.vm.setLocale(this.props.locale, this.props.messages);
+        this.setLocale();
 
         analytics.pageview('/editors/blocks');
     }
@@ -102,7 +104,8 @@ class Blocks extends React.Component {
             this.props.extensionLibraryVisible !== nextProps.extensionLibraryVisible ||
             this.props.customProceduresVisible !== nextProps.customProceduresVisible ||
             this.props.locale !== nextProps.locale ||
-            this.props.anyModalVisible !== nextProps.anyModalVisible
+            this.props.anyModalVisible !== nextProps.anyModalVisible,
+            this.props.stageSize !== nextProps.stageSize
         );
     }
     componentDidUpdate(prevProps) {
@@ -112,7 +115,7 @@ class Blocks extends React.Component {
         }
 
         if (prevProps.locale !== this.props.locale) {
-            this.props.vm.setLocale(this.props.locale, this.props.messages);
+            this.setLocale();
         }
 
         if (prevProps.toolboxXML !== this.props.toolboxXML) {
@@ -143,12 +146,28 @@ class Blocks extends React.Component {
         clearTimeout(this.toolboxUpdateTimeout);
     }
 
+    setLocale() {
+        this.workspace.getFlyout().setRecyclingEnabled(false);
+        this.ScratchBlocks.ScratchMsgs.setLocale(this.props.locale);
+        this.props.vm.setLocale(this.props.locale, this.props.messages);
+
+        this.workspace.updateToolbox(/*by yj this.props.toolboxXML*/ this.getToolboxXML());
+        this.props.vm.refreshWorkspace();
+        this.workspace.getFlyout().setRecyclingEnabled(true);
+    }
+
+    //by yj
+    getToolboxXML() {
+        return this.__toolboxXML || this.props.toolboxXML;
+    }
+
     updateToolbox() {
         this.toolboxUpdateTimeout = false;
 
         const categoryId = this.workspace.toolbox_.getSelectedCategoryId();
         const offset = this.workspace.toolbox_.getCategoryScrollOffset();
-        this.workspace.updateToolbox(this.props.toolboxXML);
+        this.workspace.updateToolbox(/*by yj this.props.toolboxXML*/ this.getToolboxXML());
+
         // In order to catch any changes that mutate the toolbox during "normal runtime"
         // (variable changes/etc), re-enable toolbox refresh.
         // Using the setter function will rerender the entire toolbox which we just rendered.
@@ -242,13 +261,15 @@ class Blocks extends React.Component {
         }
     }
     updateToolboxBlockValue(id, value) {
-        const block = this.workspace
-            .getFlyout()
-            .getWorkspace()
-            .getBlockById(id);
-        if (block) {
-            block.inputList[0].fieldRow[0].setValue(value);
-        }
+        this.withToolboxUpdates(() => {
+            const block = this.workspace
+                .getFlyout()
+                .getWorkspace()
+                .getBlockById(id);
+            if (block) {
+                block.inputList[0].fieldRow[0].setValue(value);
+            }
+        });
     }
     onTargetsUpdate() {
         if (this.props.vm.editingTarget) {
@@ -305,6 +326,8 @@ class Blocks extends React.Component {
             const toolboxTarget = this.props.vm.runtime.getSpriteTargetByName("@Toolbox");
             if (toolboxTarget) {
                 const toolboxXML = makePuzzleToolboxXML(toolboxTarget);
+                this.__toolboxXML = toolboxXML;
+                this.updateToolbox();
                 this.props.updateToolboxState(toolboxXML);
             }
             else if (this.props.vm.editingTarget) {
@@ -377,31 +400,12 @@ class Blocks extends React.Component {
         }
     }
     handleExtensionAdded(blocksInfo) {
-        //by yj 避免出现画笔等扩展指令添加时的错误，还需要想办法找到完美的解决方案
-        //已知bug，保持跟踪
-        //https://github.com/LLK/scratch-vm/issues/937
-
-        /*this.ScratchBlocks.defineBlocksWithJsonArray(blocksInfo.map(blockInfo => blockInfo.json));
-        const toolboxTarget = this.props.vm.runtime.getSpriteTargetByName("@Toolbox");
-        if (toolboxTarget) {
-            const toolboxXML = makePuzzleToolboxXML(toolboxTarget);
-            this.props.updateToolboxState(toolboxXML);
-        }
-        else if(this.props.vm.editingTarget){
-            const target = this.props.vm.editingTarget;
-            const dynamicBlocksXML = this.props.vm.runtime.getBlocksXML();
-            const toolboxXML = makeToolboxXML(target.isStage, target.id, dynamicBlocksXML);
-            this.props.updateToolboxState(toolboxXML);
-        }*/
-
-
         // select JSON from each block info object then reject the pseudo-blocks which don't have JSON, like separators
         // this actually defines blocks and MUST run regardless of the UI state
         this.ScratchBlocks.defineBlocksWithJsonArray(blocksInfo.map(blockInfo => blockInfo.json).filter(x => x));
 
         // update the toolbox view: this can be skipped if we're not looking at a target, etc.
         const runtime = this.props.vm.runtime;
-
         const toolboxTarget = runtime.getSpriteTargetByName("@Toolbox");
         if (toolboxTarget) {
             const toolboxXML = makePuzzleToolboxXML(toolboxTarget);
@@ -452,6 +456,7 @@ class Blocks extends React.Component {
     render() {
         /* eslint-disable no-unused-vars */
         const {
+            anyModalVisible,
             customProceduresVisible,
             extensionLibraryVisible,
             options,
@@ -535,6 +540,7 @@ Blocks.propTypes = {
         comments: PropTypes.bool,
         collapse: PropTypes.bool
     }),
+    stageSize: PropTypes.oneOf(Object.keys(STAGE_DISPLAY_SIZES)).isRequired,
     toolboxXML: PropTypes.string,
     updateToolboxState: PropTypes.func,
     vm: PropTypes.instanceOf(VM).isRequired,
@@ -579,8 +585,8 @@ const mapStateToProps = state => ({
         state.scratchGui.mode.isFullScreen
     ),
     extensionLibraryVisible: state.scratchGui.modals.extensionLibrary,
-    locale: state.intl.locale,
-    messages: state.intl.messages,
+    locale: state.locales.locale,
+    messages: state.locales.messages,
     toolboxXML: state.scratchGui.toolbox.toolboxXML,
     customProceduresVisible: state.scratchGui.customProcedures.active
 });

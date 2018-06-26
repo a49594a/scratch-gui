@@ -64,9 +64,15 @@ class GUI extends React.Component {
     componentWillReceiveProps(nextProps) {
         if (this.props.projectData !== nextProps.projectData) {
             this.setState({ loading: true }, () => {
-                this.props.vm.loadProject(nextProps.projectData).then(function () {
-                    this.onProjectLoaded();
-                }.bind(this));
+                this.props.vm.loadProject(nextProps.projectData)
+                    .then(() => {
+                        this.onProjectLoaded();
+                    })
+                    .catch(e => {
+                        // Need to catch this error and update component state so that
+                        // error page gets rendered if project failed to load
+                        this.setState({ loadingError: true, errorMessage: e });
+                    });
             });
         }
     }
@@ -152,8 +158,10 @@ GUI.defaultProps = GUIComponent.defaultProps;
 
 const mapStateToProps = state => ({
     activeTabIndex: state.scratchGui.editorTab.activeTabIndex,
+    backdropLibraryVisible: state.scratchGui.modals.backdropLibrary,
     blocksTabVisible: state.scratchGui.editorTab.activeTabIndex === BLOCKS_TAB_INDEX,
     cardsVisible: state.scratchGui.cards.visible,
+    costumeLibraryVisible: state.scratchGui.modals.costumeLibrary,
     costumesTabVisible: state.scratchGui.editorTab.activeTabIndex === COSTUMES_TAB_INDEX,
     importInfoVisible: state.scratchGui.modals.importInfo,
     isPlayerOnly: state.scratchGui.mode.isPlayerOnly,
@@ -176,7 +184,9 @@ const mapDispatchToProps = dispatch => ({
     onExtensionButtonClick: () => dispatch(openExtensionLibrary()),
     onActivateTab: tab => dispatch(activateTab(tab)),
     onActivateCostumesTab: () => dispatch(activateTab(COSTUMES_TAB_INDEX)),
-    onActivateSoundsTab: () => dispatch(activateTab(SOUNDS_TAB_INDEX))
+    onActivateSoundsTab: () => dispatch(activateTab(SOUNDS_TAB_INDEX)),
+    onRequestCloseBackdropLibrary: () => dispatch(closeBackdropLibrary()),
+    onRequestCloseCostumeLibrary: () => dispatch(closeCostumeLibrary())
 });
 
 const ConnectedGUI = connect(

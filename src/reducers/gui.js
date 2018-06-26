@@ -61,6 +61,7 @@ const initFullScreen = function (currentState) {
         }}
     );
 };
+
 const guiReducer = combineReducers({
     //by yj
     puzzle: puzzleReducer,

@@ -13,6 +13,7 @@ import BlocksComponent from '../components/blocks/blocks.jsx';
 import ExtensionLibrary from './extension-library.jsx';
 import CustomProcedures from './custom-procedures.jsx';
 import errorBoundaryHOC from '../lib/error-boundary-hoc.jsx';
+import {STAGE_DISPLAY_SIZES} from '../lib/layout-constants';
 
 import {connect} from 'react-redux';
 import {updateToolbox} from '../reducers/toolbox';
@@ -51,7 +52,8 @@ class Blocks extends React.Component {
             'onVisualReport',
             'onWorkspaceUpdate',
             'onWorkspaceMetricsChange',
-            'setBlocks'
+            'setBlocks',
+            'setLocale'
         ]);
         this.ScratchBlocks.prompt = this.handlePromptStart;
         this.state = {
@@ -85,7 +87,7 @@ class Blocks extends React.Component {
         addFunctionListener(this.workspace, 'zoom', this.onWorkspaceMetricsChange);
 
         this.attachVM();
-        this.props.vm.setLocale(this.props.locale, this.props.messages);
+        this.setLocale();
 
         analytics.pageview('/editors/blocks');
     }
@@ -97,7 +99,8 @@ class Blocks extends React.Component {
             this.props.extensionLibraryVisible !== nextProps.extensionLibraryVisible ||
             this.props.customProceduresVisible !== nextProps.customProceduresVisible ||
             this.props.locale !== nextProps.locale ||
-            this.props.anyModalVisible !== nextProps.anyModalVisible
+            this.props.anyModalVisible !== nextProps.anyModalVisible ||
+            this.props.stageSize !== nextProps.stageSize
         );
     }
     componentDidUpdate (prevProps) {
@@ -107,7 +110,7 @@ class Blocks extends React.Component {
         }
 
         if (prevProps.locale !== this.props.locale) {
-            this.props.vm.setLocale(this.props.locale, this.props.messages);
+            this.setLocale();
         }
 
         if (prevProps.toolboxXML !== this.props.toolboxXML) {
@@ -136,6 +139,16 @@ class Blocks extends React.Component {
         this.detachVM();
         this.workspace.dispose();
         clearTimeout(this.toolboxUpdateTimeout);
+    }
+
+    setLocale () {
+        this.workspace.getFlyout().setRecyclingEnabled(false);
+        this.ScratchBlocks.ScratchMsgs.setLocale(this.props.locale);
+        this.props.vm.setLocale(this.props.locale, this.props.messages);
+
+        this.workspace.updateToolbox(this.props.toolboxXML);
+        this.props.vm.refreshWorkspace();
+        this.workspace.getFlyout().setRecyclingEnabled(true);
     }
 
     updateToolbox () {
@@ -329,6 +342,7 @@ class Blocks extends React.Component {
             customProceduresVisible,
             extensionLibraryVisible,
             options,
+            stageSize,
             vm,
             isVisible,
             onActivateColorPicker,
@@ -409,6 +423,7 @@ Blocks.propTypes = {
         comments: PropTypes.bool,
         collapse: PropTypes.bool
     }),
+    stageSize: PropTypes.oneOf(Object.keys(STAGE_DISPLAY_SIZES)).isRequired,
     toolboxXML: PropTypes.string,
     updateToolboxState: PropTypes.func,
     vm: PropTypes.instanceOf(VM).isRequired
@@ -437,7 +452,7 @@ Blocks.defaultOptions = {
         fieldShadow: 'rgba(255, 255, 255, 0.3)',
         dragShadowOpacity: 0.6
     },
-    comments: false,
+    comments: true,
     collapse: false,
     sounds: false
 };
@@ -453,8 +468,8 @@ const mapStateToProps = state => ({
         state.scratchGui.mode.isFullScreen
     ),
     extensionLibraryVisible: state.scratchGui.modals.extensionLibrary,
-    locale: state.intl.locale,
-    messages: state.intl.messages,
+    locale: state.locales.locale,
+    messages: state.locales.messages,
     toolboxXML: state.scratchGui.toolbox.toolboxXML,
     customProceduresVisible: state.scratchGui.customProcedures.active
 });

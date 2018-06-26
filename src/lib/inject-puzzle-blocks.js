@@ -440,7 +440,7 @@ const injectPuzzleBlocks = function (ScratchBlocks, VM) {
         this.jsonInit__(json);
     };
 
-    ScratchBlocks.Msg["forever"] = "重复执行";
+    /*ScratchBlocks.Msg["forever"] = "重复执行";
     ScratchBlocks.Msg["repeat %1"] = "重复执行 %1 次";
     ScratchBlocks.Msg["if %1 then"] = "如果 %1 那么";
     ScratchBlocks.Msg["else"] = "否则";
@@ -501,7 +501,7 @@ const injectPuzzleBlocks = function (ScratchBlocks, VM) {
     ScratchBlocks.Msg["y position"] = "y坐标";
     ScratchBlocks.Msg["direction"] = "方向";
 
-    /*ScratchBlocks.Msg["stamp"] = "图章";
+    ScratchBlocks.Msg["stamp"] = "图章";
     ScratchBlocks.Msg["pen down"] = "落笔";
     ScratchBlocks.Msg["pen up"] = "抬笔";
     ScratchBlocks.Msg["set pen color to %1"] = "将画笔颜色设定为 %1";
@@ -511,7 +511,7 @@ const injectPuzzleBlocks = function (ScratchBlocks, VM) {
     ScratchBlocks.Msg["set pen shade to %1"] = "将画笔色度设定为 %1";
     ScratchBlocks.Msg["change pen size by %1"] = "将画笔大小增加 %1";
     ScratchBlocks.Msg["set pen size to %1"] = "将画笔大小设定为 %1";
-    ScratchBlocks.Msg["print %1"] = "打印 %1";*/
+    ScratchBlocks.Msg["print %1"] = "打印 %1";
 
     ScratchBlocks.Msg["touching %1?"] = "碰到 %1?";
     ScratchBlocks.Msg["touching color %1?"] = "碰到颜色 %1?";
@@ -573,7 +573,7 @@ const injectPuzzleBlocks = function (ScratchBlocks, VM) {
     ScratchBlocks.Msg["letter %1 of %2"] = "%2 的第 %1 个字符";
     ScratchBlocks.Msg["length of %1"] = "%1 的长度";
     ScratchBlocks.Msg["%1 mod %2"] = "%1 除以 %2 的余数";
-    ScratchBlocks.Msg["round %1"] = "将 %1 四舍五入";
+    ScratchBlocks.Msg["round %1"] = "将 %1 四舍五入";*/
 };
 
 export default injectPuzzleBlocks;

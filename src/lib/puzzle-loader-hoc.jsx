@@ -14,10 +14,8 @@ const PuzzleLoaderHOC = function (WrappedComponent) {
     class PuzzleLoaderComponent extends React.Component {
         constructor(props) {
             super(props);
-            //this.fetchPuzzleId = this.fetchPuzzleId.bind(this);
             this.updatePuzzle = this.updatePuzzle.bind(this);
             this.state = {
-                //puzzleId: null,
                 puzzleData: null,
                 projectData: null,
                 fetchingProject: false
@@ -27,8 +25,6 @@ const PuzzleLoaderHOC = function (WrappedComponent) {
             if (this.props.projectId || this.props.projectId === 0) {
                 this.updatePuzzle(this.props.projectId);
             }
-            //window.addEventListener('hashchange', this.updatePuzzle);
-            //this.updatePuzzle();
         }
         componentWillUpdate(nextProps) {
             if (this.props.projectId !== nextProps.projectId) {
@@ -37,12 +33,6 @@ const PuzzleLoaderHOC = function (WrappedComponent) {
                 });
             }
         }
-        /*componentWillUnmount() {
-            window.removeEventListener('hashchange', this.updatePuzzle);
-        }*/
-        /*fetchPuzzleId() {
-            return window.location.hash.substring(1);
-        }*/
         updatePuzzle(projectId) {
             if (projectId == 0) return;
             this.loadPuzzle(projectId)
@@ -65,24 +55,6 @@ const PuzzleLoaderHOC = function (WrappedComponent) {
                     }
                 }.bind(this))
                 .catch(err => log.error(err));
-
-            //by yj resolve this bug temporary:https://github.com/LLK/scratch-gui/issues/1838
-            /*if (this.state.puzzleId != null) window.location.reload();
-            
-            let puzzleId = this.fetchPuzzleId();
-            if (puzzleId !== this.state.puzzleId) {
-                if (puzzleId.length < 1) puzzleId = 0;
-                this.setState({ puzzleId: puzzleId });
-
-                if (puzzleId !== 0) {
-                    analytics.event({
-                        category: 'puzzle',
-                        action: 'Load Puzzle',
-                        value: puzzleId,
-                        nonInteraction: true
-                    });
-                }
-            }*/
         }
         loadPuzzle(projectId) {
             return new Promise(function (resolve, reject) {

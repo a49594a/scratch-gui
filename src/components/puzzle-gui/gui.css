@@ -1,5 +1,6 @@
 @import "../../css/units.css";
 @import "../../css/colors.css";
+@import "../../css/z-index.css";
 
 .page-wrapper {
     height: 100%;
@@ -8,6 +9,10 @@
 .body-wrapper {
     height: calc(100% - $menu-bar-height);
     background-color: $ui-primary;
+}
+
+.body-wrapper * {
+    box-sizing: border-box;
 }
 
 .flex-wrapper {
@@ -57,6 +62,7 @@
 .tab {
     flex-grow: 1;
     height: 80%;
+    margin-bottom: 0;
     margin-left: -0.5rem;
 
     border-radius: 1rem 1rem 0 0;
@@ -127,7 +133,6 @@
 .tabs {
     position: relative;
     flex-grow: 1;
-    flex-shrink: 0;
     display: flex;
     flex-direction: column;
 }
@@ -135,7 +140,6 @@
 .tab-panel {
     position: relative;
     flex-grow: 1;
-    flex-shrink: 0;
     display: none;
 }
 
@@ -159,17 +163,21 @@
     */
     display: flex;
     flex-direction: column;
+}
 
-    /* Fix the max width to max stage size (defined in layout_constants.js) + gutter size */
+.stage-and-target-wrapper.large {
+    /* Fix the max width to max large stage size (defined in layout_constants.js) + gutter size */
     max-width: calc(480px + calc($space * 2));
 }
 
-.stage-wrapper {
-    padding-left: $space;
-    padding-right: $space;
+.stage-and-target-wrapper.large-constrained {
+    /* Fix the max width to max largeConstrained stage size (defined in layout_constants.js) + gutter size */
+    max-width: calc(408px + calc($space * 2));
+}
 
-    /* Hides negative space between edge of rounded corners + container, when selected */
-    user-select: none;
+.stage-and-target-wrapper.small {
+    /* Fix the max width to max small stage size (defined in layout_constants.js) + gutter size */
+    max-width: calc(240px + calc($space * 2));
 }
 
 .target-wrapper {
@@ -181,6 +189,8 @@
     padding-left: $space;
     padding-right: $space;
 
+    min-height: 0; /* this makes it work in Firefox */
+    
     /*
         For making the sprite-selector a scrollable pane
         @todo: Not working in Safari
@@ -195,7 +205,7 @@
     position: absolute;
     bottom: 0;
     left: 0;
-    z-index: 50; /** Force extension button above the ScratchBlocks flyout. */
+    z-index: $z-index-extension-button;
     background: $motion-primary;
 
     border: 1px solid $motion-primary;
