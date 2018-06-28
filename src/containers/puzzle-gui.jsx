@@ -103,15 +103,11 @@ class GUI extends React.Component {
         if (this.props.vm.runtime.puzzle.preventComplete) return;
 
         var xmlText = ScratchBlocks.Xml.domToPrettyText(ScratchBlocks.Xml.workspaceToDom(ScratchBlocks.mainWorkspace));
-        $.ajax({
+        Blockey.Utils.ajax({
             url: "/Mission/SetResolved2",
-            type: "POST",
             data: { id: this.props.puzzleData.id, answer: xmlText },
-            success: function (data) {
+            success: (data) => {
                 this.props.onOpenPuzzleResolved();
-            }.bind(this),
-            error: function (xhr) {
-                alert("系统或网络错误，请重试");
             }
         });
     }

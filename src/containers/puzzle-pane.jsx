@@ -84,13 +84,12 @@ class PuzzlePane extends React.Component {
             id: this.props.puzzleData.id,
             img: imgData
         };
-        $.ajax({
+        Blockey.Utils.ajax({
             url: "/WebApi/Puzzle/saveShotscreen",
-            type: "POST",
-            dataType: "JSON",
             data: postData,
-        }).done(function (e) {
-            alert("舞台截图保存成功！");
+            success: (e) => {
+                Blockey.Utils.Alerter.info("舞台截图保存成功！");
+            }
         });
     }
     handleSettingsClick() {

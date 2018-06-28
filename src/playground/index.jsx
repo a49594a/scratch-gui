@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 
 import analytics from '../lib/analytics';
 import GUI from '../containers/gui.jsx';
+import PuzzleGUI from '../containers/puzzle-gui.jsx';
 import HashParserHOC from '../lib/hash-parser-hoc.jsx';
 import AppStateHOC from '../lib/app-state-hoc.jsx';
 
@@ -22,7 +23,9 @@ appTarget.className = styles.app;
 document.body.appendChild(appTarget);
 
 GUI.setAppElement(appTarget);
-const WrappedGui = HashParserHOC(AppStateHOC(GUI));
+
+//by yj
+const WrappedGui = HashParserHOC(AppStateHOC(Blockey && Blockey.GUIMode == "Puzzle" ? PuzzleGUI : GUI));
 
 // TODO a hack for testing the backpack, allow backpack host to be set by url param
 const backpackHostMatches = window.location.href.match(/[?&]backpack_host=([^&]*)&?/);

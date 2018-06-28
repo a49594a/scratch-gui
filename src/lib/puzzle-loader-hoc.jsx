@@ -58,15 +58,12 @@ const PuzzleLoaderHOC = function (WrappedComponent) {
         }
         loadPuzzle(projectId) {
             return new Promise(function (resolve, reject) {
-                $.ajax({
+                Blockey.Utils.ajax({
                     url: "/WebApi/Puzzle/Get",
-                    type: "POST",
                     data: { id: projectId },
-                    success: function (data) {
+                    loadingStyle: "none",
+                    success: (data) => {
                         resolve(data);
-                    },
-                    error: function (xhr) {
-                        reject("系统或网络错误，请重试");
                     }
                 });
             }.bind(this));
@@ -80,7 +77,7 @@ const PuzzleLoaderHOC = function (WrappedComponent) {
                             exts.splice(i, 1);
                         }
                     }
-                    if (exts.length == 0)delete json.info.savedExtensions;
+                    if (exts.length == 0) delete json.info.savedExtensions;
                 }
             }
             if (level) removePuzzleExtension(level);

@@ -239,25 +239,24 @@ class Blocks extends React.Component {
                 forId: this.props.puzzleData.id,
                 content: xmlString,
             };
-            $.ajax({
+            Blockey.Utils.ajax({
                 url: "/Mission/SaveHelpForAnswer",
-                type: "POST",
-                dataType: "JSON",
                 data: postData,
-            }).done(function (e) {
-                var answer = {
-                    contentType: 'xml/scratch',
-                    content: xmlString
-                };
-                var puzzleData = this.props.puzzleData;
-                if (puzzleData.answers.length == 0) {
-                    puzzleData.answers.push(answer);
+                success: (e) => {
+                    var answer = {
+                        contentType: 'xml/scratch',
+                        content: xmlString
+                    };
+                    var puzzleData = this.props.puzzleData;
+                    if (puzzleData.answers.length == 0) {
+                        puzzleData.answers.push(answer);
+                    }
+                    else {
+                        puzzleData.answers[0] = answer;
+                    }
+                    this.props.vm.emit("PUZZLE_ANSWER_SAVED");
                 }
-                else {
-                    puzzleData.answers[0] = answer;
-                }
-                this.props.vm.emit("PUZZLE_ANSWER_SAVED");
-            }.bind(this));
+            });
         }
     }
     updateToolboxBlockValue(id, value) {

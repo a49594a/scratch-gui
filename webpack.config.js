@@ -96,7 +96,6 @@ module.exports = [
         entry: {
             'lib.min': ['react', 'react-dom'],
             'gui': './src/playground/index.jsx',
-            'puzzle': './src/playground/puzzle.jsx',
             'blocksonly': './src/playground/blocks-only.jsx',
             'compatibilitytesting': './src/playground/compatibility-testing.jsx',
             'player': './src/playground/player.jsx'
@@ -106,8 +105,10 @@ module.exports = [
             filename: '[name].js'
         },
         externals: {
-            React: 'react',
-            ReactDOM: 'react-dom'
+            'react': 'React',
+            'react-dom': 'ReactDOM',
+            //React: 'react',
+            //ReactDOM: 'react-dom'
         },
         module: {
             rules: base.module.rules.concat([

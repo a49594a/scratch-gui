@@ -31,14 +31,13 @@ class SettingsModal extends React.Component {
             maxBlocks: this.state.maxBlockCount,
             templateId: this.state.templateProjectId,
         };
-        $.ajax({
+        Blockey.Utils.ajax({
             url: "/WebApi/Puzzle/saveSettings",
-            type: "POST",
-            dataType: "JSON",
             data: postData,
-        }).done(e => {
-            window.location.reload(true);
-            //this.props.onOK();
+            success: e => {
+                window.location.reload(true);
+                //this.props.onOK();
+            }
         });
     }
     handleCancel() {
