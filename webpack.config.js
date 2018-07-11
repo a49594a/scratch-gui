@@ -23,7 +23,7 @@ const base = {
     output: {
         library: 'GUI',
         filename: '[name].js',
-        publicPath: '/Content/scratch-puzzle5/'
+        publicPath: '/Content/gui/'
     },
     externals: {
         React: 'react',
@@ -202,7 +202,7 @@ module.exports = [
                         loader: 'file-loader',
                         options: {
                             outputPath: 'static/assets/',
-                            publicPath: '/Content/scratch-puzzle5/static/assets/'
+                            publicPath: '/Content/gui/static/assets/'
                         }
                     }
                 ])

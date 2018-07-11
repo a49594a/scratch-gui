@@ -298,7 +298,7 @@ GUIComponent.defaultProps = {
         host: null,
         visible: false
     },
-    basePath: './',
+    basePath: '/Content/gui/',//by yj './'
     stageSizeMode: STAGE_SIZE_MODES.large
 };
 

@@ -22,7 +22,10 @@ const Player = () => (
     </Box>
 );
 
+/* by yj
 const appTarget = document.createElement('div');
 document.body.appendChild(appTarget);
+*/
+const appTarget = document.getElementById("player");
 
 ReactDOM.render(<Player />, appTarget);

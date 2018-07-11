@@ -25,7 +25,14 @@ const HashParserHOC = function (WrappedComponent) {
         }
         handleHashChange () {
             const hashMatch = window.location.hash.match(/#(\d+)/);
-            const projectId = hashMatch === null ? 0 : hashMatch[1];
+            //by yj
+            //const projectId = hashMatch === null ? 0 : hashMatch[1];
+            var projectId = hashMatch === null ? 0 : hashMatch[1];
+            if(projectId==0){
+                var paramMatch = window.location.href.match(/\?id=(\d+)/);
+                projectId = paramMatch === null ? 0 : paramMatch[1];
+            }
+
             if (projectId !== this.state.projectId) {
                 this.setState({projectId: projectId});
             }

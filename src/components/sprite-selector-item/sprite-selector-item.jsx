@@ -71,7 +71,7 @@ const SpriteSelectorItem = props => (
                         />
                     </MenuItem>
                 ) : null }
-                {props.onExportButtonClick ? (
+                {props.onExportButtonClick && Blockey.INIT_DATA.PROJECT.canSaveToLocal /* by yj */ ? (
                     <MenuItem onClick={props.onExportButtonClick}>
                         <FormattedMessage
                             defaultMessage="export"

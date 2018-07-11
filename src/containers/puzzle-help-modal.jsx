@@ -57,7 +57,7 @@ class HelpModal extends React.Component {
         }
         else if (help.contentType == 'xml/scratch') {
             let workspace = ScratchBlocks.inject(this.elContent, {
-                media: '/Content/scratch-puzzle5/static/blocks-media/',
+                media: '/Content/gui/static/blocks-media/',
                 toolbox: '<xml style="display: none"></xml>',
                 scrollbars: true,
                 zoom: {

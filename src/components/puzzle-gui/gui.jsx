@@ -235,7 +235,7 @@ GUIComponent.defaultProps = {
         visible: false
     },
     //by yj 修改此处调整资源路径（blockly中的图片和声音）
-    basePath: '/Content/scratch-puzzle5/',
+    basePath: '/Content/gui/',
 
     stageSizeMode: STAGE_SIZE_MODES.large
 };
