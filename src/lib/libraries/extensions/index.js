@@ -9,6 +9,22 @@ import boostImage from './boost.png';
 import translateImage from './translate.png';
 
 export default [
+    //by yj
+    {
+        name: 'Community',
+        extensionId: 'community',
+        iconURL: musicImage,
+        description: 'Community blocks.',
+        featured: true
+    },
+    {
+        name: 'Puzzle',
+        extensionId: 'puzzle',
+        iconURL: musicImage,
+        description: 'Puzzle blocks.',
+        featured: true
+    },
+
     {
         name: 'Music',
         extensionId: 'music',

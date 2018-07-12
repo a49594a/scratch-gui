@@ -312,7 +312,7 @@ const injectPuzzleBlocks = function (ScratchBlocks, VM) {
      *谜题指令集
     **/
 
-    ScratchBlocks.Blocks['puzzle_convertpainttowatermark'] = {
+    /*ScratchBlocks.Blocks['puzzle_convertpainttowatermark'] = {
         init: function () {
             this.jsonInit({
                 "message0": "将画板保存为水印",
@@ -423,7 +423,7 @@ const injectPuzzleBlocks = function (ScratchBlocks, VM) {
                 "colourTertiary": ScratchBlocks.Colours.more.tertiary
             });
         }
-    };
+    };*/
 
     /**
      * Initialize this block using a cross-platform, internationalization-friendly
