@@ -81,16 +81,16 @@ class GUI extends React.Component {
         this.props.vm.setCompatibilityMode(true);
         this.props.vm.start();
         if (this.props.puzzleData) {
-            this.props.vm.runtime.puzzle = {
+            var runtime = this.props.vm.runtime;
+            runtime.puzzle = {
                 maxBlockCount: this.props.puzzleData.maxBlockCount,
                 attemptCount: 0,
-                stepInterval: this.props.puzzleData.stepInterval,
+                stepInterval: this.props.puzzleData.stepInterval || 0.5,
                 setResolved: this.setPuzzleResolved.bind(this),
                 isRuning: false,
                 preventComplete: false,
             };
             var defaultSprite = this.props.puzzleData.defaultSprite;
-            var runtime = this.props.vm.runtime;
             var target = runtime.getSpriteTargetByName(defaultSprite);
             if (!target) target = runtime.getTargetForStage();
             this.props.vm.setEditingTarget(target.id);
