@@ -19,6 +19,7 @@ class ProjectUploader extends React.Component {
                 url: "/WebApi/Project/Upload",
                 data: { id: projectId, content: content },
                 success: (r) => {
+                    this.props.vm.updateSavedAssetMap();//配合saveProjectDiff
                     Blockey.Utils.Alerter.info("保存成功");
                 }
             });

@@ -39,6 +39,7 @@ class GUI extends React.Component {
         this.props.vm.attachAudioEngine(this.audioEngine);
         this.props.vm.loadProject(this.props.projectData)
             .then(() => {
+                this.props.vm.updateSavedAssetMap();//配合saveProjectDiff
                 this.setState({loading: false}, () => {
                     this.props.vm.setCompatibilityMode(true);
                     this.props.vm.start();
@@ -56,6 +57,7 @@ class GUI extends React.Component {
             this.setState({loading: true}, () => {
                 this.props.vm.loadProject(nextProps.projectData)
                     .then(() => {
+                        this.props.vm.updateSavedAssetMap();//配合saveProjectDiff
                         this.setState({loading: false});
                     })
                     .catch(e => {
