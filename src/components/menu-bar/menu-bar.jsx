@@ -368,25 +368,7 @@ class MenuBar extends React.Component {
                     </div>
                 </div>
                 <div className={styles.accountInfoWrapper}>
-<<<<<<< HEAD
                     <div
-=======
-                    <MenuBarItemTooltip id="mystuff">
-                        <div
-                            className={classNames(
-                                styles.menuBarItem,
-                                styles.hoverable,
-                                styles.mystuffButton
-                            )}
-                        >
-                            <img
-                                className={styles.mystuffIcon}
-                                src={mystuffIcon}
-                            />
-                        </div>
-                    </MenuBarItemTooltip>
-                    <MenuBarItemTooltip
->>>>>>> upstream/develop
                         id="account-nav"
                         place="left"
                     >
