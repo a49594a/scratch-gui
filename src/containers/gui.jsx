@@ -68,9 +68,6 @@ class GUI extends React.Component {
             });
         }
     }
-    componentWillUnmount () {
-        this.props.vm.stopAll();
-    }
     render () {
         if (this.state.loadingError) {
             throw new Error(
@@ -101,6 +98,7 @@ GUI.propTypes = {
     fetchingProject: PropTypes.bool,
     importInfoVisible: PropTypes.bool,
     loadingStateVisible: PropTypes.bool,
+    onSeeCommunity: PropTypes.func,
     previewInfoVisible: PropTypes.bool,
     projectData: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
     vm: PropTypes.instanceOf(VM)

@@ -4,7 +4,7 @@ import React from 'react';
 import VM from 'scratch-vm';
 import {defineMessages, injectIntl, intlShape} from 'react-intl';
 
-import extensionLibraryContent from '../lib/libraries/extensions/index';
+import extensionLibraryContent from '../lib/libraries/extensions/index.jsx';
 
 import analytics from '../lib/analytics';
 import LibraryComponent from '../components/library/library.jsx';
@@ -46,10 +46,17 @@ class ExtensionLibrary extends React.PureComponent {
                 });
             }
         }
+        let gaLabel = '';
+        if (typeof (item.name) === 'string') {
+            gaLabel = item.name;
+        } else {
+            // Name is localized, get the default message for the gaLabel
+            gaLabel = item.name.props.defaultMessage;
+        }
         analytics.event({
             category: 'library',
             action: 'Select Extension',
-            label: item.name
+            label: gaLabel
         });
     }
     render () {
