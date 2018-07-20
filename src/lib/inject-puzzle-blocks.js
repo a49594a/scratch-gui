@@ -135,11 +135,7 @@ const injectPuzzleBlocks = function (ScratchBlocks, VM) {
         }
     };
 
-    ScratchBlocks.Blocks['motion_setrotationstyle'] = {
-        /**
-         * Block to set rotation style.
-         * @this ScratchBlocks.Block
-         */
+    /*ScratchBlocks.Blocks['motion_setrotationstyle'] = {
         init: function () {
             this.jsonInit({
                 "message0": "set rotation style %1",
@@ -161,10 +157,6 @@ const injectPuzzleBlocks = function (ScratchBlocks, VM) {
     };
 
     ScratchBlocks.Blocks['operator_mathop'] = {
-        /**
-         * Block for "advanced" math ops on a number.
-         * @this ScratchBlocks.Block
-         */
         init: function () {
             this.jsonInit(
                 {
@@ -199,7 +191,7 @@ const injectPuzzleBlocks = function (ScratchBlocks, VM) {
                     "extensions": ["colours_operators", "output_number"]
                 });
         }
-    };
+    };*/
 
     ScratchBlocks.Blocks['data_cloud_menu_options'] = [
         ['共享空间', 'shared space'],
