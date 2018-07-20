@@ -24,7 +24,6 @@ const Player = ({isPlayerOnly, onSeeInside}) => (
             [styles.stageOnly]: isPlayerOnly
         })}
     >
-        {isPlayerOnly && <button onClick={onSeeInside}>{'See inside'}</button>}
         <GUI
             enableCommunity
             isPlayerOnly={isPlayerOnly}

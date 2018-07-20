@@ -40,7 +40,7 @@ export default [
             <FormattedMessage
                 defaultMessage="Puzzle"
                 description="Name for the 'Puzzle' extension"
-                id="gui.extension.community.name"
+                id="gui.extension.puzzle.name"
             />
         ),
         extensionId: 'puzzle',
