@@ -9,6 +9,7 @@ import ScanningStep from '../../containers/scanning-step.jsx';
 import ConnectingStep from './connecting-step.jsx';
 import ConnectedStep from './connected-step.jsx';
 import ErrorStep from './error-step.jsx';
+import UnavailableStep from './unavailable-step.jsx';
 
 import styles from './connection-modal.css';
 
@@ -16,7 +17,8 @@ const PHASES = keyMirror({
     scanning: null,
     connecting: null,
     connected: null,
-    error: null
+    error: null,
+    unavailable: null
 });
 
 const ConnectionModalComponent = props => (
@@ -25,6 +27,7 @@ const ConnectionModalComponent = props => (
         contentLabel={props.name}
         headerClassName={styles.header}
         headerImage={props.smallDeviceImage}
+        onHelp={props.onHelp}
         onRequestClose={props.onCancel}
     >
         <Box className={styles.body}>
@@ -32,13 +35,16 @@ const ConnectionModalComponent = props => (
             {props.phase === PHASES.connecting && <ConnectingStep {...props} />}
             {props.phase === PHASES.connected && <ConnectedStep {...props} />}
             {props.phase === PHASES.error && <ErrorStep {...props} />}
+            {props.phase === PHASES.unavailable && <UnavailableStep {...props} />}
         </Box>
     </Modal>
 );
 
 ConnectionModalComponent.propTypes = {
+    connectingMessage: PropTypes.node,
     name: PropTypes.node,
     onCancel: PropTypes.func.isRequired,
+    onHelp: PropTypes.func.isRequired,
     phase: PropTypes.oneOf(Object.keys(PHASES)).isRequired,
     smallDeviceImage: PropTypes.string,
     title: PropTypes.string.isRequired

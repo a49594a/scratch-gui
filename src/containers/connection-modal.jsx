@@ -12,7 +12,8 @@ class ConnectionModal extends React.Component {
             'handleConnected',
             'handleConnecting',
             'handleDisconnect',
-            'handleError'
+            'handleError',
+            'handleHelp'
         ]);
         this.state = {
             phase: PHASES.scanning
@@ -57,9 +58,17 @@ class ConnectionModal extends React.Component {
     }
     handleError () {
         this.props.onStatusButtonUpdate();
-        this.setState({
-            phase: PHASES.error
-        });
+        // Assume errors that come in during scanning phase are the result of not
+        // having scratch-link installed.
+        if (this.state.phase === PHASES.scanning || this.state.phase === PHASES.unavailable) {
+            this.setState({
+                phase: PHASES.unavailable
+            });
+        } else {
+            this.setState({
+                phase: PHASES.error
+            });
+        }
     }
     handleConnected () {
         this.props.onStatusButtonUpdate();
@@ -68,11 +77,12 @@ class ConnectionModal extends React.Component {
         });
     }
     handleHelp () {
-        // @todo: implement the help button
+        window.open(this.props.helpLink, '_blank');
     }
     render () {
         return (
             <ConnectionModalComponent
+                connectingMessage={this.props.connectingMessage}
                 deviceImage={this.props.deviceImage}
                 extensionId={this.props.extensionId}
                 name={this.props.name}
@@ -92,8 +102,10 @@ class ConnectionModal extends React.Component {
 }
 
 ConnectionModal.propTypes = {
+    connectingMessage: PropTypes.node.isRequired,
     deviceImage: PropTypes.string.isRequired,
     extensionId: PropTypes.string.isRequired,
+    helpLink: PropTypes.string.isRequired,
     name: PropTypes.node.isRequired,
     onCancel: PropTypes.func.isRequired,
     onStatusButtonUpdate: PropTypes.func.isRequired,
