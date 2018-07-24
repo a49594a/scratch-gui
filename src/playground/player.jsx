@@ -21,12 +21,13 @@ import styles from './player.css';
 const Player = ({isPlayerOnly, onSeeInside}) => (
     <Box
         className={classNames({
-            [styles.stageOnly]: isPlayerOnly
+            [styles.stageOnly]: isPlayerOnly&&false//by yj
         })}
     >
         <GUI
             enableCommunity
             isPlayerOnly={isPlayerOnly}
+            projectId={Blockey.INIT_DATA.PROJECT.id}//by yj
         />
     </Box>
 );
@@ -51,6 +52,6 @@ const WrappedPlayer = HashParserHOC(AppStateHOC(ConnectedPlayer));
 const appTarget = document.createElement('div');
 document.body.appendChild(appTarget);
 */
-const appTarget = document.getElementById("player");
+const appTarget = Blockey.GUI_CONFIG.WRAPPER;
 
 ReactDOM.render(<WrappedPlayer isPlayerOnly />, appTarget);

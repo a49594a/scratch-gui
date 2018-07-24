@@ -65,3 +65,23 @@
 .stage-button-toggled-off {
     filter: saturate(0);
 }
+
+/* by yj */
+.gamepad-icon {
+    width: 2rem;
+    height: 2rem;
+    padding: 0.375rem;
+    border-radius: 0.25rem;
+    user-select: none;
+    user-drag: none;
+    cursor: pointer;
+    transition: 0.2s ease-out;
+}
+
+.gamepad-icon:hover {
+    transform: scale(1.2);
+}
+
+.gamepad-icon.is-active {
+    background-color: $motion-transparent;
+}

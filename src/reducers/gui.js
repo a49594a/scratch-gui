@@ -19,10 +19,14 @@ import throttle from 'redux-throttle';
 
 //by yj
 import puzzleReducer from './puzzle';
+import gamepadReducer, {gamepadInitialState} from './gamepad';
 
 const guiMiddleware = compose(applyMiddleware(throttle(300, {leading: true, trailing: true})));
 
 const guiInitialState = {
+    //by yj
+    gamepad: gamepadInitialState,
+
     assetDrag: assetDragInitialState,
     blockDrag: blockDragInitialState,
     cards: cardsInitialState,
@@ -65,6 +69,7 @@ const initFullScreen = function (currentState) {
 const guiReducer = combineReducers({
     //by yj
     puzzle: puzzleReducer,
+    gamepad: gamepadReducer,
     
     assetDrag: assetDragReducer,
     blockDrag: blockDragReducer,

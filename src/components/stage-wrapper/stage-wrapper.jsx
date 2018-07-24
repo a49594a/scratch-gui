@@ -3,7 +3,7 @@ import React from 'react';
 import VM from 'scratch-vm';
 
 import Box from '../box/box.jsx';
-import {STAGE_DISPLAY_SIZES} from '../../lib/layout-constants.js';
+import { STAGE_DISPLAY_SIZES } from '../../lib/layout-constants.js';
 import StageHeader from '../../containers/stage-header.jsx';
 import Stage from '../../containers/stage.jsx';
 
@@ -16,15 +16,20 @@ const StageWrapperComponent = function (props) {
         vm
     } = props;
 
+    //by yj
+    let isMobile = Blockey.GUI_CONFIG&&Blockey.GUI_CONFIG.IS_MOBILE;
+
     return (
         <Box className={styles.stageWrapper}>
-            <Box className={styles.stageMenuWrapper}>
-                <StageHeader
-                    stageSize={stageSize}
-                    vm={vm}
-                />
-            </Box>
-            <Box className={styles.stageCanvasWrapper}>
+            {isMobile ? null : (
+                <Box className={styles.stageMenuWrapper}>
+                    <StageHeader
+                        stageSize={stageSize}
+                        vm={vm}
+                    />
+                </Box>
+            )}
+            <Box className={isMobile?styles.stageCanvasWrapperMobile:styles.stageCanvasWrapper}>
                 {
                     isRendererSupported ?
                         <Stage
@@ -34,6 +39,14 @@ const StageWrapperComponent = function (props) {
                         null
                 }
             </Box>
+            {isMobile ? (
+                <Box className={styles.stageMenuWrapper}>
+                    <StageHeader
+                        stageSize={stageSize}
+                        vm={vm}
+                    />
+                </Box>
+            ) : null}
         </Box>
     );
 };

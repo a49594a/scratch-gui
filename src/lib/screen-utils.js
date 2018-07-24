@@ -1,4 +1,4 @@
-import layout, {STAGE_DISPLAY_SCALES, STAGE_SIZE_MODES, STAGE_DISPLAY_SIZES} from '../lib/layout-constants';
+import layout, { STAGE_DISPLAY_SCALES, STAGE_SIZE_MODES, STAGE_DISPLAY_SIZES } from '../lib/layout-constants';
 
 /**
  * @typedef {object} StageDimensions
@@ -62,6 +62,15 @@ const getStageDimensions = (stageSize, isFullScreen) => {
         stageDimensions.scale = STAGE_DISPLAY_SCALES[stageSize];
         stageDimensions.height = stageDimensions.scale * stageDimensions.heightDefault;
         stageDimensions.width = stageDimensions.scale * stageDimensions.widthDefault;
+    }
+
+    //by yj
+    if (Blockey.GUI_CONFIG.IS_MOBILE) {
+        stageDimensions.width = Blockey.GUI_CONFIG.WRAPPER.offsetWidth
+            /*- STAGE_DIMENSION_DEFAULTS.spacingBorderAdjustment * 2*/
+             - 2;
+        stageDimensions.height = stageDimensions.width * .75;
+        stageDimensions.scale = stageDimensions.width / stageDimensions.widthDefault;
     }
 
     return stageDimensions;

@@ -6,6 +6,9 @@ import {STAGE_SIZE_MODES} from '../lib/layout-constants';
 import {setStageSize} from '../reducers/stage-size';
 import {setFullScreen} from '../reducers/mode';
 
+//by yj
+import {toggleGamepad} from '../reducers/gamepad';
+
 import {connect} from 'react-redux';
 
 import StageHeaderComponent from '../components/stage-header/stage-header.jsx';
@@ -51,12 +54,18 @@ StageHeader.propTypes = {
 };
 
 const mapStateToProps = state => ({
+    //by yj
+    gamepadVisible: state.scratchGui.gamepad.gamepadVisible,
+
     stageSizeMode: state.scratchGui.stageSize.stageSize,
     isFullScreen: state.scratchGui.mode.isFullScreen,
     isPlayerOnly: state.scratchGui.mode.isPlayerOnly
 });
 
 const mapDispatchToProps = dispatch => ({
+    //by yj
+    onToggleGamepad: () => dispatch(toggleGamepad()),
+
     onSetStageLarge: () => dispatch(setStageSize(STAGE_SIZE_MODES.large)),
     onSetStageSmall: () => dispatch(setStageSize(STAGE_SIZE_MODES.small)),
     onSetStageFull: () => dispatch(setFullScreen(true)),

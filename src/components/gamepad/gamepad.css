@@ -1,0 +1,60 @@
+.container{
+  position: absolute;
+  height: 192px;
+  background-color: rgba(64,64,64,0.9);
+  z-index:1000;
+  width:100%
+}
+
+.wrapper{
+  position: relative;
+  overflow: visible;
+}
+
+.wrapper .key {
+  width: 64px;
+  height: 64px;
+  border-radius: 32px;
+  background-color: #ccc;
+  border: solid 2px #999;
+  position: absolute;
+}
+
+.wrapper .key-space {
+  width: 96px;
+  height: 96px;
+  border-radius: 48px;
+  background-color: #ccc;
+  border: solid 2px #999;
+  position: absolute;
+}
+
+.wrapper .key-left {
+  top: 64px;
+  left: 16px;
+  background: url(./key-left.png) no-repeat center/contain;
+}
+
+.wrapper .key-right {
+  top: 64px;
+  left: 144px;
+  background: url(./key-right.png) no-repeat center/contain;
+}
+
+.wrapper .key-up {
+  top: 16px;
+  left: 80px;
+  background: url(./key-up.png) no-repeat center/contain;
+}
+
+.wrapper .key-down {
+  top: 112px;
+  left: 80px;
+  background: url(./key-down.png) no-repeat center/contain;
+}
+
+.wrapper .key-space {
+  top: 48px;
+  right: 32px;
+  background: url(./key-space.png) no-repeat center/contain;
+}

@@ -12,3 +12,12 @@
     /* Hides negative space between edge of rounded corners + container, when selected */
     user-select: none;
 }
+
+/* by yj */
+.stage-canvas-wrapper-mobile {
+    padding-left: 0;
+    padding-right: 0;
+
+    /* Hides negative space between edge of rounded corners + container, when selected */
+    user-select: none;
+}
