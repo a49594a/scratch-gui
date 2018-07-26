@@ -101,12 +101,18 @@ const GUIComponent = props => {
     return (<MediaQuery minWidth={layout.fullSizeMinWidth}>{isFullSize => {
         const stageSize = resolveStageSize(stageSizeMode, isFullSize);
 
+        //by yj add loader for player only mode
         return isPlayerOnly ? (
-            <StageWrapper
-                isRendererSupported={isRendererSupported}
-                stageSize={stageSize}
-                vm={vm}
-            />
+            <Box>
+                <StageWrapper
+                    isRendererSupported={isRendererSupported}
+                    stageSize={stageSize}
+                    vm={vm}
+                />
+                {loading ? (
+                    <Loader />
+                ) : null}
+            </Box>
         ) : (
             <Box
                 className={styles.pageWrapper}
