@@ -53,7 +53,7 @@ class HelpModal extends React.Component {
         }
         else if (help.contentType == 'video/bokecc') {
             Blockey.ccVerificationCode = "Mission," + puzzleData.id + "," + Blockey.INIT_DATA.logedInUser.id;
-            $(this.elContent).html('<script src="http://p.bokecc.com/player?autoStart=true&width=100%&height=600&vid=' + help.content + '" type="text/javascript"></script>');
+            $(this.elContent).html('<script src="//p.bokecc.com/player?autoStart=true&width=100%&height=600&siteid=FFEB007F21BC8D4A&vid=' + help.content + '" type="text/javascript"></script>');
         }
         else if (help.contentType == 'xml/scratch') {
             let workspace = ScratchBlocks.inject(this.elContent, {
