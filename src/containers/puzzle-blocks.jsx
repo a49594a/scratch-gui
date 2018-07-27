@@ -423,30 +423,61 @@ class Blocks extends React.Component {
         // @todo Later we should replace this to avoid all the warnings from redefining blocks.
         this.handleExtensionAdded(blocksInfo);
     }
-    handleCategorySelected(categoryName) {
+    handleCategorySelected (categoryId) {
+        const extension = extensionData.find(ext => ext.extensionId === categoryId);
+        if (extension && extension.launchDeviceConnectionFlow) {
+            this.handleConnectionModalStart(categoryId);
+        }
+
         this.withToolboxUpdates(() => {
             this.workspace.toolbox_.setSelectedCategoryById(categoryId);
         });
     }
-    setBlocks(blocks) {
+    setBlocks (blocks) {
         this.blocks = blocks;
     }
-    handlePromptStart(message, defaultValue, callback, optTitle, optVarType) {
-        const p = { prompt: { callback, message, defaultValue } };
+    handlePromptStart (message, defaultValue, callback, optTitle, optVarType) {
+        const p = {prompt: {callback, message, defaultValue}};
         p.prompt.title = optTitle ? optTitle :
-            this.ScratchBlocks.VARIABLE_MODAL_TITLE;
+            this.ScratchBlocks.Msg.VARIABLE_MODAL_TITLE;
+        p.prompt.varType = typeof optVarType === 'string' ?
+            optVarType : this.ScratchBlocks.SCALAR_VARIABLE_TYPE;
         p.prompt.showMoreOptions =
-            optVarType !== this.ScratchBlocks.BROADCAST_MESSAGE_VARIABLE_TYPE;
+            optVarType !== this.ScratchBlocks.BROADCAST_MESSAGE_VARIABLE_TYPE &&
+            p.prompt.title !== this.ScratchBlocks.Msg.RENAME_VARIABLE_MODAL_TITLE &&
+            p.prompt.title !== this.ScratchBlocks.Msg.RENAME_LIST_MODAL_TITLE;
         this.setState(p);
     }
-    handlePromptCallback(data) {
-        this.state.prompt.callback(data);
+    handleConnectionModalStart (extensionId) {
+        const extension = extensionData.find(ext => ext.extensionId === extensionId);
+        if (extension) {
+            this.setState({connectionModal: {
+                extensionId: extensionId,
+                deviceImage: extension.deviceImage,
+                smallDeviceImage: extension.smallDeviceImage,
+                name: extension.name,
+                connectingMessage: extension.connectingMessage,
+                helpLink: extension.helpLink
+            }});
+        }
+    }
+    handleConnectionModalClose () {
+        this.setState({connectionModal: null});
+    }
+    handleStatusButtonUpdate () {
+        this.ScratchBlocks.refreshStatusButtons(this.workspace);
+    }
+    handlePromptCallback (input, optionSelection) {
+        this.state.prompt.callback(
+            input,
+            this.props.vm.runtime.getAllVarNamesOfType(this.state.prompt.varType),
+            optionSelection);
         this.handlePromptClose();
     }
-    handlePromptClose() {
-        this.setState({ prompt: null });
+    handlePromptClose () {
+        this.setState({prompt: null});
     }
-    handleCustomProceduresClose(data) {
+    handleCustomProceduresClose (data) {
         this.props.onRequestCloseCustomProcedures(data);
         const ws = this.workspace;
         ws.refreshToolboxSelection_();

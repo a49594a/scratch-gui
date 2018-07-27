@@ -35,7 +35,7 @@ class GUI extends React.Component {
         if (this.props.vm.initialized) return;
         this.audioEngine = new AudioEngine();
         this.props.vm.attachAudioEngine(this.audioEngine);
-
+        this.props.vm.runtime.puzzle={};
         //by yj
         this.props.vm.startPuzzle = function () {
             this.runtime.startHats('event_whenflagclicked');
@@ -94,7 +94,7 @@ class GUI extends React.Component {
             var target = runtime.getSpriteTargetByName(defaultSprite);
             if (!target) target = runtime.getTargetForStage();
             this.props.vm.setEditingTarget(target.id);
-            this.props.vm.emitWorkspaceUpdate();
+            //this.props.vm.emitWorkspaceUpdate();
             this.props.vm.resetPuzzle();
             this.props.vm.emit("PUZZLE_LOADED");
             this.setState({ loading: false });
