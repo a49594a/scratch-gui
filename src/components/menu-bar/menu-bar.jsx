@@ -17,6 +17,7 @@ import ProjectSaver from '../../containers/project-saver.jsx';
 
 //by yj
 import ProjectUploader from '../../containers/project-uploader.jsx';
+import ProjectPublisher from '../../containers/project-publisher.jsx';
 import aerfayingLogo from './aerfaying-logo.svg';
 
 import { openTipsLibrary } from '../../reducers/modals';
@@ -342,15 +343,10 @@ class MenuBar extends React.Component {
                         </MenuBarItemTooltip>
                     </div>
                     <div className={classNames(styles.menuBarItem)}>
-                        <MenuBarItemTooltip id="share-button">
-                            <Button className={classNames(styles.shareButton)}>
-                                <FormattedMessage
-                                    defaultMessage="Share"
-                                    description="Label for project share button"
-                                    id="gui.menuBar.share"
-                                />
-                            </Button>
-                        </MenuBarItemTooltip>
+                        <ProjectPublisher>{(publishProject, publishProps) => (
+                            <Button className={classNames(styles.shareButton)} onClick={publishProject}>发布</Button>
+                        )}
+                        </ProjectPublisher>
                     </div>
                     <div className={classNames(styles.menuBarItem, styles.communityButtonWrapper)}>
                         <Button

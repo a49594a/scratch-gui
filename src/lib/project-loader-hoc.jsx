@@ -33,8 +33,9 @@ const ProjectLoaderHOC = function (WrappedComponent) {
             }
         }
         updateProject (projectId) {
+            const revision = Blockey.INIT_DATA.PROJECT.version;//by yj
             storage
-                .load(storage.AssetType.Project, projectId, storage.DataFormat.JSON)
+                .load(storage.AssetType.Project, projectId+(revision?"."+revision:""), storage.DataFormat.JSON)
                 .then(projectAsset => projectAsset && this.setState({
                     projectData: projectAsset.data,
                     fetchingProject: false

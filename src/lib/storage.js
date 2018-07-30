@@ -21,7 +21,7 @@ class Storage extends ScratchStorage {
                 const [projectId, revision] = projectAsset.assetId.split('.');
                 return revision ?
                     //by yj
-                    `${PROJECT_SERVER}/Project/download?id=${projectId}` :
+                    `${PROJECT_SERVER}/Project/download?id=${projectId}&v=${revision}` :
                     `${PROJECT_SERVER}/Project/download?id=${projectId}`;
                     //`${PROJECT_SERVER}/internalapi/project/${projectId}/get/${revision}` :
                     //`${PROJECT_SERVER}/internalapi/project/${projectId}/get/`;
