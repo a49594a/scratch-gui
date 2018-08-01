@@ -28,7 +28,6 @@ import settingsIcon from './icon--settings.svg';
 import saveAnswerIcon from './icon--save-answer.svg';
 import shotscreenIcon from './icon--shotscreen.svg';
 
-import PuzzleHelpModal from '../../containers/puzzle-help-modal.jsx';
 import PuzzleSettingsModal from '../../containers/puzzle-settings-modal.jsx';
 /*
  * Pane that contains the sprite selector, sprite info, stage selector,
@@ -59,26 +58,15 @@ const PuzzlePane = function (props) {
     let costumeURL = assetId && vm.runtime.storage.get(assetId).encodeDataURI();
     let warningTooltipId = `tooltip-${Math.random()}`;
 
-    let puzzle = props.vm.runtime.puzzle || {
-        blockCount: 0,
-        maxBlockCount: puzzleData.maxBlockCount,
-    };
-    let blockError = puzzle.maxBlockCount > 0 && puzzle.blockCount > puzzle.maxBlockCount;
     return (
         <div className={styles.puzzlePane}>
-            {props.puzzleHelpVisible ? (
-                <PuzzleHelpModal
-                    vm={vm}
-                    puzzleData={puzzleData}
-                />
-            ) : null}
             {props.puzzleSettingsVisible ? (
                 <PuzzleSettingsModal
                     vm={vm}
                     puzzleData={puzzleData} />
             ) : null}
             <Box className={styles.puzzleInfo}>
-                <Box className={styles.puzzleHeader}>
+                <Box className={styles.scrollWrapper}>
                     {costumeURL ? (
                         <CostumeCanvas
                             className={styles.sprite}
@@ -87,58 +75,7 @@ const PuzzlePane = function (props) {
                             width={64}
                         />
                     ) : null}
-                    <div className={styles.puzzleHeaderRight}>
-                        <div className={classNames(styles.blockCount, blockError ? styles.error : "")}>
-                            <span>{puzzle.blockCount + "/" + (puzzle.maxBlockCount > 0 ? puzzle.maxBlockCount : "∞")}</span>
-                        </div>
-                    </div>
-                </Box>
-                <Box className={styles.scrollWrapper}>
-                    <div className={styles.helpPane}>
-                        {puzzleData.courses.length > 0 ? (
-                            <Button
-                                title={"任务指南"}
-                                onClick={props.onTutorialClick}
-                            >
-                                <img
-                                    className={styles.tutorialIcon}
-                                    draggable={false}
-                                    src={tutorialIcon}
-                                />
-                            </Button>
-                        ) : null}
-                        {puzzleData.hints.length > 0 ? (
-                            puzzleData.hints.map(hint => (
-                                <Button
-                                    key={"hint-" + hint.forOrder}
-                                    title={"任务提示-" + hint.forOrder}
-                                    data-order={hint.forOrder}
-                                    onClick={props.onHintClick}
-                                >
-                                    <img
-                                        className={styles.hintIcon}
-                                        draggable={false}
-                                        src={hint.forOrder > puzzleData.unlockedHintCount ? hintLockedIcon : hintUnlockedIcon}
-                                    />
-                                </Button>
-                            ))
-                        ) : null}
-                        {puzzleData.answers.length > 0 ? (
-                            <Button
-                                title={"标准答案"}
-                                onClick={props.onAnswerClick}
-                            >
-                                <img
-                                    className={styles.answerIcon}
-                                    draggable={false}
-                                    src={answerIcon}
-                                />
-                            </Button>
-                        ) : null}
-                    </div>
-                    <div>
-                        {puzzleData.descp}
-                    </div>
+                    {puzzleData.descp}
                     {puzzleData.isAdmin ? (
                         <ActionMenu
                             className={styles.addButton}

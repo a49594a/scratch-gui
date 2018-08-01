@@ -13,7 +13,8 @@ const StageWrapperComponent = function (props) {
     const {
         isRendererSupported,
         stageSize,
-        vm
+        vm,
+        puzzleData
     } = props;
 
     return (
@@ -33,6 +34,7 @@ const StageWrapperComponent = function (props) {
                 <StageHeader
                     stageSize={stageSize}
                     vm={vm}
+                    puzzleData={puzzleData}
                 />
             </Box>
         </Box>

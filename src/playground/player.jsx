@@ -27,7 +27,7 @@ const Player = ({isPlayerOnly, onSeeInside}) => (
         <GUI
             enableCommunity
             isPlayerOnly={isPlayerOnly}
-            projectId={Blockey.INIT_DATA.PROJECT.id}//by yj
+            projectId={Blockey.INIT_DATA.project.id}//by yj
         />
     </Box>
 );

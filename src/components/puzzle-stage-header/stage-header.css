@@ -75,3 +75,25 @@
     background-repeat: no-repeat;
     background-size: 24px;
 }
+
+.block-count{
+    position: fixed;
+    top: 4rem;
+    right: 1rem;
+    z-index: 10;
+    width: 5rem;
+    height: 2rem;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    line-height: 2rem;
+    border-radius: 1rem;
+    background-color: #999;
+    color: #fff;
+    opacity: 0.9;
+    box-shadow: #999 0.5px 0.5px 0.5rem;
+}
+
+.block-count.error{
+    background-color: #f00;
+}

@@ -13,11 +13,11 @@ class ProjectUploader extends React.Component {
     }
     uploadProject() {
         if (!window.confirm('如果该作品原先为scratch2.0版本，保存后会永久转换为3.0版本。确定要保存吗？')) return;
-        this.props.vm.saveProjectDiff().then(content => {
-            const projectId = Blockey.INIT_DATA.PROJECT.id;
+        this.props.vm.saveProjectDiff().then(file => {
+            const projectId = Blockey.INIT_DATA.project.id;
             Blockey.Utils.ajax({
                 url: "/WebApi/Project/Upload",
-                data: { id: projectId, content: content },
+                data: { id: projectId, file: file },
                 success: (r) => {
                     this.props.vm.updateSavedAssetMap();//配合saveProjectDiff
                     Blockey.Utils.Alerter.info("保存成功");

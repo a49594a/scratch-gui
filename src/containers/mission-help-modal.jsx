@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import HelpModalComponent from '../components/puzzle-help-modal/help-modal.jsx';
+import HelpModalComponent from '../components/mission-help-modal/help-modal.jsx';
 
-import { closePuzzleHelp } from '../reducers/modals';
+import { closeMissionHelp } from '../reducers/modals';
 import ScratchBlocks from 'scratch-blocks';
 
 class HelpModal extends React.Component {
@@ -15,14 +15,17 @@ class HelpModal extends React.Component {
             'handleOK',
             'handleCancel',
             'handleSelect',
-            'setContent',
+            'setContent'
         ]);
 
-        let puzzle = this.props.vm.runtime.puzzle;
+        let mission = Blockey.INIT_DATA.mission;
+        let sidebarVisible = mission.helps && mission.helps.length > 1;
         this.state = {
-            forType: puzzle.helpForType,
-            forOrder: puzzle.helpForOrder,
-            sidebarVisible: puzzle.helpSidebarVisible,
+            mission: mission,
+            forType: 'Mission.Course',
+            forOrder: mission.helpForOrder || 1,
+            sidebarVisible: sidebarVisible,
+            helps: mission.helps,
         };
     }
     componentDidMount() {
@@ -36,23 +39,26 @@ class HelpModal extends React.Component {
             this.answersWorkspace = null;
         }
     }
+    componentDidUpdate() {
+        let mission = this.state.mission;
+        if (mission.helpForOrder != this.state.forOrder) {
+            mission.helpForOrder = this.state.forOrder;
+            this.setContent(this.elContent);
+        }
+    }
     setContent(elContent) {
         this.elContent = elContent;
         if (!this.elContent) return;
 
-        let puzzleData = this.props.puzzleData;
         let forType = this.state.forType;
         let forOrder = this.state.forOrder;
-        let helps = null;
-        if (forType == 'Mission.Course') helps = puzzleData.courses;
-        if (forType == 'Mission.Hint') helps = puzzleData.hints;
-        if (forType == 'Mission.Answer') helps = puzzleData.answers;
+        let helps = this.state.mission.helps;
         let help = helps[forOrder - 1];
         if (help.contentType == 'text/html') {
             $(this.elContent).html(help.content);
         }
         else if (help.contentType == 'video/bokecc') {
-            Blockey.ccVerificationCode = "Mission," + puzzleData.id + "," + Blockey.INIT_DATA.logedInUser.id;
+            Blockey.ccVerificationCode = "Mission," + this.state.mission.id + "," + Blockey.INIT_DATA.logedInUser.id;
             $(this.elContent).html('<script src="//p.bokecc.com/player?autoStart=true&width=100%&height=600&siteid=FFEB007F21BC8D4A&vid=' + help.content + '" type="text/javascript"></script>');
         }
         else if (help.contentType == 'xml/scratch') {
@@ -79,7 +85,7 @@ class HelpModal extends React.Component {
 
             workspace.clear();
             workspace.getFlyout().hide();
-            var dom = ScratchBlocks.Xml.textToDom(this.props.puzzleData.answers[0].content);
+            var dom = ScratchBlocks.Xml.textToDom(help.content);
             workspace.scrollX -= 240;
             workspace.scrollY += 20;
             ScratchBlocks.Xml.domToWorkspace(dom, workspace);
@@ -87,11 +93,29 @@ class HelpModal extends React.Component {
         }
     }
     handleSelect(e) {
-        let puzzle = this.props.vm.runtime.puzzle;
-        puzzle.helpForOrder = e.currentTarget.getAttribute("data-order");
-        this.setState({
-            forOrder: puzzle.helpForOrder
-        });
+        let forOrder = e.currentTarget.getAttribute("data-order");
+        let mission = this.state.mission;
+        let help = mission.helps[forOrder - 1];
+        if (help.forType == 'Mission.Hint' && !help.unlocked) {
+            if (confirm('使用1个提示都会减少10%的任务奖励，确定要解锁这个提示吗?')) {
+                Blockey.Utils.ajax({
+                    url: '/WebApi/Mission/UnlockHint',
+                    data: { id: mission.id, helpId: help.id },
+                    success: r => {
+                        help.unlocked = true;
+                        this.setState({
+                            forOrder: forOrder
+                        });
+                    }
+                });
+            }
+            return;
+        }
+        else {
+            this.setState({
+                forOrder: forOrder
+            });
+        }
     }
     handleOK() {
         this.props.onOK();
@@ -109,8 +133,11 @@ class HelpModal extends React.Component {
                 onCancel={this.handleCancel}
                 onOK={this.handleOK}
                 onSelect={this.handleSelect}
+                onToggleSidebar={this.handleToggleSidebar}
                 forType={this.state.forType}
                 forOrder={this.state.forOrder}
+                loaded={this.state.loaded}
+                mission={this.state.mission}
                 sidebarVisible={this.state.sidebarVisible}
                 setContent={this.setContent}
             />
@@ -128,10 +155,10 @@ const mapStateToProps = () => ({});
 
 const mapDispatchToProps = dispatch => ({
     onOK: () => {
-        dispatch(closePuzzleHelp());
+        dispatch(closeMissionHelp());
     },
     onCancel: () => {
-        dispatch(closePuzzleHelp());
+        dispatch(closeMissionHelp());
     }
 });
 

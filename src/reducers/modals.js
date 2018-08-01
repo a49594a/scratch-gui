@@ -16,8 +16,9 @@ const MODAL_SOUND_RECORDER = 'soundRecorder';
 //by yj
 const MODAL_PUZZLE_LOADING = 'puzzleLoading';
 const MODAL_PUZZLE_RESOLVED = 'puzzleResolved';
-const MODAL_PUZZLE_HELP = 'puzzleHelp';
 const MODAL_PUZZLE_SETTINGS = 'puzzleSettings';
+const MODAL_MISSION_HELP = 'missionHelp';
+const MODAL_PUBLISH = 'publish';
 
 const MODAL_TIPS_LIBRARY = 'tipsLibrary';
 
@@ -26,8 +27,9 @@ const initialState = {
     //by yj
     [MODAL_PUZZLE_LOADING]: true,
     [MODAL_PUZZLE_RESOLVED]: false,
-    [MODAL_PUZZLE_HELP]: false,
     [MODAL_PUZZLE_SETTINGS]: false,
+    [MODAL_MISSION_HELP]: false,
+    [MODAL_PUBLISH]: false,
 
     [MODAL_BACKDROP_LIBRARY]: false,
     [MODAL_CAMERA_CAPTURE]: false,
@@ -160,18 +162,25 @@ const openPuzzleResolved = function () {
 const closePuzzleResolved = function () {
     return closeModal(MODAL_PUZZLE_RESOLVED);
 };
-const openPuzzleHelp = function () {
-    return openModal(MODAL_PUZZLE_HELP);
-};
-const closePuzzleHelp = function () {
-    return closeModal(MODAL_PUZZLE_HELP);
-};
 const openPuzzleSettings = function () {
     return openModal(MODAL_PUZZLE_SETTINGS);
 };
 const closePuzzleSettings = function () {
     return closeModal(MODAL_PUZZLE_SETTINGS);
 };
+const openMissionHelp = function () {
+    return openModal(MODAL_MISSION_HELP);
+};
+const closeMissionHelp = function () {
+    return closeModal(MODAL_MISSION_HELP);
+};
+const openPublish = function () {
+    return openModal(MODAL_PUBLISH);
+};
+const closePublish = function () {
+    return closeModal(MODAL_PUBLISH);
+};
+
 
 export {
     reducer as default,
@@ -204,8 +213,10 @@ export {
     closePuzzleLoading,
     openPuzzleResolved,
     closePuzzleResolved,
-    openPuzzleHelp,
-    closePuzzleHelp,
     openPuzzleSettings,
-    closePuzzleSettings
+    closePuzzleSettings,
+    openMissionHelp,
+    closeMissionHelp,
+    openPublish,
+    closePublish
 };

@@ -2,14 +2,14 @@ import classNames from 'classnames';
 import { defineMessages, injectIntl, intlShape } from 'react-intl';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import VM from 'scratch-vm';
 
 import Box from '../box/box.jsx';
 import Button from '../button/button.jsx';
 import Controls from '../../containers/puzzle-controls.jsx';
-import {getStageDimensions} from '../../lib/screen-utils';
-import {STAGE_SIZE_MODES} from '../../lib/layout-constants';
+import { getStageDimensions } from '../../lib/screen-utils';
+import { STAGE_SIZE_MODES } from '../../lib/layout-constants';
 
 import fullScreenIcon from './icon--fullscreen.svg';
 import largeStageIcon from './icon--large-stage.svg';
@@ -57,8 +57,15 @@ const StageHeaderComponent = function (props) {
         onSetStageUnFull,
         stageSizeMode,
         setSlider,
-        vm
+        vm,
+        puzzleData
     } = props;
+
+    let puzzle = vm.runtime.puzzle || {
+        blockCount: 0,
+        maxBlockCount: puzzleData.maxBlockCount,
+    };
+    let blockError = puzzle.maxBlockCount > 0 && puzzle.blockCount > puzzle.maxBlockCount;
 
     let header = null;
 
@@ -68,7 +75,7 @@ const StageHeaderComponent = function (props) {
             <Box className={styles.stageHeaderWrapperOverlay}>
                 <Box
                     className={styles.stageMenuWrapper}
-                    style={{width: stageDimensions.width}}
+                    style={{ width: stageDimensions.width }}
                 >
                     <Button
                         className={styles.stageButton}
@@ -120,6 +127,9 @@ const StageHeaderComponent = function (props) {
                             </svg>
                         </svg>
                     </Box>
+                    <div className={classNames(styles.blockCount, blockError ? styles.error : "")}>
+                        <span>{puzzle.blockCount + "/" + (puzzle.maxBlockCount > 0 ? puzzle.maxBlockCount : "∞")}</span>
+                    </div>
                     <Controls vm={vm} />
                 </Box>
             </Box>

@@ -17,7 +17,7 @@ import SoundTab from '../../containers/sound-tab.jsx';
 //import StageWrapper from '../../containers/stage-wrapper.jsx';
 import Loader from '../loader/loader.jsx';
 import Box from '../box/box.jsx';
-import MenuBar from '../puzzle-menu-bar/menu-bar.jsx';
+import MenuBar from '../menu-bar/menu-bar.jsx';
 import CostumeLibrary from '../../containers/costume-library.jsx';
 import BackdropLibrary from '../../containers/backdrop-library.jsx';
 

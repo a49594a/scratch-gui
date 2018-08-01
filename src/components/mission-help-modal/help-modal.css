@@ -1,0 +1,77 @@
+@import "../../css/colors.css";
+@import "../../css/units.css";
+@import "../../css/typography.css";
+
+.modal-content {
+    width: 960px;
+}
+
+.body {
+    background: $ui-white;
+    padding: 0;
+}
+
+.content{
+    margin-left:0px;
+    font-size: 2rem;
+}
+
+.content-with-sidebar{
+    margin-left:200px;
+}
+
+.answerBlocks{
+    min-height: 512px;
+    height: 512px;
+}
+
+/*mission helps view style*/
+.sidebar {
+    position: relative;
+    padding: 5px;
+    float: left;
+    width: 200px;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 600px;
+}
+
+    ul.nav {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    ul.nav li {
+        list-style: none;
+        margin: 0 0 0.5rem 0;
+        border: 1px solid #eee;
+        border-radius: 5px;
+        padding: 0.3rem 0.5rem;
+        cursor: pointer;
+        font-size: 0.9rem;
+    }
+
+    ul.nav li .title-prefix {
+        display: inline-block;
+        font-weight: bold;
+    }
+
+        ul.nav li.active {
+            background-color: #eee;
+        }
+
+        ul.nav li:hover {
+            background-color: #eee;
+        }
+
+.help-icon{
+    height: 1.6rem;
+    vertical-align: text-bottom;
+    margin: -0.3rem 0;
+}
+
+.clear-both{
+    clear: both;
+}

@@ -20,20 +20,36 @@ class StageHeader extends React.Component {
             'handleKeyPress',
             'setSlider',
             'syncSliderValue',
+            'onPuzzleBlocksChanged',
         ]);
+        this.state = {
+            preventComplete: false,
+            blockCount: 0,
+            maxBlockCount: 0,
+        };
     }
     componentDidMount() {
         document.addEventListener('keydown', this.handleKeyPress);
         this.props.vm.addListener('PUZZLE_LOADED', this.syncSliderValue);
+        this.props.vm.addListener('PUZZLE_BLOCKS_CHANGED', this.onPuzzleBlocksChanged);
     }
     componentWillUnmount() {
         document.removeEventListener('keydown', this.handleKeyPress);
         this.props.vm.removeListener('PUZZLE_LOADED', this.syncSliderValue);
+        this.props.vm.removeListener('PUZZLE_BLOCKS_CHANGED', this.onPuzzleBlocksChanged);
     }
     handleKeyPress(event) {
         if (event.key === 'Escape' && this.props.isFullScreen) {
             this.props.onSetStageUnFull(false);
         }
+    }
+    onPuzzleBlocksChanged(e) {
+        let puzzle = this.props.vm.runtime.puzzle;
+        this.setState({
+            preventComplete: puzzle.preventComplete,
+            blockCount: puzzle.blockCount,
+            maxBlockCount: puzzle.maxBlockCount,
+        })
     }
     syncSliderValue() {
         let puzzle = this.props.vm.runtime.puzzle;
@@ -61,6 +77,9 @@ class StageHeader extends React.Component {
                 {...props}
                 onKeyPress={this.handleKeyPress}
                 setSlider={this.setSlider}
+                preventComplete={this.state.preventComplete}
+                blockCount={this.state.blockCount}
+                maxBlockCount={this.state.maxBlockCount}
             />
         );
     }
