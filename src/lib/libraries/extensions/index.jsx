@@ -14,47 +14,11 @@ import microbitMenuImage from './device-connection/microbit/microbit-small.svg';
 import ev3DeviceImage from './device-connection/ev3/ev3-hub-illustration.svg';
 import ev3MenuImage from './device-connection/ev3/ev3-small.svg';
 
-export default [
-    //by yj
-    {
-        name: (
-            <FormattedMessage
-                defaultMessage="Community"
-                description="Name for the 'Community' extension"
-                id="gui.extension.community.name"
-            />
-        ),
-        extensionId: 'community',
-        iconURL: musicImage,
-        description: (
-            <FormattedMessage
-                defaultMessage="Community blocks."
-                description="Description for the 'community' extension"
-                id="gui.extension.community.description"
-            />
-        ),
-        featured: true
-    },
-    {
-        name: (
-            <FormattedMessage
-                defaultMessage="Puzzle"
-                description="Name for the 'Puzzle' extension"
-                id="gui.extension.puzzle.name"
-            />
-        ),
-        extensionId: 'puzzle',
-        iconURL: musicImage,
-        description: (
-            <FormattedMessage
-                defaultMessage="Puzzle blocks."
-                description="Description for the 'puzzle' extension"
-                id="gui.extension.puzzle.description"
-            />
-        ),
-        featured: true
-    },
+//by yj
+import puzzleImage from './puzzle.png';
+import communityImage from './community.png';
 
+export default [
     {
         name: (
             <FormattedMessage
@@ -112,6 +76,47 @@ export default [
         ),
         featured: true
     },
+
+    //by yj
+    {
+        name: (
+            <FormattedMessage
+                defaultMessage="Community"
+                description="Name for the 'Community' extension"
+                id="gui.extension.community.name"
+            />
+        ),
+        extensionId: 'community',
+        iconURL: communityImage,
+        description: (
+            <FormattedMessage
+                defaultMessage="Community blocks."
+                description="Description for the 'community' extension"
+                id="gui.extension.community.description"
+            />
+        ),
+        featured: true
+    },
+    {
+        name: (
+            <FormattedMessage
+                defaultMessage="Puzzle"
+                description="Name for the 'Puzzle' extension"
+                id="gui.extension.puzzle.name"
+            />
+        ),
+        extensionId: 'puzzle',
+        iconURL: puzzleImage,
+        description: (
+            <FormattedMessage
+                defaultMessage="Puzzle blocks."
+                description="Description for the 'puzzle' extension"
+                id="gui.extension.puzzle.description"
+            />
+        ),
+        featured: true
+    },
+    
     {
         name: (
             <FormattedMessage
