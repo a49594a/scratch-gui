@@ -54,6 +54,8 @@ const StageHeaderComponent = function (props) {
     const {
         //by yj
         onToggleGamepad,
+        setSlider,
+        puzzleData,
 
         isFullScreen,
         isPlayerOnly,
@@ -68,6 +70,37 @@ const StageHeaderComponent = function (props) {
 
     let header = null;
 
+    //by yj
+    let isPuzzleMode = Blockey.GUI_CONFIG.MODE=='Puzzle';
+    let puzzle=null,blockError=null,slider=null,blocksInfo=null;
+    if(isPuzzleMode){
+        puzzle = vm.runtime.puzzle || {
+            blockCount: 0,
+            maxBlockCount: puzzleData.maxBlockCount,
+        };
+        blockError = puzzle.maxBlockCount > 0 && puzzle.blockCount > puzzle.maxBlockCount;
+        slider = (
+            <Box className={styles.slider} componentRef={setSlider}>
+                <svg className={"slider-svg"} xmlns="http://www.w3.org/2000/svg" width="150" height="32">
+                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                        <clipPath id="slowClipPath">
+                            <rect width="26" height="12" x="5" y="14" /></clipPath>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                        <clipPath id="fastClipPath">
+                            <rect width="26" height="16" x="120" y="10" />
+                        </clipPath>
+                    </svg>
+                </svg>
+            </Box>
+        );
+        blocksInfo = (
+            <div className={classNames(styles.blockCount, blockError ? styles.error : "")}>
+                <span>{puzzle.blockCount + "/" + (puzzle.maxBlockCount > 0 ? puzzle.maxBlockCount : "∞")}</span>
+            </div>
+        );
+    }
+
     if (isFullScreen) {
         const stageDimensions = getStageDimensions(null, true);
         header = (
@@ -76,7 +109,9 @@ const StageHeaderComponent = function (props) {
                     className={styles.stageMenuWrapper}
                     style={{ width: stageDimensions.width }}
                 >
-                    <Controls vm={vm} />
+                    {Blockey.GUI_CONFIG.MODE!='Puzzle'?(
+                        <Controls vm={vm} />
+                    ):null}
                     <Button
                         className={styles.stageButton}
                         onClick={onSetStageUnFull}
@@ -90,6 +125,9 @@ const StageHeaderComponent = function (props) {
                             title={props.intl.formatMessage(messages.fullscreenControl)}
                         />
                     </Button>
+                    {Blockey.GUI_CONFIG.MODE=='Puzzle'?(
+                        <Controls vm={vm} />
+                    ):null}
                 </Box>
             </Box>
         );
@@ -138,9 +176,11 @@ const StageHeaderComponent = function (props) {
         header = (
             <Box className={styles.stageHeaderWrapper}>
                 <Box className={styles.stageMenuWrapper}>
-                    <Controls vm={vm} />
+                    {Blockey.GUI_CONFIG.MODE!='Puzzle'?(
+                        <Controls vm={vm} />
+                    ):null}
                     <div className={styles.stageSizeRow}>
-                        {stageControls}
+                        {Blockey.GUI_CONFIG.MODE!='Puzzle'? stageControls:null}
                         <div>
                             {Blockey.GUI_CONFIG.IS_MOBILE ? (
                                 <img
@@ -169,6 +209,11 @@ const StageHeaderComponent = function (props) {
                                 )}
                         </div>
                     </div>
+                    {slider}
+                    {blocksInfo}
+                    {Blockey.GUI_CONFIG.MODE=='Puzzle'?(
+                        <Controls vm={vm} />
+                    ):null}
                 </Box>
                 {props.gamepadVisible ? (
                     <Gamepad vm={vm} />

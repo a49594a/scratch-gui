@@ -7,6 +7,10 @@ import GreenFlag from '../green-flag/green-flag.jsx';
 import StopAll from '../stop-all/stop-all.jsx';
 import TurboMode from '../turbo-mode/turbo-mode.jsx';
 
+//by yj
+import resetIcon from './icon--reset.svg';
+import startIcon from './icon--start.svg';
+
 import styles from './controls.css';
 
 const messages = defineMessages({
@@ -24,6 +28,12 @@ const messages = defineMessages({
 
 const Controls = function (props) {
     const {
+        //by yj
+        started,
+        preventComplete,
+        onStartClick,
+        onResetClick,
+
         active,
         className,
         intl,
@@ -32,6 +42,21 @@ const Controls = function (props) {
         turbo,
         ...componentProps
     } = props;
+
+    //by yj
+    if(Blockey.GUI_CONFIG.MODE=='Puzzle'){
+        return (
+            <div
+                className={classNames(styles.controlsContainer, className)}
+                {...componentProps}
+            >
+                <button className={classNames(started ? styles.reset : styles.start, preventComplete ? styles.preventComplete : "")} onClick={started ? onResetClick : onStartClick}>
+                    <img className={started ? styles.resetIcon : styles.startIcon} src={started ? resetIcon : startIcon} />{started ? "重置" : "开始"}
+                </button>
+            </div>
+        );
+    }
+
     return (
         <div
             className={classNames(styles.controlsContainer, className)}

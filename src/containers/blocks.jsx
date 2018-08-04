@@ -23,6 +23,9 @@ import {activateColorPicker} from '../reducers/color-picker';
 import {closeExtensionLibrary} from '../reducers/modals';
 import {activateCustomProcedures, deactivateCustomProcedures} from '../reducers/custom-procedures';
 
+//by yj
+import makePuzzleToolboxXML from '../lib/make-puzzle-toolbox-xml';
+
 const addFunctionListener = (object, property, callback) => {
     const oldFn = object[property];
     object[property] = function () {
@@ -37,6 +40,11 @@ class Blocks extends React.Component {
         super(props);
         this.ScratchBlocks = VMScratchBlocks(props.vm);
         bindAll(this, [
+            //by yj
+            "puzzleBlockListener",
+            "puzzleFlyoutBlockListener",
+            "handlePuzzleSaveAnswer",
+
             'attachVM',
             'detachVM',
             'handleCategorySelected',
@@ -77,7 +85,7 @@ class Blocks extends React.Component {
         const workspaceConfig = defaultsDeep({},
             Blocks.defaultOptions,
             this.props.options,
-            {toolbox: this.props.toolboxXML}
+            {toolbox: /*by yj this.props.toolboxXML*/ this.getToolboxXML()}
         );
         this.workspace = this.ScratchBlocks.inject(this.blocks, workspaceConfig);
 
@@ -166,12 +174,17 @@ class Blocks extends React.Component {
             });
     }
 
+    //by yj
+    getToolboxXML() {
+        return this.__toolboxXML || this.props.toolboxXML;
+    }
+
     updateToolbox () {
         this.toolboxUpdateTimeout = false;
 
         const categoryId = this.workspace.toolbox_.getSelectedCategoryId();
         const offset = this.workspace.toolbox_.getCategoryScrollOffset();
-        this.workspace.updateToolbox(this.props.toolboxXML);
+        this.workspace.updateToolbox(/*by yj this.props.toolboxXML*/ this.getToolboxXML());
         // In order to catch any changes that mutate the toolbox during "normal runtime"
         // (variable changes/etc), re-enable toolbox refresh.
         // Using the setter function will rerender the entire toolbox which we just rendered.
@@ -217,6 +230,12 @@ class Blocks extends React.Component {
         this.props.vm.addListener('BLOCKSINFO_UPDATE', this.handleBlocksInfoUpdate);
         this.props.vm.addListener('PERIPHERAL_CONNECTED', this.handleStatusButtonUpdate);
         this.props.vm.addListener('PERIPHERAL_ERROR', this.handleStatusButtonUpdate);
+
+        //by yj
+        if(Blockey.GUI_CONFIG.MODE=='Puzzle'){
+            this.flyoutWorkspace.addChangeListener(this.puzzleFlyoutBlockListener);
+            this.props.vm.addListener('PUZZLE_SAVE_ANSWER', this.handlePuzzleSaveAnswer);
+        }
     }
     detachVM () {
         this.props.vm.removeListener('SCRIPT_GLOW_ON', this.onScriptGlowOn);
@@ -230,6 +249,42 @@ class Blocks extends React.Component {
         this.props.vm.removeListener('BLOCKSINFO_UPDATE', this.handleBlocksInfoUpdate);
         this.props.vm.removeListener('PERIPHERAL_CONNECTED', this.handleStatusButtonUpdate);
         this.props.vm.removeListener('PERIPHERAL_ERROR', this.handleStatusButtonUpdate);
+
+        //by yj
+        if(Blockey.GUI_CONFIG.MODE=='Puzzle'){
+            this.flyoutWorkspace.removeListener(this.puzzleFlyoutBlockListener);
+            this.props.vm.removeListener('PUZZLE_SAVE_ANSWER', this.handlePuzzleSaveAnswer);
+        }
+    }
+    //by yj
+    handlePuzzleSaveAnswer() {
+        if (window.confirm("确定要将当前程序保存为标准答案吗？")) {
+            var xmlString = '<xml xmlns="http://www.w3.org/1999/xhtml">' + '<variables>';
+            //${variables.map(v => v.toXML()).join()}
+            xmlString += '</variables>' + this.props.vm.editingTarget.blocks.toXML(null, false) + '</xml>';
+            let postData = {
+                forId: this.props.puzzleData.id,
+                content: xmlString,
+            };
+            Blockey.Utils.ajax({
+                url: "/Mission/SaveHelpForAnswer",
+                data: postData,
+                success: (e) => {
+                    var answer = {
+                        contentType: 'xml/scratch',
+                        content: xmlString
+                    };
+                    var puzzleData = this.props.puzzleData;
+                    if (puzzleData.answers.length == 0) {
+                        puzzleData.answers.push(answer);
+                    }
+                    else {
+                        puzzleData.answers[0] = answer;
+                    }
+                    this.props.vm.emit("PUZZLE_ANSWER_SAVED");
+                }
+            });
+        }
     }
 
     updateToolboxBlockValue (id, value) {
@@ -266,23 +321,47 @@ class Blocks extends React.Component {
         }
     }
     onScriptGlowOn (data) {
+        //by yj
+        if (!this.workspace.getBlockById(data.id))return;
+
         this.workspace.glowStack(data.id, true);
     }
     onScriptGlowOff (data) {
+        //by yj
+        if (!this.workspace.getBlockById(data.id))return;
+
         this.workspace.glowStack(data.id, false);
     }
     onBlockGlowOn (data) {
+        //by yj
+        if (!this.workspace.getBlockById(data.id))return;
+
         this.workspace.glowBlock(data.id, true);
     }
     onBlockGlowOff (data) {
+        //by yj
+        if (!this.workspace.getBlockById(data.id))return;
+
         this.workspace.glowBlock(data.id, false);
     }
     onVisualReport (data) {
+        //by yj
+        if (!this.workspace.getBlockById(data.id))return;
+
         this.workspace.reportValue(data.id, data.value);
     }
     onWorkspaceUpdate (data) {
         // When we change sprites, update the toolbox to have the new sprite's blocks
-        if (this.props.vm.editingTarget) {
+
+        //by yj 显示谜题自定义toolbox
+        const toolboxTarget = Blockey.GUI_CONFIG.MODE=='Puzzle'?this.props.vm.runtime.getSpriteTargetByName("@Toolbox"):null;
+        if(toolboxTarget){
+            const toolboxXML = makePuzzleToolboxXML(toolboxTarget);
+            this.__toolboxXML = toolboxXML;
+            this.updateToolbox();
+            this.props.updateToolboxState(toolboxXML);
+        }
+        else if (this.props.vm.editingTarget) {
             const target = this.props.vm.editingTarget;
             const dynamicBlocksXML = this.props.vm.runtime.getBlocksXML();
             const toolboxXML = makeToolboxXML(target.isStage, target.id, dynamicBlocksXML);
@@ -299,6 +378,12 @@ class Blocks extends React.Component {
         this.ScratchBlocks.Xml.clearWorkspaceAndLoadFromXml(dom, this.workspace);
         this.workspace.addChangeListener(this.props.vm.blockListener);
 
+        //by yj 检测模块数量变化
+        if(Blockey.GUI_CONFIG.MODE=='Puzzle'){
+            this.workspace.removeChangeListener(this.puzzleBlockListener.bind(this));
+            this.workspace.addChangeListener(this.puzzleBlockListener.bind(this));
+        }
+        
         if (this.props.vm.editingTarget && this.state.workspaceMetrics[this.props.vm.editingTarget.id]) {
             const {scrollX, scrollY, scale} = this.state.workspaceMetrics[this.props.vm.editingTarget.id];
             this.workspace.scrollX = scrollX;
@@ -307,6 +392,48 @@ class Blocks extends React.Component {
             this.workspace.resize();
         }
     }
+
+    //by yj
+    puzzleBlockListener(evt) {
+        let type = evt.type;
+        let puzzle = this.props.vm.runtime.puzzle;
+        let blockCount = null;
+        let blockStackClicked = null;
+        if (/*type == "change" || type == "move" ||*/ type == "delete" || type == "create") {
+            blockCount = 0;
+            let blocks = this.workspace.getAllBlocks();
+            for (let i = 0; i < blocks.length; i++) {
+                if (blocks[i].isShadow_ || blocks[i].isInsertionMarker_) continue;
+                blockCount++;
+            }
+            puzzle.blockCount = blockCount;
+            if (puzzle.maxBlockCount > 0 && puzzle.blockCount > puzzle.maxBlockCount) {
+                puzzle.preventComplete = true;
+            }
+            else if (!puzzle.started) {
+                puzzle.preventComplete = false;
+            }
+            this.props.vm.emit("PUZZLE_BLOCKS_CHANGED", {
+                type: evt.type,
+            });
+        }
+        if (evt.element === 'stackclick') {
+            puzzle.preventComplete = true;
+            this.props.vm.emit("PUZZLE_BLOCKS_CHANGED", {
+                type: evt.element
+            });
+        }
+    }
+    puzzleFlyoutBlockListener(e) {
+        let puzzle = this.props.vm.runtime.puzzle;
+        if (e.element === 'stackclick') {
+            puzzle.preventComplete = true;
+            this.props.vm.emit("PUZZLE_BLOCKS_CHANGED", {
+                type: e.element
+            });
+        }
+    }
+
     handleExtensionAdded (blocksInfo) {
         // select JSON from each block info object then reject the pseudo-blocks which don't have JSON, like separators
         // this actually defines blocks and MUST run regardless of the UI state
@@ -314,6 +441,16 @@ class Blocks extends React.Component {
 
         // update the toolbox view: this can be skipped if we're not looking at a target, etc.
         const runtime = this.props.vm.runtime;
+        //by yj
+        if(Blockey.GUI_CONFIG.MODE=='Puzzle'){
+            const toolboxTarget = runtime.getSpriteTargetByName("@Toolbox");
+            if (toolboxTarget) {
+                const toolboxXML = makePuzzleToolboxXML(toolboxTarget);
+                this.props.updateToolboxState(toolboxXML);
+                return;
+            }
+        }
+
         const target = runtime.getEditingTarget() || runtime.getTargetForStage();
         if (target) {
             const dynamicBlocksXML = runtime.getBlocksXML();
@@ -497,7 +634,7 @@ Blocks.defaultOptions = {
     zoom: {
         controls: true,
         wheel: true,
-        startScale: 0.675
+        startScale: 0.75, //by yj 0.675
     },
     grid: {
         spacing: 40,

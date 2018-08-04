@@ -18,10 +18,11 @@ const StageWrapperComponent = function (props) {
 
     //by yj
     let isMobile = Blockey.GUI_CONFIG&&Blockey.GUI_CONFIG.IS_MOBILE;
+    let isPuzzle = Blockey.GUI_CONFIG.MODE=='Puzzle';
 
     return (
         <Box className={styles.stageWrapper}>
-            {isMobile ? null : (
+            {isPuzzle || isMobile ? null : (
                 <Box className={styles.stageMenuWrapper}>
                     <StageHeader
                         stageSize={stageSize}
@@ -39,14 +40,22 @@ const StageWrapperComponent = function (props) {
                         null
                 }
             </Box>
-            {isMobile ? (
+            {isPuzzle ? (
+                <Box className={styles.stageMenuWrapper}>
+                    <StageHeader
+                        stageSize={stageSize}
+                        vm={vm}
+                        puzzleData={props.puzzleData}
+                    />
+                </Box>
+            ) : (isMobile ? (
                 <Box className={styles.stageMenuWrapper}>
                     <StageHeader
                         stageSize={stageSize}
                         vm={vm}
                     />
                 </Box>
-            ) : null}
+            ) : null)}
         </Box>
     );
 };
