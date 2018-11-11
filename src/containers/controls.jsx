@@ -2,6 +2,7 @@ import bindAll from 'lodash.bindall';
 import PropTypes from 'prop-types';
 import React from 'react';
 import VM from 'scratch-vm';
+import {connect} from 'react-redux';
 
 import analytics from '../lib/analytics';
 import ControlsComponent from '../components/controls/controls.jsx';
@@ -18,9 +19,7 @@ class Controls extends React.Component {
             'onPuzzleBlocksChanged',
 
             'handleGreenFlagClick',
-            'handleStopAllClick',
-            'onProjectRunStart',
-            'onProjectRunStop'
+            'handleStopAllClick'
         ]);
         this.state = {
             //by yj
@@ -58,8 +57,7 @@ class Controls extends React.Component {
     handleGreenFlagClick (e) {
         e.preventDefault();
         if (e.shiftKey) {
-            this.setState({turbo: !this.state.turbo});
-            this.props.vm.setTurboMode(!this.state.turbo);
+            this.props.vm.setTurboMode(!this.props.turbo);
         } else {
             this.props.vm.greenFlag();
             analytics.event({
@@ -124,13 +122,15 @@ class Controls extends React.Component {
     render () {
         const {
             vm, // eslint-disable-line no-unused-vars
+            projectRunning,
+            turbo,
             ...props
         } = this.props;
         return (
             <ControlsComponent
                 {...props}
-                active={this.state.projectRunning}
-                turbo={this.state.turbo}
+                active={projectRunning}
+                turbo={turbo}
                 onGreenFlagClick={this.handleGreenFlagClick}
                 onStopAllClick={this.handleStopAllClick}
                 //by yj for puzzle
@@ -144,7 +144,16 @@ class Controls extends React.Component {
 }
 
 Controls.propTypes = {
+    projectRunning: PropTypes.bool.isRequired,
+    turbo: PropTypes.bool.isRequired,
     vm: PropTypes.instanceOf(VM)
 };
 
-export default Controls;
+const mapStateToProps = state => ({
+    projectRunning: state.scratchGui.vmStatus.running,
+    turbo: state.scratchGui.vmStatus.turbo
+});
+// no-op function to prevent dispatch prop being passed to component
+const mapDispatchToProps = () => ({});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Controls);

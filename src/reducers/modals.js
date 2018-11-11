@@ -13,15 +13,15 @@ const MODAL_PREVIEW_INFO = 'previewInfo';
 const MODAL_SOUND_LIBRARY = 'soundLibrary';
 const MODAL_SPRITE_LIBRARY = 'spriteLibrary';
 const MODAL_SOUND_RECORDER = 'soundRecorder';
+const MODAL_CONNECTION = 'connectionModal';
+const MODAL_TIPS_LIBRARY = 'tipsLibrary';
+
 //by yj
 const MODAL_PUZZLE_LOADING = 'puzzleLoading';
 const MODAL_PUZZLE_RESOLVED = 'puzzleResolved';
 const MODAL_PUZZLE_SETTINGS = 'puzzleSettings';
 const MODAL_MISSION_HELP = 'missionHelp';
 const MODAL_PUBLISH = 'publish';
-
-const MODAL_TIPS_LIBRARY = 'tipsLibrary';
-
 
 const initialState = {
     //by yj
@@ -41,6 +41,7 @@ const initialState = {
     [MODAL_SOUND_LIBRARY]: false,
     [MODAL_SPRITE_LIBRARY]: false,
     [MODAL_SOUND_RECORDER]: false,
+    [MODAL_CONNECTION]: false,
     [MODAL_TIPS_LIBRARY]: false
 };
 
@@ -111,6 +112,10 @@ const openSoundRecorder = function () {
     analytics.pageview('/modals/microphone');
     return openModal(MODAL_SOUND_RECORDER);
 };
+const openConnectionModal = function () {
+    analytics.pageview('/modals/connection');
+    return openModal(MODAL_CONNECTION);
+};
 const openTipsLibrary = function () {
     analytics.pageview('/modals/tips');
     return openModal(MODAL_TIPS_LIBRARY);
@@ -148,6 +153,9 @@ const closeSoundRecorder = function () {
 const closeTipsLibrary = function () {
     return closeModal(MODAL_TIPS_LIBRARY);
 };
+const closeConnectionModal = function () {
+    return closeModal(MODAL_CONNECTION);
+};
 
 //by yj
 const openPuzzleLoading = function () {
@@ -181,7 +189,6 @@ const closePublish = function () {
     return closeModal(MODAL_PUBLISH);
 };
 
-
 export {
     reducer as default,
     initialState as modalsInitialState,
@@ -196,6 +203,7 @@ export {
     openSpriteLibrary,
     openSoundRecorder,
     openTipsLibrary,
+    openConnectionModal,
     closeBackdropLibrary,
     closeCameraCapture,
     closeCostumeLibrary,
@@ -207,6 +215,7 @@ export {
     closeSoundLibrary,
     closeSoundRecorder,
     closeTipsLibrary,
+    closeConnectionModal,
     
     //by yj
     openPuzzleLoading,

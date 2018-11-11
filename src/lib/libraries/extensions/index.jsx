@@ -8,11 +8,15 @@ import translateImage from './translate.png';
 import microbitImage from './microbit.png';
 import ev3Image from './ev3.png';
 import wedoImage from './wedo.png';
+import text2speechImage from './text2speech.png';
 
-import microbitDeviceImage from './device-connection/microbit/microbit-illustration.svg';
-import microbitMenuImage from './device-connection/microbit/microbit-small.svg';
-import ev3DeviceImage from './device-connection/ev3/ev3-hub-illustration.svg';
-import ev3MenuImage from './device-connection/ev3/ev3-small.svg';
+import microbitPeripheralImage from './peripheral-connection/microbit/microbit-illustration.svg';
+import microbitMenuImage from './peripheral-connection/microbit/microbit-small.svg';
+import ev3PeripheralImage from './peripheral-connection/ev3/ev3-hub-illustration.svg';
+import ev3MenuImage from './peripheral-connection/ev3/ev3-small.svg';
+import wedoPeripheralImage from './peripheral-connection/wedo/wedo-illustration.svg';
+import wedoMenuImage from './peripheral-connection/wedo/wedo-small.svg';
+import wedoButtonImage from './peripheral-connection/wedo/wedo-button-illustration.svg';
 
 //by yj
 import puzzleImage from './puzzle.png';
@@ -120,9 +124,28 @@ export default [
     {
         name: (
             <FormattedMessage
-                defaultMessage="Google Translate"
-                description="Name for the 'Google Translate' extension. Do not translate 'Google'."
-                id="gui.extension.googletranslate.name"
+                defaultMessage="Text to Speech"
+                description="Name for the Text to Speech extension"
+                id="gui.extension.text2speech.name"
+            />
+        ),
+        extensionId: 'text2speech',
+        iconURL: text2speechImage,
+        description: (
+            <FormattedMessage
+                defaultMessage="Make your projects talk."
+                description="Description for the Text to speech extension"
+                id="gui.extension.text2speech.description"
+            />
+        ),
+        featured: true
+    },
+    {
+        name: (
+            <FormattedMessage
+                defaultMessage="Translate"
+                description="Name for the Translate extension"
+                id="gui.extension.translate.name"
             />
         ),
         extensionId: 'translate',
@@ -130,8 +153,8 @@ export default [
         description: (
             <FormattedMessage
                 defaultMessage="Translate text into many languages."
-                description="Description for the 'Google Translate' extension"
-                id="gui.extension.googletranslate.description"
+                description="Description for the Translate extension"
+                id="gui.extension.translate.description"
             />
         ),
         featured: true
@@ -149,9 +172,10 @@ export default [
         ),
         featured: true,
         disabled: false,
-        launchDeviceConnectionFlow: true,
-        deviceImage: microbitDeviceImage,
-        smallDeviceImage: microbitMenuImage,
+        launchPeripheralConnectionFlow: true,
+        useAutoScan: false,
+        peripheralImage: microbitPeripheralImage,
+        smallPeripheralImage: microbitMenuImage,
         connectingMessage: (
             <FormattedMessage
                 defaultMessage="Connecting"
@@ -174,9 +198,10 @@ export default [
         ),
         featured: true,
         disabled: false,
-        launchDeviceConnectionFlow: true,
-        deviceImage: ev3DeviceImage,
-        smallDeviceImage: ev3MenuImage,
+        launchPeripheralConnectionFlow: true,
+        useAutoScan: false,
+        peripheralImage: ev3PeripheralImage,
+        smallPeripheralImage: ev3MenuImage,
         connectingMessage: (
             <FormattedMessage
                 defaultMessage="Connecting. Make sure the pin on your EV3 is set to 1234."
@@ -198,6 +223,20 @@ export default [
             />
         ),
         featured: true,
-        disabled: true
+        disabled: false,
+        launchPeripheralConnectionFlow: true,
+        useAutoScan: true,
+        peripheralImage: wedoPeripheralImage,
+        smallPeripheralImage: wedoMenuImage,
+        peripheralButtonImage: wedoButtonImage,
+        connectingMessage: (
+            <FormattedMessage
+                defaultMessage="Connecting"
+                description="Message to help people connect to their WeDo."
+                id="gui.extension.wedo2.connectingMessage"
+            />
+        ),
+        helpLink: 'https://scratch.mit.edu/wedo'
+
     }
 ];

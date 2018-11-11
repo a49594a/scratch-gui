@@ -1,5 +1,6 @@
 import {FormattedMessage} from 'react-intl';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import React from 'react';
 
 import Box from '../box/box.jsx';
@@ -13,10 +14,10 @@ const ErrorStep = props => (
     <Box className={styles.body}>
         <Box className={styles.activityArea}>
             <Box className={styles.centeredRow}>
-                <div className={styles.deviceActivity}>
+                <div className={styles.peripheralActivity}>
                     <img
-                        className={styles.deviceActivityIcon}
-                        src={props.deviceImage}
+                        className={styles.peripheralActivityIcon}
+                        src={props.peripheralImage}
                     />
                 </div>
             </Box>
@@ -39,7 +40,7 @@ const ErrorStep = props => (
                     onClick={props.onScanning}
                 >
                     <img
-                        className={styles.buttonIconLeft}
+                        className={classNames(styles.buttonIconLeft, styles.buttonIconBack)}
                         src={backIcon}
                     />
                     <FormattedMessage
@@ -68,9 +69,9 @@ const ErrorStep = props => (
 );
 
 ErrorStep.propTypes = {
-    deviceImage: PropTypes.string.isRequired,
     onHelp: PropTypes.func,
-    onScanning: PropTypes.func
+    onScanning: PropTypes.func,
+    peripheralImage: PropTypes.string.isRequired
 };
 
 export default ErrorStep;

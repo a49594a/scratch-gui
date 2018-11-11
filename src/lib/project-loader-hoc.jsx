@@ -33,6 +33,7 @@ const ProjectLoaderHOC = function (WrappedComponent) {
             }
         }
         updateProject (projectId) {
+            //need review by yj : this file has been deleted by mit
             const revision = Blockey.INIT_DATA.project.version;//by yj
             storage
                 .load(storage.AssetType.Project, projectId+(revision?"."+revision:""), storage.DataFormat.JSON)

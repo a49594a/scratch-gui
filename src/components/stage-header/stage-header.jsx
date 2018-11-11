@@ -136,42 +136,42 @@ const StageHeaderComponent = function (props) {
             isPlayerOnly ? (
                 []
             ) : (
-                    <div className={styles.stageSizeToggleGroup}>
-                        <div>
-                            <Button
-                                className={classNames(
-                                    styles.stageButton,
-                                    styles.stageButtonLeft,
-                                    (stageSizeMode === STAGE_SIZE_MODES.small) ? null : styles.stageButtonToggledOff
-                                )}
-                                onClick={onSetStageSmall}
-                            >
-                                <img
-                                    alt={props.intl.formatMessage(messages.smallStageSizeMessage)}
-                                    className={styles.stageButtonIcon}
-                                    draggable={false}
-                                    src={smallStageIcon}
-                                />
-                            </Button>
-                        </div>
-                        <div>
-                            <Button
-                                className={classNames(
-                                    styles.stageButton,
-                                    styles.stageButtonRight,
-                                    (stageSizeMode === STAGE_SIZE_MODES.large) ? null : styles.stageButtonToggledOff
-                                )}
-                                onClick={onSetStageLarge}
-                            >
-                                <img
-                                    alt={props.intl.formatMessage(messages.largeStageSizeMessage)}
-                                    className={styles.stageButtonIcon}
-                                    draggable={false}
-                                    src={largeStageIcon}
-                                />
-                            </Button>
-                        </div>
+                <div className={styles.stageSizeToggleGroup}>
+                    <div>
+                        <Button
+                            className={classNames(
+                                styles.stageButton,
+                                styles.stageButtonFirst,
+                                (stageSizeMode === STAGE_SIZE_MODES.small) ? null : styles.stageButtonToggledOff
+                            )}
+                            onClick={onSetStageSmall}
+                        >
+                            <img
+                                alt={props.intl.formatMessage(messages.smallStageSizeMessage)}
+                                className={styles.stageButtonIcon}
+                                draggable={false}
+                                src={smallStageIcon}
+                            />
+                        </Button>
                     </div>
+                    <div>
+                        <Button
+                            className={classNames(
+                                styles.stageButton,
+                                styles.stageButtonLast,
+                                (stageSizeMode === STAGE_SIZE_MODES.large) ? null : styles.stageButtonToggledOff
+                            )}
+                            onClick={onSetStageLarge}
+                        >
+                            <img
+                                alt={props.intl.formatMessage(messages.largeStageSizeMessage)}
+                                className={styles.stageButtonIcon}
+                                draggable={false}
+                                src={largeStageIcon}
+                            />
+                        </Button>
+                    </div>
+                </div>
                 );
         header = (
             <Box className={styles.stageHeaderWrapper}>
