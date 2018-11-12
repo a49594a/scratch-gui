@@ -24,10 +24,7 @@ class Controls extends React.Component {
         this.state = {
             //by yj
             started: false,
-            preventComplete: false,
-
-            projectRunning: false,
-            turbo: false
+            preventComplete: false
         };
     }
     componentDidMount () {
@@ -35,24 +32,12 @@ class Controls extends React.Component {
         this.props.vm.addListener('PUZZLE_RUN_START', this.onPuzzleRunStart);
         this.props.vm.addListener('PUZZLE_RUN_RESET', this.onPuzzleRunReset);
         this.props.vm.addListener('PUZZLE_BLOCKS_CHANGED', this.onPuzzleBlocksChanged);
-
-        this.props.vm.addListener('PROJECT_RUN_START', this.onProjectRunStart);
-        this.props.vm.addListener('PROJECT_RUN_STOP', this.onProjectRunStop);
     }
     componentWillUnmount () {
         //by yj
         this.props.vm.removeListener('PUZZLE_RUN_START', this.onPuzzleRunStart);
         this.props.vm.removeListener('PUZZLE_RUN_RESET', this.onPuzzleRunReset);
         this.props.vm.removeListener('PUZZLE_BLOCKS_CHANGED', this.onPuzzleBlocksChanged);
-
-        this.props.vm.removeListener('PROJECT_RUN_START', this.onProjectRunStart);
-        this.props.vm.removeListener('PROJECT_RUN_STOP', this.onProjectRunStop);
-    }
-    onProjectRunStart () {
-        this.setState({projectRunning: true});
-    }
-    onProjectRunStop () {
-        this.setState({projectRunning: false});
     }
     handleGreenFlagClick (e) {
         e.preventDefault();

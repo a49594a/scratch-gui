@@ -69,6 +69,7 @@ PuzzlePane.propTypes = {
 };
 
 const mapStateToProps = state => ({
+    puzzleData: state.scratchGui.projectState.puzzleData,
     editingTarget: state.scratchGui.targets.editingTarget,
     hoveredTarget: state.scratchGui.hoveredTarget,
     sprites: Object.keys(state.scratchGui.targets.sprites).reduce((sprites, k) => {

@@ -90,6 +90,7 @@ const getIsError = loadingState => (
 const initialState = {
     error: null,
     projectData: null,
+    puzzleData: null,//by yj
     projectId: null,
     loadingState: LoadingState.NOT_LOADED
 };
@@ -112,6 +113,7 @@ const reducer = function (state, action) {
         if (state.loadingState === LoadingState.FETCHING_WITH_ID) {
             return Object.assign({}, state, {
                 loadingState: LoadingState.LOADING_VM_WITH_ID,
+                puzzleData: action.puzzleData,//by yj
                 projectData: action.projectData
             });
         }
@@ -328,12 +330,14 @@ const doneCreatingProject = (id, loadingState) => {
     }
 };
 
-const onFetchedProjectData = (projectData, loadingState) => {
+//by yj
+const onFetchedProjectData = (projectData, loadingState, puzzleData) => {
     switch (loadingState) {
     case LoadingState.FETCHING_WITH_ID:
         return {
             type: DONE_FETCHING_WITH_ID,
-            projectData: projectData
+            projectData: projectData,
+            puzzleData: puzzleData
         };
     case LoadingState.FETCHING_NEW_DEFAULT:
         return {

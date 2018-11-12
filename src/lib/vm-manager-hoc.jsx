@@ -14,6 +14,10 @@ import {
     projectError
 } from '../reducers/project-state';
 
+//by yj
+import ScratchBlocks from 'scratch-blocks';
+import { openPuzzleResolved } from '../reducers/modals';
+
 /*
  * Higher Order Component to manage events emitted by the VM
  * @param {React.Component} WrappedComponent component to manage VM events for
@@ -34,6 +38,20 @@ const vmManagerHOC = function (WrappedComponent) {
             this.props.vm.setCompatibilityMode(true);
             this.props.vm.start();
             this.props.vm.initialized = true;
+
+            //by yj
+            this.props.vm.runtime.puzzle={};
+            this.props.vm.startPuzzle = function () {
+                this.runtime.startHats('event_whenflagclicked');
+                this.emit('PUZZLE_RUN_START');
+            };
+            this.props.vm.resetPuzzle = function () {
+                this.stopAll();
+                this.runtime.startHats('event_whenbroadcastreceived', {
+                    BROADCAST_OPTION: "@onInit"
+                });
+                this.emit('PUZZLE_RUN_RESET');
+            };
         }
         componentDidUpdate (prevProps) {
             // if project is in loading state, AND fonts are loaded,
@@ -46,6 +64,14 @@ const vmManagerHOC = function (WrappedComponent) {
         loadProject () {
             return this.props.vm.loadProject(this.props.projectData)
                 .then(() => {
+                    //by yj                    
+                    if(Blockey.GUI_CONFIG.MODE=='Puzzle'){
+                        this.onPuzzleLoaded();
+                    }
+                    else{
+                        this.props.vm.updateSavedAssetMap();//配合saveProjectDiff                        
+                    }
+
                     this.props.onLoadedProject(this.props.loadingState, this.props.canSave);
                     // If the cloud host exists, open a cloud connection and
                     // set the vm's cloud provider.
@@ -63,6 +89,42 @@ const vmManagerHOC = function (WrappedComponent) {
                 .catch(e => {
                     this.props.onError(e);
                 });
+        }
+        //by yj
+        onPuzzleLoaded() {
+            this.props.vm.setCompatibilityMode(true);
+            this.props.vm.start();
+            if (this.props.puzzleData) {
+                var runtime = this.props.vm.runtime;
+                runtime.puzzle = {
+                    maxBlockCount: this.props.puzzleData.maxBlockCount,
+                    attemptCount: 0,
+                    stepInterval: this.props.puzzleData.stepInterval || 0.5,
+                    setResolved: this.setPuzzleResolved.bind(this),
+                    isRuning: false,
+                    preventComplete: false,
+                };
+                var defaultSprite = this.props.puzzleData.defaultSprite;
+                var target = runtime.getSpriteTargetByName(defaultSprite);
+                if (!target) target = runtime.getTargetForStage();
+                this.props.vm.setEditingTarget(target.id);
+                //this.props.vm.emitWorkspaceUpdate();
+                this.props.vm.resetPuzzle();
+                this.props.vm.emit("PUZZLE_LOADED");
+                this.setState({ loading: false });
+            }
+        }
+        setPuzzleResolved() {
+            if (this.props.vm.runtime.puzzle.preventComplete) return;
+    
+            var xmlText = ScratchBlocks.Xml.domToPrettyText(ScratchBlocks.Xml.workspaceToDom(ScratchBlocks.mainWorkspace));
+            Blockey.Utils.ajax({
+                url: "/Mission/SetResolved2",
+                data: { id: this.props.puzzleData.id, answer: xmlText },
+                success: (data) => {
+                    this.props.onOpenPuzzleResolved();
+                }
+            });
         }
         render () {
             const {
@@ -109,12 +171,16 @@ const vmManagerHOC = function (WrappedComponent) {
         return {
             isLoadingWithId: getIsLoadingWithId(loadingState),
             projectData: state.scratchGui.projectState.projectData,
+            puzzleData: state.scratchGui.projectState.puzzleData,//by yj
             projectId: state.scratchGui.projectState.projectId,
             loadingState: loadingState
         };
     };
 
     const mapDispatchToProps = dispatch => ({
+        //by yj
+        onOpenPuzzleResolved: () => dispatch(openPuzzleResolved()),
+
         onError: error => dispatch(projectError(error)),
         onLoadedProject: (loadingState, canSave) =>
             dispatch(onLoadedProject(loadingState, canSave))

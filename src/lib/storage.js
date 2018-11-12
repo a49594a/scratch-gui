@@ -61,7 +61,7 @@ class Storage extends ScratchStorage {
     }
     getAssetGetConfig (asset) {
         //by yj
-        return `${ASSET_SERVER}/Project/GetAsset?name=${asset.assetId}.${asset.dataFormat}`,
+        return `${ASSET_SERVER}/Project/GetAsset?name=${asset.assetId}.${asset.dataFormat}`;
         //return `${this.assetHost}/internalapi/asset/${asset.assetId}.${asset.dataFormat}/get/`;
     }
     setTranslatorFunction (translator) {

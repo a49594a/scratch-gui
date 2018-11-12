@@ -25,22 +25,20 @@ const detectLocale = supportedLocales => {
         }
     }
 
+    //by yj
+    locale = 'zh-cn';
+
     const queryParams = queryString.parse(location.search);
     // Flatten potential arrays and remove falsy values
     const potentialLocales = [].concat(queryParams.locale, queryParams.lang).filter(l => l);
     if (!potentialLocales.length) {
         return locale;
     }
-    //by yj
-    else {
-        locale = 'zh-cn';
-    }
 
-    //need review by yj
-    /*const urlLocale = potentialLocales[0].toLowerCase();
+    const urlLocale = potentialLocales[0].toLowerCase();
     if (supportedLocales.includes(urlLocale)) {
         return urlLocale;
-    }*/
+    }
 
     return locale;
 };

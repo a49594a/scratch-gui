@@ -4,7 +4,6 @@ import {compose} from 'redux';
 
 import AppStateHOC from '../lib/app-state-hoc.jsx';
 import GUI from '../containers/gui.jsx';
-import PuzzleGUI from '../containers/puzzle-gui.jsx';//by yj
 import HashParserHOC from '../lib/hash-parser-hoc.jsx';
 import TitledHOC from '../lib/titled-hoc.jsx';
 
@@ -19,12 +18,11 @@ export default appTarget => {
     // note that redux's 'compose' function is just being used as a general utility to make
     // the hierarchy of HOC constructor calls clearer here; it has nothing to do with redux's
     // ability to compose reducers.
-    //by yj
     const WrappedGui = compose(
         AppStateHOC,
         HashParserHOC,
         TitledHOC
-    )(Blockey && Blockey.GUIMode == "Puzzle" ? PuzzleGUI : GUI);
+    )(GUI);
 
     // TODO a hack for testing the backpack, allow backpack host to be set by url param
     const backpackHostMatches = window.location.href.match(/[?&]backpack_host=([^&]*)&?/);

@@ -265,7 +265,7 @@ class Blocks extends React.Component {
 
         //by yj
         if(Blockey.GUI_CONFIG.MODE=='Puzzle'){
-            this.flyoutWorkspace.removeListener(this.puzzleFlyoutBlockListener);
+            this.flyoutWorkspace.removeChangeListener(this.puzzleFlyoutBlockListener);
             this.props.vm.removeListener('PUZZLE_SAVE_ANSWER', this.handlePuzzleSaveAnswer);
         }
     }

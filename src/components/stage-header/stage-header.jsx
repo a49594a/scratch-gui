@@ -76,7 +76,7 @@ const StageHeaderComponent = function (props) {
     if(isPuzzleMode){
         puzzle = vm.runtime.puzzle || {
             blockCount: 0,
-            maxBlockCount: puzzleData.maxBlockCount,
+            maxBlockCount: puzzleData? puzzleData.maxBlockCount:0,
         };
         blockError = puzzle.maxBlockCount > 0 && puzzle.blockCount > puzzle.maxBlockCount;
         slider = (
@@ -228,6 +228,7 @@ const StageHeaderComponent = function (props) {
 const mapStateToProps = state => ({
     //by yj
     gamepadVisible: state.scratchGui.gamepad.gamepadVisible,
+    puzzleData: state.scratchGui.projectState.puzzleData,
 
     // This is the button's mode, as opposed to the actual current state
     stageSizeMode: state.scratchGui.stageSize.stageSize

@@ -35,6 +35,11 @@ import vmManagerHOC from '../lib/vm-manager-hoc.jsx';
 
 import GUIComponent from '../components/gui/gui.jsx';
 
+//by yj
+import { openPuzzleResolved } from '../reducers/modals';
+import PuzzleFetcherHOC from '../lib/puzzle-fetcher-hoc.jsx';
+import PuzzleGUIComponent from '../components/gui/puzzle-gui.jsx';
+
 const messages = defineMessages({
     defaultProjectTitle: {
         id: 'gui.gui.defaultProjectTitle',
@@ -44,45 +49,6 @@ const messages = defineMessages({
 });
 
 class GUI extends React.Component {
-    //need review by yj
-    /*componentDidMount () {
-        if (this.props.vm.initialized) return;
-        this.audioEngine = new AudioEngine();
-        this.props.vm.attachAudioEngine(this.audioEngine);
-        this.props.vm.loadProject(this.props.projectData)
-            .then(() => {
-                this.props.vm.updateSavedAssetMap();//配合saveProjectDiff
-                this.setState({loading: false}, () => {
-                    this.props.vm.setCompatibilityMode(true);
-                    this.props.vm.start();
-                });
-            })
-            .catch(e => {
-                // Need to catch this error and update component state so that
-                // error page gets rendered if project failed to load
-                this.setState({loadingError: true, errorMessage: e});
-            });
-        this.props.vm.initialized = true;
-    }
-    componentWillReceiveProps (nextProps) {
-        if (this.props.projectData !== nextProps.projectData) {
-            this.setState({loading: true}, () => {
-                this.props.vm.loadProject(nextProps.projectData)
-                    .then(() => {
-                        this.props.vm.updateSavedAssetMap();//配合saveProjectDiff
-                        this.setState({loading: false});
-                    })
-                    .catch(e => {
-                        // Need to catch this error and update component state so that
-                        // error page gets rendered if project failed to load
-                        this.setState({loadingError: true, errorMessage: e});
-                    });
-            });
-        this.setReduxTitle(this.props.projectTitle);
-        this.props.onStorageInit(storage);
-    }*/
-    //end by yj
-
     componentDidMount () {
         this.setReduxTitle(this.props.projectTitle);
         this.props.onStorageInit(storage);
@@ -130,6 +96,17 @@ class GUI extends React.Component {
             loadingStateVisible,
             ...componentProps
         } = this.props;
+        //by yj
+        if(Blockey.GUI_CONFIG.MODE == 'Puzzle'){
+            return (
+                <PuzzleGUIComponent
+                    loading={fetchingProject || isLoading || loadingStateVisible}
+                    {...componentProps}
+                >
+                    {children}
+                </PuzzleGUIComponent>
+            );
+        }
         return (
             <GUIComponent
                 loading={fetchingProject || isLoading || loadingStateVisible}
@@ -174,6 +151,9 @@ GUI.defaultProps = {
 const mapStateToProps = (state, ownProps) => {
     const loadingState = state.scratchGui.projectState.loadingState;
     return {
+        //by yj
+        puzzleResolvedVisible: state.scratchGui.modals.puzzleResolved,
+
         activeTabIndex: state.scratchGui.editorTab.activeTabIndex,
         alertsVisible: state.scratchGui.alerts.visible,
         backdropLibraryVisible: state.scratchGui.modals.backdropLibrary,
@@ -202,6 +182,9 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = dispatch => ({
+    //by yj
+    onOpenPuzzleResolved: () => dispatch(openPuzzleResolved()),
+
     onExtensionButtonClick: () => dispatch(openExtensionLibrary()),
     onActivateTab: tab => dispatch(activateTab(tab)),
     onActivateCostumesTab: () => dispatch(activateTab(COSTUMES_TAB_INDEX)),
@@ -223,7 +206,7 @@ const WrappedGui = compose(
     LocalizationHOC,
     ErrorBoundaryHOC('Top Level App'),
     FontLoaderHOC,
-    ProjectFetcherHOC,
+    Blockey.GUI_CONFIG.MODE == 'Puzzle'? PuzzleFetcherHOC : ProjectFetcherHOC,
     ProjectSaverHOC,
     vmListenerHOC,
     vmManagerHOC

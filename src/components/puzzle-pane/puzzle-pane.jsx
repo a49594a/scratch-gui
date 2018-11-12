@@ -5,29 +5,15 @@ import classNames from 'classnames';
 import VM from 'scratch-vm';
 
 import Box from '../box/box.jsx';
-import CostumeCanvas from '../costume-canvas/costume-canvas.jsx';
-//import SpriteLibrary from '../../containers/sprite-library.jsx';
-//import BackdropLibrary from '../../containers/backdrop-library.jsx';
-//import PuzzleInfoComponent from '../puzzle-info/puzzle-info.jsx';
-//import StageSelector from '../../containers/stage-selector.jsx';
-
-import ReactTooltip from 'react-tooltip';
-import Button from '../button/button.jsx';
 import ActionMenu from '../action-menu/action-menu.jsx';
 
 import styles from './puzzle-pane.css';
-
-import infoIcon from './icon--info.svg';
-import warningIcon from './icon--warning.svg';
-import tutorialIcon from './icon--tutorial.svg';
-import hintLockedIcon from './icon--hint-locked.svg';
-import hintUnlockedIcon from './icon--hint-unlocked.svg';
-import answerIcon from './icon--answer.svg';
 
 import settingsIcon from './icon--settings.svg';
 import saveAnswerIcon from './icon--save-answer.svg';
 import shotscreenIcon from './icon--shotscreen.svg';
 
+import getCostumeUrl from '../../lib/get-costume-url';
 import PuzzleSettingsModal from '../../containers/puzzle-settings-modal.jsx';
 /*
  * Pane that contains the sprite selector, sprite info, stage selector,
@@ -54,11 +40,11 @@ const PuzzlePane = function (props) {
         selectedSprite = {};
         spriteInfoDisabled = true;
     }
-    let assetId = selectedSprite.costume && selectedSprite.costume.assetId;
-    let costumeURL = assetId && vm.runtime.storage.get(assetId).encodeDataURI();
+    let asset = selectedSprite.costume && selectedSprite.costume.asset;
+    let costumeURL = asset && getCostumeUrl(asset);
     let warningTooltipId = `tooltip-${Math.random()}`;
 
-    return (
+    return puzzleData ? (
         <div className={styles.puzzlePane}>
             {props.puzzleSettingsVisible ? (
                 <PuzzleSettingsModal
@@ -68,11 +54,10 @@ const PuzzlePane = function (props) {
             <Box className={styles.puzzleInfo}>
                 <Box className={styles.scrollWrapper}>
                     {costumeURL ? (
-                        <CostumeCanvas
+                        <img
                             className={styles.sprite}
-                            height={64}
-                            url={costumeURL}
-                            width={64}
+                            draggable={false}
+                            src={costumeURL}
                         />
                     ) : null}
                     {puzzleData.descp}
@@ -102,7 +87,7 @@ const PuzzlePane = function (props) {
                 </Box>
             </Box>
         </div>
-    );
+    ) : null;
 };
 
 const spriteShape = PropTypes.shape({

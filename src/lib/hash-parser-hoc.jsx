@@ -42,7 +42,7 @@ const HashParserHOC = function (WrappedComponent) {
         handleHashChange () {
             const hashMatch = window.location.hash.match(/#(\d+)/);
             //need review by yj
-            const hashProjectId = hashMatch === null ? defaultProjectId : hashMatch[1];
+            let hashProjectId = hashMatch === null ? defaultProjectId : hashMatch[1];
             if(hashProjectId==defaultProjectId){
                 var paramMatch = window.location.href.match(/\?id=(\d+)/);
                 hashProjectId = paramMatch === null ? 0 : paramMatch[1];
