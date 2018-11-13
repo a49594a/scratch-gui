@@ -140,6 +140,9 @@ class MenuBar extends React.Component {
     constructor(props) {
         super(props);
         bindAll(this, [
+            //by yj
+            'handleClickShare',
+
             'handleClickNew',
             'handleClickRemix',
             'handleClickSave',
@@ -198,7 +201,27 @@ class MenuBar extends React.Component {
         this.props.onClickRemix();
         this.props.onRequestCloseFile();
     }
+    //by yj
+    handleClickShare() {
+        this.props.onOpenPublish();
+    }
     handleClickSave() {
+        //by yj
+        if (!window.confirm('如果该作品原先为scratch2.0版本，保存后会永久转换为3.0版本。确定要保存吗？')) return;
+        this.props.vm.saveProjectDiff().then(file => {
+            const projectId = Blockey.INIT_DATA.project.id;
+            Blockey.Utils.ajax({
+                url: "/WebApi/Project/Upload",
+                data: { id: projectId, file: file },
+                success: (r) => {
+                    this.props.vm.updateSavedAssetMap();//配合saveProjectDiff
+                    Blockey.Utils.Alerter.info("保存成功");
+                    this.props.onRequestCloseFile();
+                }
+            });
+        });
+        return;
+
         this.props.onClickSave();
         this.props.onRequestCloseFile();
     }
@@ -302,7 +325,7 @@ class MenuBar extends React.Component {
                     styles.shareButton,
                     { [styles.shareButtonIsShared]: this.props.isShared }
                 )}
-                onClick={this.props.onShare}
+                onClick={this.handleClickShare}
             >
                 {this.props.isShared ? isSharedMessage : shareMessage}
             </Button>
@@ -379,20 +402,20 @@ class MenuBar extends React.Component {
                                     place={this.props.isRtl ? 'left' : 'right'}
                                     onRequestClose={this.props.onRequestCloseFile}
                                 >
-                                    <MenuSection>
-                                        <MenuItem
-                                            isRtl={this.props.isRtl}
-                                            onClick={this.handleClickNew}
-                                        >
-                                            {newProjectMessage}
-                                        </MenuItem>
-                                    </MenuSection>
-                                    <MenuSection>
-                                        {this.props.canSave ? (
-                                            <MenuItem onClick={this.handleClickSave}>
-                                                {saveNowMessage}
+                                    {false?(
+                                        <MenuSection>
+                                            <MenuItem
+                                                isRtl={this.props.isRtl}
+                                                onClick={this.handleClickNew}
+                                            >
+                                                {newProjectMessage}
                                             </MenuItem>
-                                        ) : []}
+                                        </MenuSection>
+                                    ):null}
+                                    <MenuSection>
+                                        <MenuItem onClick={this.handleClickSave}>
+                                            {saveNowMessage}
+                                        </MenuItem>
                                         {this.props.canCreateCopy ? (
                                             <MenuItem onClick={this.handleClickSaveAsCopy}>
                                                 {createCopyMessage}
@@ -522,19 +545,11 @@ class MenuBar extends React.Component {
                     ) : null}
                     {Blockey.GUI_CONFIG.MODE != 'Puzzle' ? (
                         <div className={classNames(styles.menuBarItem)}>
-                            {this.props.canShare ? shareButton : (
-                                this.props.showComingSoon ? (
-                                    <MenuBarItemTooltip id="share-button">
-                                        {shareButton}
-                                    </MenuBarItemTooltip>
-                                ) : []
-                            )}
-                            {this.props.canRemix ? remixButton : []}
+                            {shareButton}
                         </div>
                     ) : null}
                     {Blockey.GUI_CONFIG.MODE != 'Puzzle' ? (
                         <div className={classNames(styles.menuBarItem, styles.communityButtonWrapper)}>
-                            {this.props.enableCommunity ? (
                                 <Button
                                     className={classNames(
                                         styles.menuBarButton,
@@ -550,24 +565,6 @@ class MenuBar extends React.Component {
                                         id="gui.menuBar.seeCommunity"
                                     />
                                 </Button>
-                            ) : (this.props.showComingSoon ? (
-                                <MenuBarItemTooltip id="community-button">
-                                    <Button
-                                        className={classNames(
-                                            styles.menuBarButton,
-                                            styles.communityButton
-                                        )}
-                                        iconClassName={styles.communityButtonIcon}
-                                        iconSrc={communityIcon}
-                                    >
-                                        <FormattedMessage
-                                            defaultMessage="See Community"
-                                            description="Label for see community button"
-                                            id="gui.menuBar.seeCommunity"
-                                        />
-                                    </Button>
-                                </MenuBarItemTooltip>
-                            ) : [])}
                         </div>
                     ) : null}
                 </div>

@@ -125,6 +125,7 @@ const GUIComponent = props => {
         const stageSize = resolveStageSize(stageSizeMode, isFullSize);
 
         return isPlayerOnly ? (
+            <box>
             <StageWrapper
                 isRendererSupported={isRendererSupported}
                 stageSize={stageSize}
@@ -134,6 +135,10 @@ const GUIComponent = props => {
                     <Alerts className={styles.alertsContainer} />
                 ) : null}
             </StageWrapper>
+                {loading ? (
+                    <Loader />
+                ) : null}
+            </box>
         ) : (
             <Box
                 className={styles.pageWrapper}
