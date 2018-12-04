@@ -99,9 +99,9 @@ module.exports = [
         entry: {
             'lib.min': ['react', 'react-dom'],
             'gui': './src/playground/index.jsx',
-            'blocksonly': './src/playground/blocks-only.jsx',
-            'compatibilitytesting': './src/playground/compatibility-testing.jsx',
-            'player': './src/playground/player.jsx'
+            /*'blocksonly': './src/playground/blocks-only.jsx',
+            'compatibilitytesting': './src/playground/compatibility-testing.jsx',*/
+            'player': './src/playground/player.jsx',
         },
         output: {
             path: path.resolve(__dirname, 'build'),
@@ -110,11 +110,21 @@ module.exports = [
         externals: {
             'react': 'React',
             'react-dom': 'ReactDOM',
+            'scratch-vm': 'VirtualMachine',
+            'scratch-paint': 'ScratchPaint',
             //React: 'react',
             //ReactDOM: 'react-dom'
         },
         module: {
             rules: base.module.rules.concat([
+                {
+                    test: require.resolve('scratch-vm/src/index.js'),
+                    loader: 'expose-loader?VirtualMachine'
+                },
+                {
+                    test: require.resolve('scratch-paint/src/index.js'),
+                    loader: 'expose-loader?ScratchPaint'
+                },
                 {
                     test: /\.(svg|png|wav|gif|jpg)$/,
                     loader: 'file-loader',
@@ -145,7 +155,7 @@ module.exports = [
                 title: 'Scratch 3.0 GUI',
                 sentryConfig: process.env.SENTRY_CONFIG ? '"' + process.env.SENTRY_CONFIG + '"' : null
             }),
-            new HtmlWebpackPlugin({
+            /*new HtmlWebpackPlugin({
                 chunks: ['lib.min', 'blocksonly'],
                 template: 'src/playground/index.ejs',
                 filename: 'blocks-only.html',
@@ -156,7 +166,7 @@ module.exports = [
                 template: 'src/playground/index.ejs',
                 filename: 'compatibility-testing.html',
                 title: 'Scratch 3.0 GUI: Compatibility Testing'
-            }),
+            }),*/
             new HtmlWebpackPlugin({
                 chunks: ['lib.min', 'player'],
                 template: 'src/playground/index.ejs',

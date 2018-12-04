@@ -56,7 +56,7 @@ const vmManagerHOC = function (WrappedComponent) {
         componentDidUpdate (prevProps) {
             // if project is in loading state, AND fonts are loaded,
             // and they weren't both that way until now... load project!
-            if (this.props.isLoadingWithId && this.props.fontsLoaded &&
+            if (this.props.isLoadingWithId && /*this.props.fontsLoaded &&*///by yj fix safari can not load fonts
                 (!prevProps.isLoadingWithId || !prevProps.fontsLoaded)) {
                 this.loadProject();
             }

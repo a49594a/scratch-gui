@@ -280,10 +280,10 @@ class Blocks extends React.Component {
                 content: xmlString,
             };
             Blockey.Utils.ajax({
-                url: "/Mission/SaveHelpForAnswer",
+                url: "/WebApi/Mission/SaveHelpForAnswer",
                 data: postData,
                 success: (e) => {
-                    var answer = {
+                    /*var answer = {
                         contentType: 'xml/scratch',
                         content: xmlString
                     };
@@ -293,7 +293,7 @@ class Blocks extends React.Component {
                     }
                     else {
                         puzzleData.answers[0] = answer;
-                    }
+                    }*/
                     this.props.vm.emit("PUZZLE_ANSWER_SAVED");
                 }
             });

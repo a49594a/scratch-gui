@@ -2,16 +2,16 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {connect} from 'react-redux';
-import {compose} from 'redux';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 
 import Box from '../components/box/box.jsx';
-import GUI from '../containers/gui.jsx';
+import GUI from '../containers/gui-player.jsx';
 import HashParserHOC from '../lib/hash-parser-hoc.jsx';
-import AppStateHOC from '../lib/app-state-hoc.jsx';
+import AppStateHOC from '../lib/app-state-hoc-player.jsx';//by yj
 import TitledHOC from '../lib/titled-hoc.jsx';
 
-import {setPlayer} from '../reducers/mode';
+import { setPlayer } from '../reducers/mode';
 
 if (process.env.NODE_ENV === 'production' && typeof window === 'object') {
     // Warn before navigating away
@@ -20,16 +20,16 @@ if (process.env.NODE_ENV === 'production' && typeof window === 'object') {
 
 import styles from './player.css';
 
-const Player = ({isPlayerOnly, onSeeInside, projectId}) => (
+const Player = ({ isPlayerOnly, onSeeInside, projectId }) => (
     <Box
         className={classNames({
-            [styles.stageOnly]: isPlayerOnly&&false//by yj
+            [styles.stageOnly]: isPlayerOnly && false//by yj
         })}
     >
         <GUI
             enableCommunity
             isPlayerOnly={isPlayerOnly}
-            projectId={Blockey.INIT_DATA.project.id}//by yj {projectId}
+            projectId={projectId || Blockey.INIT_DATA.project.id}//by yj {projectId}
         />
     </Box>
 );
@@ -67,5 +67,7 @@ const appTarget = document.createElement('div');
 document.body.appendChild(appTarget);
 */
 const appTarget = Blockey.GUI_CONFIG.WRAPPER;
-
-ReactDOM.render(<WrappedPlayer isPlayerOnly />, appTarget);
+if (appTarget) {
+    ReactDOM.render(<WrappedPlayer isPlayerOnly />, appTarget);
+}
+Blockey.GUIPlayer = WrappedPlayer;
