@@ -12,8 +12,6 @@ import StageWrapper from '../../containers/stage-wrapper.jsx';
 import Loader from '../loader/loader.jsx';
 import Box from '../box/box.jsx';
 
-import Alerts from '../../containers/alerts.jsx';
-
 import layout, { STAGE_SIZE_MODES } from '../../lib/layout-constants';
 import { resolveStageSize } from '../../lib/screen-utils';
 
@@ -86,20 +84,17 @@ const GUIComponent = props => {
         const stageSize = resolveStageSize(stageSizeMode, isFullSize);
 
         return (
-            <box>
+            <Box>
                 <StageWrapper
                     isRendererSupported={isRendererSupported}
                     stageSize={stageSize}
                     vm={vm}
                 >
-                    {alertsVisible ? (
-                        <Alerts className={styles.alertsContainer} />
-                    ) : null}
                 </StageWrapper>
                 {loading ? (
                     <Loader />
                 ) : null}
-            </box>
+            </Box>
         )
     }}</MediaQuery>);
 };

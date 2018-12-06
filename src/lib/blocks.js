@@ -1,11 +1,16 @@
 import ScratchBlocks from 'scratch-blocks';
 
+//by yj
+import injectBlocks from '../lib/inject-blocks';
+
 /**
  * Connect scratch blocks with the vm
  * @param {VirtualMachine} vm - The scratch vm
  * @return {ScratchBlocks} ScratchBlocks connected with the vm
  */
 export default function (vm) {
+    //by yj
+    injectBlocks(ScratchBlocks);
 
     const jsonForMenuBlock = function (name, menuOptionsFn, colors, start) {
         return {

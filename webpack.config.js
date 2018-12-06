@@ -111,7 +111,8 @@ module.exports = [
             'react': 'React',
             'react-dom': 'ReactDOM',
             'scratch-vm': 'VirtualMachine',
-            'scratch-paint': 'ScratchPaint',
+            //'scratch-paint': 'PaintEditor',
+            //'scratch-blocks': 'ScratchBlocks',
             //React: 'react',
             //ReactDOM: 'react-dom'
         },
@@ -121,10 +122,14 @@ module.exports = [
                     test: require.resolve('scratch-vm/src/index.js'),
                     loader: 'expose-loader?VirtualMachine'
                 },
-                {
+                /*{
                     test: require.resolve('scratch-paint/src/index.js'),
-                    loader: 'expose-loader?ScratchPaint'
+                    loader: 'expose-loader?PaintEditor'
                 },
+                {
+                    test: require.resolve('scratch-blocks/dist/vertical.js'),
+                    loader: 'expose-loader?ScratchBlocks'
+                },*/
                 {
                     test: /\.(svg|png|wav|gif|jpg)$/,
                     loader: 'file-loader',
@@ -198,7 +203,7 @@ module.exports = [
         defaultsDeep({}, base, {
             target: 'web',
             entry: {
-                'scratch-gui': './src/index.js'
+                //'scratch-gui': './src/index.js'
             },
             output: {
                 libraryTarget: 'umd',
