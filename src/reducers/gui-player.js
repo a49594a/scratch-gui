@@ -1,32 +1,32 @@
 import {applyMiddleware, compose, combineReducers} from 'redux';
 //import alertsReducer, {alertsInitialState} from './alerts';
-import assetDragReducer, {assetDragInitialState} from './asset-drag';
-import cardsReducer, {cardsInitialState} from './cards';
+//import assetDragReducer, {assetDragInitialState} from './asset-drag';
+//import cardsReducer, {cardsInitialState} from './cards';
 import colorPickerReducer, {colorPickerInitialState} from './color-picker';
 import connectionModalReducer, {connectionModalInitialState} from './connection-modal';
-import customProceduresReducer, {customProceduresInitialState} from './custom-procedures';
-import blockDragReducer, {blockDragInitialState} from './block-drag';
-import editorTabReducer, {editorTabInitialState} from './editor-tab';
-import hoveredTargetReducer, {hoveredTargetInitialState} from './hovered-target';
-import menuReducer, {menuInitialState} from './menus';
+//import customProceduresReducer, {customProceduresInitialState} from './custom-procedures';
+//import blockDragReducer, {blockDragInitialState} from './block-drag';
+//import editorTabReducer, {editorTabInitialState} from './editor-tab';
+//import hoveredTargetReducer, {hoveredTargetInitialState} from './hovered-target';
+//import menuReducer, {menuInitialState} from './menus';
 import micIndicatorReducer, {micIndicatorInitialState} from './mic-indicator';
 import modalReducer, {modalsInitialState} from './modals';
 import modeReducer, {modeInitialState} from './mode';
 import monitorReducer, {monitorsInitialState} from './monitors';
 import monitorLayoutReducer, {monitorLayoutInitialState} from './monitor-layout';
 import projectStateReducer, {projectStateInitialState} from './project-state';
-import projectTitleReducer, {projectTitleInitialState} from './project-title';
-import restoreDeletionReducer, {restoreDeletionInitialState} from './restore-deletion';
+//import projectTitleReducer, {projectTitleInitialState} from './project-title';
+//import restoreDeletionReducer, {restoreDeletionInitialState} from './restore-deletion';
 import stageSizeReducer, {stageSizeInitialState} from './stage-size';
 import targetReducer, {targetsInitialState} from './targets';
 //import toolboxReducer, {toolboxInitialState} from './toolbox';
 import vmReducer, {vmInitialState} from './vm';
 import vmStatusReducer, {vmStatusInitialState} from './vm-status';
 import throttle from 'redux-throttle';
-import decks from '../lib/libraries/decks/index.jsx';
+//import decks from '../lib/libraries/decks/index.jsx';
 
 //by yj
-import puzzleReducer from './puzzle';
+//import puzzleReducer from './puzzle';
 import gamepadReducer, {gamepadInitialState} from './gamepad';
 
 const guiMiddleware = compose(applyMiddleware(throttle(300, {leading: true, trailing: true})));
@@ -36,24 +36,24 @@ const guiInitialState = {
     gamepad: gamepadInitialState,
 
     //alerts: alertsInitialState,
-    assetDrag: assetDragInitialState,
-    blockDrag: blockDragInitialState,
-    cards: cardsInitialState,
+    //assetDrag: assetDragInitialState,
+    //blockDrag: blockDragInitialState,
+    //cards: cardsInitialState,
     colorPicker: colorPickerInitialState,
     connectionModal: connectionModalInitialState,
-    customProcedures: customProceduresInitialState,
-    editorTab: editorTabInitialState,
+    //customProcedures: customProceduresInitialState,
+    //editorTab: editorTabInitialState,
     mode: modeInitialState,
-    hoveredTarget: hoveredTargetInitialState,
+    //hoveredTarget: hoveredTargetInitialState,
     stageSize: stageSizeInitialState,
-    menus: menuInitialState,
+    //menus: menuInitialState,
     micIndicator: micIndicatorInitialState,
     modals: modalsInitialState,
     monitors: monitorsInitialState,
     monitorLayout: monitorLayoutInitialState,
     projectState: projectStateInitialState,
-    projectTitle: projectTitleInitialState,
-    restoreDeletion: restoreDeletionInitialState,
+    //projectTitle: projectTitleInitialState,
+    //restoreDeletion: restoreDeletionInitialState,
     targets: targetsInitialState,
     //toolbox: toolboxInitialState,
     vm: vmInitialState,
@@ -81,7 +81,7 @@ const initFullScreen = function (currentState) {
     );
 };
 
-const initTutorialCard = function (currentState, deckId) {
+/*const initTutorialCard = function (currentState, deckId) {
     return Object.assign(
         {},
         currentState,
@@ -100,32 +100,32 @@ const initTutorialCard = function (currentState, deckId) {
             }
         }
     );
-};
+};*/
 
 const guiReducer = combineReducers({
     //by yj
-    puzzle: puzzleReducer,
+    //puzzle: puzzleReducer,
     gamepad: gamepadReducer,
     
     //alerts: alertsReducer,
-    assetDrag: assetDragReducer,
-    blockDrag: blockDragReducer,
-    cards: cardsReducer,
+    //assetDrag: assetDragReducer,
+    //blockDrag: blockDragReducer,
+    //cards: cardsReducer,
     colorPicker: colorPickerReducer,
     connectionModal: connectionModalReducer,
-    customProcedures: customProceduresReducer,
-    editorTab: editorTabReducer,
+    //customProcedures: customProceduresReducer,
+    //editorTab: editorTabReducer,
     mode: modeReducer,
-    hoveredTarget: hoveredTargetReducer,
+    //hoveredTarget: hoveredTargetReducer,
     stageSize: stageSizeReducer,
-    menus: menuReducer,
+    //menus: menuReducer,
     micIndicator: micIndicatorReducer,
     modals: modalReducer,
     monitors: monitorReducer,
     monitorLayout: monitorLayoutReducer,
     projectState: projectStateReducer,
-    projectTitle: projectTitleReducer,
-    restoreDeletion: restoreDeletionReducer,
+    //projectTitle: projectTitleReducer,
+    //restoreDeletion: restoreDeletionReducer,
     targets: targetReducer,
     //toolbox: toolboxReducer,
     vm: vmReducer,

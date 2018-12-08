@@ -9,7 +9,7 @@ import Box from '../components/box/box.jsx';
 import GUI from '../containers/gui-player.jsx';
 import HashParserHOC from '../lib/hash-parser-hoc.jsx';
 import AppStateHOC from '../lib/app-state-hoc-player.jsx';//by yj
-import TitledHOC from '../lib/titled-hoc.jsx';
+//import TitledHOC from '../lib/titled-hoc.jsx';
 
 import { setPlayer } from '../reducers/mode';
 
@@ -59,7 +59,7 @@ const ConnectedPlayer = connect(
 const WrappedPlayer = compose(
     AppStateHOC,
     HashParserHOC,
-    TitledHOC
+    //TitledHOC
 )(ConnectedPlayer);
 
 /* by yj

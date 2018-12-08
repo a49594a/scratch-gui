@@ -10,7 +10,6 @@ import {setPlayer, setFullScreen} from '../reducers/mode.js';
 
 import locales from 'scratch-l10n';
 import {detectLocale} from './detect-locale';
-import {detectTutorialId} from './tutorial-from-url';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -52,7 +51,6 @@ const AppStateHOC = function (WrappedComponent, localesOnly) {
                     guiMiddleware,
                     initFullScreen,
                     initPlayer,
-                    initTutorialCard
                 } = guiRedux;
                 //const {ScratchPaintReducer} = require('scratch-paint');
 
@@ -63,14 +61,6 @@ const AppStateHOC = function (WrappedComponent, localesOnly) {
                     }
                     if (props.isPlayerOnly) {
                         initializedGui = initPlayer(initializedGui);
-                    }
-                } else {
-                    const tutorialId = detectTutorialId();
-                    if (tutorialId !== null) {
-                        // When loading a tutorial from the URL,
-                        // load w/o preview modal
-                        // open requested tutorial card
-                        initializedGui = initTutorialCard(initializedGui, tutorialId);
                     }
                 }
                 reducers = {
