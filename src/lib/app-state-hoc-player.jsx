@@ -45,7 +45,7 @@ const AppStateHOC = function (WrappedComponent, localesOnly) {
             } else {
                 // You are right, this is gross. But it's necessary to avoid
                 // importing unneeded code that will crash unsupported browsers.
-                const guiRedux = require('../reducers/gui');
+                const guiRedux = require('../reducers/gui-player');
                 const guiReducer = guiRedux.default;
                 const {
                     guiInitialState,

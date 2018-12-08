@@ -3,9 +3,10 @@ import React from 'react';
 
 import { connect } from 'react-redux';
 
+import ScratchBlocks from 'scratch-blocks';
 import PuzzlePaneComponent from '../components/puzzle-pane/puzzle-pane.jsx';
 
-import { openMissionHelp, openPuzzleSettings } from '../reducers/modals';
+import { openMissionHelp, openPuzzleSettings, openPuzzleResolved } from '../reducers/modals';
 
 class PuzzlePane extends React.Component {
     constructor(props) {
@@ -14,13 +15,16 @@ class PuzzlePane extends React.Component {
             'handleShotscreenClick',
             'handleSettingsClick',
             'handleSaveAnswerClick',
+            'handlePuzzleResolved'
         ]);
     }
     componentDidMount() {
         this.props.vm.addListener('PUZZLE_ANSWER_SAVED', this.props.onOpenMissionHelp);
+        this.props.vm.addListener('PUZZLE_RESOLVED', this.handlePuzzleResolved);
     }
     componentWillUnmount() {
         this.props.vm.removeListener('PUZZLE_ANSWER_SAVED', this.props.onOpenMissionHelp);
+        this.props.vm.removeListener('PUZZLE_RESOLVED', this.handlePuzzleResolved);
     }
     handleShotscreenClick() {
         this.props.vm.runtime.renderer.draw();
@@ -34,6 +38,16 @@ class PuzzlePane extends React.Component {
             data: postData,
             success: (e) => {
                 Blockey.Utils.Alerter.info("舞台截图保存成功！");
+            }
+        });
+    }
+    handlePuzzleResolved() {
+        var xmlText = ScratchBlocks.Xml.domToPrettyText(ScratchBlocks.Xml.workspaceToDom(ScratchBlocks.mainWorkspace));
+        Blockey.Utils.ajax({
+            url: "/Mission/SetResolved2",
+            data: { id: this.props.puzzleData.id, answer: xmlText },
+            success: (data) => {
+                this.props.onOpenPuzzleResolved();
             }
         });
     }
@@ -95,6 +109,7 @@ const mapDispatchToProps = dispatch => ({
     onOpenMissionHelp: () => dispatch(openMissionHelp()),
     onClosePuzzleSettings: () => dispatch(closePuzzleSettings()),
     onOpenPuzzleSettings: () => dispatch(openPuzzleSettings()),
+    onOpenPuzzleResolved: () => dispatch(openPuzzleResolved()),
 });
 
 export default connect(

@@ -154,13 +154,13 @@ module.exports = [
                 'process.env.DEBUG': Boolean(process.env.DEBUG),
                 'process.env.GA_ID': '"' + (process.env.GA_ID || 'UA-000000-01') + '"'
             }),
-            new HtmlWebpackPlugin({
+            /*new HtmlWebpackPlugin({
                 chunks: ['lib.min', 'gui'],
                 template: 'src/playground/index.ejs',
                 title: 'Scratch 3.0 GUI',
                 sentryConfig: process.env.SENTRY_CONFIG ? '"' + process.env.SENTRY_CONFIG + '"' : null
             }),
-            /*new HtmlWebpackPlugin({
+            new HtmlWebpackPlugin({
                 chunks: ['lib.min', 'blocksonly'],
                 template: 'src/playground/index.ejs',
                 filename: 'blocks-only.html',
@@ -171,13 +171,13 @@ module.exports = [
                 template: 'src/playground/index.ejs',
                 filename: 'compatibility-testing.html',
                 title: 'Scratch 3.0 GUI: Compatibility Testing'
-            }),*/
+            }),
             new HtmlWebpackPlugin({
                 chunks: ['lib.min', 'player'],
                 template: 'src/playground/index.ejs',
                 filename: 'player.html',
                 title: 'Scratch 3.0 GUI: Player Example'
-            }),
+            }),*/
             new CopyWebpackPlugin([{
                 from: 'static',
                 to: 'static'

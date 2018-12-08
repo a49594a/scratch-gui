@@ -14,10 +14,6 @@ import {
     projectError
 } from '../reducers/project-state';
 
-//by yj
-import ScratchBlocks from 'scratch-blocks';
-import { openPuzzleResolved } from '../reducers/modals';
-
 /*
  * Higher Order Component to manage events emitted by the VM
  * @param {React.Component} WrappedComponent component to manage VM events for
@@ -116,15 +112,7 @@ const vmManagerHOC = function (WrappedComponent) {
         }
         setPuzzleResolved() {
             if (this.props.vm.runtime.puzzle.preventComplete) return;
-    
-            var xmlText = ScratchBlocks.Xml.domToPrettyText(ScratchBlocks.Xml.workspaceToDom(ScratchBlocks.mainWorkspace));
-            Blockey.Utils.ajax({
-                url: "/Mission/SetResolved2",
-                data: { id: this.props.puzzleData.id, answer: xmlText },
-                success: (data) => {
-                    this.props.onOpenPuzzleResolved();
-                }
-            });
+            this.props.vm.emit("PUZZLE_RESOLVED");
         }
         render () {
             const {
