@@ -66,8 +66,4 @@ const WrappedPlayer = compose(
 const appTarget = document.createElement('div');
 document.body.appendChild(appTarget);
 */
-const appTarget = Blockey.GUI_CONFIG.WRAPPER;
-if (appTarget) {
-    ReactDOM.render(<WrappedPlayer isPlayerOnly />, appTarget);
-}
 Blockey.GUIPlayer = WrappedPlayer;
