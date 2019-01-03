@@ -2,13 +2,20 @@ import React from 'react';
 import {FormattedMessage} from 'react-intl';
 
 import musicImage from './music.png';
+import musicInsetImage from './music-small.svg';
 import penImage from './pen.png';
+import penInsetImage from './pen-small.svg';
 import videoImage from './video-sensing.png';
+import videoInsetImage from './video-sensing-small.svg';
 import translateImage from './translate.png';
+import translateInsetImage from './translate-small.png';
 import microbitImage from './microbit.png';
 import ev3Image from './ev3.png';
 import wedoImage from './wedo.png';
 import text2speechImage from './text2speech.png';
+import text2speechInsetImage from './text2speech-small.svg';
+import makeymakeyImage from './makeymakey.png';
+import makeymakeyInsetImage from './makeymakey-small.svg';
 
 import microbitPeripheralImage from './peripheral-connection/microbit/microbit-illustration.svg';
 import microbitMenuImage from './peripheral-connection/microbit/microbit-small.svg';
@@ -33,6 +40,7 @@ export default [
         ),
         extensionId: 'music',
         iconURL: musicImage,
+        insetIconURL: musicInsetImage,
         description: (
             <FormattedMessage
                 defaultMessage="Play instruments and drums."
@@ -52,6 +60,7 @@ export default [
         ),
         extensionId: 'pen',
         iconURL: penImage,
+        insetIconURL: penInsetImage,
         description: (
             <FormattedMessage
                 defaultMessage="Draw with your sprites."
@@ -71,6 +80,7 @@ export default [
         ),
         extensionId: 'videoSensing',
         iconURL: videoImage,
+        insetIconURL: videoInsetImage,
         description: (
             <FormattedMessage
                 defaultMessage="Sense motion with the camera."
@@ -130,7 +140,9 @@ export default [
             />
         ),
         extensionId: 'text2speech',
+        collaborator: 'Amazon Web Services',
         iconURL: text2speechImage,
+        insetIconURL: text2speechInsetImage,
         description: (
             <FormattedMessage
                 defaultMessage="Make your projects talk."
@@ -138,7 +150,8 @@ export default [
                 id="gui.extension.text2speech.description"
             />
         ),
-        featured: true
+        featured: true,
+        internetConnectionRequired: true
     },
     {
         name: (
@@ -149,7 +162,9 @@ export default [
             />
         ),
         extensionId: 'translate',
+        collaborator: 'Google',
         iconURL: translateImage,
+        insetIconURL: translateInsetImage,
         description: (
             <FormattedMessage
                 defaultMessage="Translate text into many languages."
@@ -157,12 +172,30 @@ export default [
                 id="gui.extension.translate.description"
             />
         ),
+        featured: true,
+        internetConnectionRequired: true
+    },
+    {
+        name: 'Makey Makey',
+        extensionId: 'makeymakey',
+        collaborator: 'JoyLabz',
+        iconURL: makeymakeyImage,
+        insetIconURL: makeymakeyInsetImage,
+        description: (
+            <FormattedMessage
+                defaultMessage="Make anything into a key."
+                description="Description for the 'Makey Makey' extension"
+                id="gui.extension.makeymakey.description"
+            />
+        ),
         featured: true
     },
     {
         name: 'micro:bit',
         extensionId: 'microbit',
+        collaborator: 'micro:bit',
         iconURL: microbitImage,
+        insetIconURL: microbitMenuImage,
         description: (
             <FormattedMessage
                 defaultMessage="Connect your projects with the world."
@@ -172,6 +205,7 @@ export default [
         ),
         featured: true,
         disabled: false,
+        bluetoothRequired: true,
         launchPeripheralConnectionFlow: true,
         useAutoScan: false,
         peripheralImage: microbitPeripheralImage,
@@ -188,7 +222,9 @@ export default [
     {
         name: 'LEGO MINDSTORMS EV3',
         extensionId: 'ev3',
+        collaborator: 'LEGO',
         iconURL: ev3Image,
+        insetIconURL: ev3MenuImage,
         description: (
             <FormattedMessage
                 defaultMessage="Build interactive robots and more."
@@ -198,6 +234,7 @@ export default [
         ),
         featured: true,
         disabled: false,
+        bluetoothRequired: true,
         launchPeripheralConnectionFlow: true,
         useAutoScan: false,
         peripheralImage: ev3PeripheralImage,
@@ -214,7 +251,9 @@ export default [
     {
         name: 'LEGO WeDo 2.0',
         extensionId: 'wedo2',
+        collaborator: 'LEGO',
         iconURL: wedoImage,
+        insetIconURL: wedoMenuImage,
         description: (
             <FormattedMessage
                 defaultMessage="Build with motors and sensors."
@@ -224,6 +263,7 @@ export default [
         ),
         featured: true,
         disabled: false,
+        bluetoothRequired: true,
         launchPeripheralConnectionFlow: true,
         useAutoScan: true,
         peripheralImage: wedoPeripheralImage,

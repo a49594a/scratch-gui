@@ -9,6 +9,8 @@ import {
     setProjectId
 } from '../reducers/project-state';
 
+import {closePreviewInfo} from '../reducers/modals';
+
 /* Higher Order Component to get the project id from location.hash
  * @param {React.Component} WrappedComponent: component to render
  * @returns {React.Component} component with hash parsing behavior
@@ -20,9 +22,6 @@ const HashParserHOC = function (WrappedComponent) {
             bindAll(this, [
                 'handleHashChange'
             ]);
-            this.state = {
-                hideIntro: false
-            };
         }
         componentDidMount () {
             window.addEventListener('hashchange', this.handleHashChange);
@@ -49,9 +48,6 @@ const HashParserHOC = function (WrappedComponent) {
             }
 
             this.props.setProjectId(hashProjectId.toString());
-            if (hashProjectId !== defaultProjectId) {
-                this.setState({hideIntro: true});
-            }
         }
         render () {
             const {
@@ -64,7 +60,6 @@ const HashParserHOC = function (WrappedComponent) {
             } = this.props;
             return (
                 <WrappedComponent
-                    hideIntro={this.state.hideIntro}
                     {...componentProps}
                 />
             );
@@ -83,7 +78,12 @@ const HashParserHOC = function (WrappedComponent) {
         };
     };
     const mapDispatchToProps = dispatch => ({
-        setProjectId: projectId => dispatch(setProjectId(projectId))
+        setProjectId: projectId => {
+            dispatch(setProjectId(projectId));
+            if (projectId !== defaultProjectId) {
+                dispatch(closePreviewInfo());
+            }
+        }
     });
     // Allow incoming props to override redux-provided props. Used to mock in tests.
     const mergeProps = (stateProps, dispatchProps, ownProps) => Object.assign(

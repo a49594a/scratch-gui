@@ -7,13 +7,18 @@ import React from 'react';
 
 import Box from '../box/box.jsx';
 import Button from '../button/button.jsx';
-import { ComingSoonTooltip } from '../coming-soon/coming-soon.jsx';
+import CommunityButton from './community-button.jsx';
+import ShareButton from './share-button.jsx';
+import {ComingSoonTooltip} from '../coming-soon/coming-soon.jsx';
 import Divider from '../divider/divider.jsx';
 import LanguageSelector from '../../containers/language-selector.jsx';
+import SaveStatus from './save-status.jsx';
 import SBFileUploader from '../../containers/sb-file-uploader.jsx';
+import ProjectWatcher from '../../containers/project-watcher.jsx';
 import MenuBarMenu from './menu-bar-menu.jsx';
 import { MenuItem, MenuSection } from '../menu/menu.jsx';
 import ProjectTitleInput from './project-title-input.jsx';
+import AuthorInfo from './author-info.jsx';
 import AccountNav from '../../containers/account-nav.jsx';
 import LoginDropdown from './login-dropdown.jsx';
 import SB3Downloader from '../../containers/sb3-downloader.jsx';
@@ -31,6 +36,7 @@ import { openMissionHelp, openPublish } from '../../reducers/modals';
 import { openTipsLibrary } from '../../reducers/modals';
 import { setPlayer } from '../../reducers/mode';
 import {
+    autoUpdateProject,
     getIsUpdating,
     getIsShowingProject,
     manualUpdateProject,
@@ -62,13 +68,19 @@ import helpIcon from '../../lib/assets/icon--tutorials.svg';
 import mystuffIcon from './icon--mystuff.png';
 import feedbackIcon from './icon--feedback.svg';
 import profileIcon from './icon--profile.png';
-import communityIcon from './icon--see-community.svg';
 import remixIcon from './icon--remix.svg';
 import dropdownCaret from './dropdown-caret.svg';
 import languageIcon from '../language-selector/language-icon.svg';
 
 import scratchLogo from './scratch-logo.svg';
 
+const messages = defineMessages({
+    confirmNav: {
+        id: 'gui.menuBar.confirmNewWithoutSaving',
+        defaultMessage: 'Replace contents of the current project?',
+        description: 'message for prompting user to confirm that they want to create new project without saving'
+    }
+});
 const ariaMessages = defineMessages({
     language: {
         id: 'gui.menuBar.LanguageSelector',
@@ -147,6 +159,8 @@ class MenuBar extends React.Component {
             'handleClickRemix',
             'handleClickSave',
             'handleClickSaveAsCopy',
+            'handleClickSeeCommunity',
+            'handleClickShare',
             'handleCloseFileMenuAndThen',
             'handleLanguageMouseUp',
             'handleRestoreOption',
@@ -187,10 +201,17 @@ class MenuBar extends React.Component {
         }
     }
     handleClickNew() {
-        // if canSave===true and canCreateNew===true, it's safe to replace current project,
-        // since we will auto-save first. Else, confirm first.
-        const readyToReplaceProject = (this.props.canSave && this.props.canCreateNew) ||
-            confirm('Replace contents of the current project?'); // eslint-disable-line no-alert
+        let readyToReplaceProject = true;
+        // if the project is dirty, and user owns the project, we will autosave.
+        // but if they are not logged in and can't save, user should consider
+        // downloading or logging in first.
+        // Note that if user is logged in and editing someone else's project,
+        // they'll lose their work.
+        if (this.props.projectChanged && !this.props.canCreateNew) {
+            readyToReplaceProject = confirm( // eslint-disable-line no-alert
+                this.props.intl.formatMessage(messages.confirmNav)
+            );
+        }
         this.props.onRequestCloseFile();
         if (readyToReplaceProject) {
             this.props.onClickNew(this.props.canSave && this.props.canCreateNew);
@@ -229,7 +250,28 @@ class MenuBar extends React.Component {
         this.props.onClickSaveAsCopy();
         this.props.onRequestCloseFile();
     }
-    handleRestoreOption(restoreFun) {
+    handleClickSeeCommunity (waitForUpdate) {
+        if (this.props.canSave) { // save before transitioning to project page
+            this.props.autoUpdateProject();
+            waitForUpdate(true); // queue the transition to project page
+        } else {
+            waitForUpdate(false); // immediately transition to project page
+        }
+    }
+    handleClickShare (waitForUpdate) {
+        if (!this.props.isShared) {
+            if (this.props.canShare) { // save before transitioning to project page
+                this.props.onShare();
+            }
+            if (this.props.canSave) { // save before transitioning to project page
+                this.props.autoUpdateProject();
+                waitForUpdate(true); // queue the transition to project page
+            } else {
+                waitForUpdate(false); // immediately transition to project page
+            }
+        }
+    }
+    handleRestoreOption (restoreFun) {
         return () => {
             restoreFun();
             this.props.onRequestCloseEdit();
@@ -304,32 +346,6 @@ class MenuBar extends React.Component {
                 id="gui.menuBar.new"
             />
         );
-        const shareMessage = (
-            <FormattedMessage
-                defaultMessage="Share"
-                description="Label for project share button"
-                id="gui.menuBar.share"
-            />
-        );
-        const isSharedMessage = (
-            <FormattedMessage
-                defaultMessage="Shared"
-                description="Label for shared project"
-                id="gui.menuBar.isShared"
-            />
-        );
-        const shareButton = (
-            <Button
-                className={classNames(
-                    styles.menuBarButton,
-                    styles.shareButton,
-                    { [styles.shareButtonIsShared]: this.props.isShared }
-                )}
-                onClick={this.handleClickShare}
-            >
-                {this.props.isShared ? isSharedMessage : shareMessage}
-            </Button>
-        );
         const remixButton = (
             <Button
                 className={classNames(
@@ -347,25 +363,21 @@ class MenuBar extends React.Component {
             <Box
                 className={classNames(
                     this.props.className,
-                    styles.menuBar,
-                    { [styles.saveInProgress]: this.props.isUpdating }
+                    styles.menuBar
                 )}
             >
                 <div className={styles.mainMenu}>
                     <div className={styles.fileGroup}>
                         <div className={classNames(styles.menuBarItem)}>
-                            <a
-                                href="https://mozhua.aerfaying.com"
-                                rel="noopener noreferrer"
-                                target="_blank"
-                            >
-                                <img
-                                    alt="阿儿法营魔抓社区"
-                                    className={styles.scratchLogo}
-                                    draggable={false}
-                                    src={aerfayingLogo}
-                                />
-                            </a>
+                            <img
+                                alt="阿儿法营魔抓社区"
+                                className={classNames(styles.scratchLogo, {
+                                    [styles.clickable]: typeof this.props.onClickLogo !== 'undefined'
+                                })}
+                                draggable={false}
+                                src={aerfayingLogo}
+                                onClick={this.props.onClickLogo}
+                            />
                         </div>
                         {Blockey.GUI_CONFIG.MODE != 'Puzzle' ? (
                             <div
@@ -610,8 +622,13 @@ class MenuBar extends React.Component {
 
 MenuBar.propTypes = {
     accountMenuOpen: PropTypes.bool,
+    authorId: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    authorThumbnailUrl: PropTypes.string,
+    authorUsername: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    autoUpdateProject: PropTypes.func,
     canCreateCopy: PropTypes.bool,
     canCreateNew: PropTypes.bool,
+    canEditTitle: PropTypes.bool,
     canRemix: PropTypes.bool,
     canSave: PropTypes.bool,
     canShare: PropTypes.bool,
@@ -631,6 +648,7 @@ MenuBar.propTypes = {
     onClickFile: PropTypes.func,
     onClickLanguage: PropTypes.func,
     onClickLogin: PropTypes.func,
+    onClickLogo: PropTypes.func,
     onClickNew: PropTypes.func,
     onClickRemix: PropTypes.func,
     onClickSave: PropTypes.func,
@@ -647,6 +665,8 @@ MenuBar.propTypes = {
     onShare: PropTypes.func,
     onToggleLoginOpen: PropTypes.func,
     onUpdateProjectTitle: PropTypes.func,
+    projectChanged: PropTypes.bool,
+    projectTitle: PropTypes.string,
     renderLogin: PropTypes.func,
     sessionExists: PropTypes.bool,
     showComingSoon: PropTypes.bool,
@@ -675,6 +695,8 @@ const mapStateToProps = state => {
         isShowingProject: getIsShowingProject(loadingState),
         languageMenuOpen: languageMenuOpen(state),
         loginMenuOpen: loginMenuOpen(state),
+        projectChanged: state.scratchGui.projectChanged,
+        projectTitle: state.scratchGui.projectTitle,
         sessionExists: state.session && typeof state.session.session !== 'undefined',
         username: user ? user.username : null
     };
@@ -685,6 +707,7 @@ const mapDispatchToProps = dispatch => ({
     onOpenPublish: () => dispatch(openPublish()),
     onOpenMissionHelp: () => dispatch(openMissionHelp()),
 
+    autoUpdateProject: () => dispatch(autoUpdateProject()),
     onOpenTipLibrary: () => dispatch(openTipsLibrary()),
     onClickAccount: () => dispatch(openAccountMenu()),
     onRequestCloseAccount: () => dispatch(closeAccountMenu()),

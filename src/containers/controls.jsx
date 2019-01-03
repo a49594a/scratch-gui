@@ -44,6 +44,9 @@ class Controls extends React.Component {
         if (e.shiftKey) {
             this.props.vm.setTurboMode(!this.props.turbo);
         } else {
+            if (!this.props.isStarted) {
+                this.props.vm.start();
+            }
             this.props.vm.greenFlag();
             analytics.event({
                 category: 'general',
@@ -107,6 +110,7 @@ class Controls extends React.Component {
     render () {
         const {
             vm, // eslint-disable-line no-unused-vars
+            isStarted, // eslint-disable-line no-unused-vars
             projectRunning,
             turbo,
             ...props
@@ -129,12 +133,14 @@ class Controls extends React.Component {
 }
 
 Controls.propTypes = {
+    isStarted: PropTypes.bool.isRequired,
     projectRunning: PropTypes.bool.isRequired,
     turbo: PropTypes.bool.isRequired,
     vm: PropTypes.instanceOf(VM)
 };
 
 const mapStateToProps = state => ({
+    isStarted: state.scratchGui.vmStatus.running,
     projectRunning: state.scratchGui.vmStatus.running,
     turbo: state.scratchGui.vmStatus.turbo
 });
