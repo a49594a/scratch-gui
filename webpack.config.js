@@ -111,8 +111,8 @@ module.exports = [
             'react': 'React',
             'react-dom': 'ReactDOM',
             'scratch-vm': 'VirtualMachine',
-            'scratch-paint': 'PaintEditor',
-            'scratch-blocks': 'ScratchBlocks',
+            //'scratch-paint': 'PaintEditor',
+            //'scratch-blocks': 'ScratchBlocks',
             //React: 'react',
             //ReactDOM: 'react-dom'
         },

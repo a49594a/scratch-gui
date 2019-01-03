@@ -152,9 +152,6 @@ class MenuBar extends React.Component {
     constructor(props) {
         super(props);
         bindAll(this, [
-            //by yj
-            'handleClickShare',
-
             'handleClickNew',
             'handleClickRemix',
             'handleClickSave',
@@ -222,10 +219,6 @@ class MenuBar extends React.Component {
         this.props.onClickRemix();
         this.props.onRequestCloseFile();
     }
-    //by yj
-    handleClickShare() {
-        this.props.onOpenPublish();
-    }
     handleClickSave() {
         //by yj
         if (!window.confirm('如果该作品原先为scratch2.0版本，保存后会永久转换为3.0版本。确定要保存吗？')) return;
@@ -237,20 +230,21 @@ class MenuBar extends React.Component {
                 success: (r) => {
                     this.props.vm.updateSavedAssetMap();//配合saveProjectDiff
                     Blockey.Utils.Alerter.info("保存成功");
+                    this.props.onClickSave();
                     this.props.onRequestCloseFile();
                 }
             });
         });
-        return;
-
-        this.props.onClickSave();
-        this.props.onRequestCloseFile();
     }
     handleClickSaveAsCopy() {
         this.props.onClickSaveAsCopy();
         this.props.onRequestCloseFile();
     }
     handleClickSeeCommunity (waitForUpdate) {
+        window.location = "/MProject?id=" + Blockey.INIT_DATA.project.id;
+        //by yj
+        return;
+
         if (this.props.canSave) { // save before transitioning to project page
             this.props.autoUpdateProject();
             waitForUpdate(true); // queue the transition to project page
@@ -259,6 +253,9 @@ class MenuBar extends React.Component {
         }
     }
     handleClickShare (waitForUpdate) {
+        this.props.onOpenPublish();
+        return;
+
         if (!this.props.isShared) {
             if (this.props.canShare) { // save before transitioning to project page
                 this.props.onShare();
@@ -557,26 +554,12 @@ class MenuBar extends React.Component {
                     ) : null}
                     {Blockey.GUI_CONFIG.MODE != 'Puzzle' ? (
                         <div className={classNames(styles.menuBarItem)}>
-                            {shareButton}
+                            <ShareButton onClick={this.handleClickShare} />
                         </div>
                     ) : null}
                     {Blockey.GUI_CONFIG.MODE != 'Puzzle' ? (
                         <div className={classNames(styles.menuBarItem, styles.communityButtonWrapper)}>
-                                <Button
-                                    className={classNames(
-                                        styles.menuBarButton,
-                                        styles.communityButton
-                                    )}
-                                    iconClassName={styles.communityButtonIcon}
-                                    iconSrc={communityIcon}
-                                    onClick={() => { window.location = "/MProject?id=" + Blockey.INIT_DATA.project.id; }/*props.onSeeCommunity*/}
-                                >
-                                    <FormattedMessage
-                                        defaultMessage="See Community"
-                                        description="Label for see community button"
-                                        id="gui.menuBar.seeCommunity"
-                                    />
-                                </Button>
+                            <CommunityButton onClick={this.handleClickSeeCommunity} />
                         </div>
                     ) : null}
                 </div>
