@@ -16,6 +16,7 @@ import monitorReducer, {monitorsInitialState} from './monitors';
 import monitorLayoutReducer, {monitorLayoutInitialState} from './monitor-layout';
 import projectStateReducer, {projectStateInitialState} from './project-state';
 //import projectTitleReducer, {projectTitleInitialState} from './project-title';
+import fontsLoadedReducer, {fontsLoadedInitialState} from './fonts-loaded';
 //import restoreDeletionReducer, {restoreDeletionInitialState} from './restore-deletion';
 import stageSizeReducer, {stageSizeInitialState} from './stage-size';
 import targetReducer, {targetsInitialState} from './targets';
@@ -53,6 +54,7 @@ const guiInitialState = {
     monitorLayout: monitorLayoutInitialState,
     projectState: projectStateInitialState,
     //projectTitle: projectTitleInitialState,
+    fontsLoaded: fontsLoadedInitialState,
     //restoreDeletion: restoreDeletionInitialState,
     targets: targetsInitialState,
     //toolbox: toolboxInitialState,
@@ -77,6 +79,19 @@ const initFullScreen = function (currentState) {
         {mode: {
             isFullScreen: true,
             isPlayerOnly: currentState.mode.isPlayerOnly
+        }}
+    );
+};
+
+const initEmbedded = function (currentState) {
+    return Object.assign(
+        {},
+        currentState,
+        {mode: {
+            showBranding: true,
+            isFullScreen: true,
+            isPlayerOnly: true,
+            hasEverEnteredEditor: false
         }}
     );
 };
@@ -125,6 +140,7 @@ const guiReducer = combineReducers({
     monitorLayout: monitorLayoutReducer,
     projectState: projectStateReducer,
     //projectTitle: projectTitleReducer,
+    fontsLoaded: fontsLoadedReducer,
     //restoreDeletion: restoreDeletionReducer,
     targets: targetReducer,
     //toolbox: toolboxReducer,
@@ -136,6 +152,7 @@ export {
     guiReducer as default,
     guiInitialState,
     guiMiddleware,
+    initEmbedded,
     initFullScreen,
     initPlayer,
     initTutorialCard

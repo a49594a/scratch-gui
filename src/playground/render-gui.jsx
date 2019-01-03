@@ -9,7 +9,7 @@ import TitledHOC from '../lib/titled-hoc.jsx';
 import log from '../lib/log.js';
 
 const onClickLogo = () => {
-    window.location = 'https://scratch.mit.edu';
+    window.location = 'https://www.aerfaying.com';
 };
 
 const handleTelemetryModalCancel = () => {
