@@ -47,8 +47,8 @@
         @todo: make room for the scrollbar
     */
     box-sizing: border-box;
-    min-width: 4rem;
-    min-height: 4rem; /* @todo: calc height same as width */
+    max-width: 4rem;
+    max-height: 4rem; /* @todo: calc height same as width */
     margin-right: $space;
     margin-bottom: $space;
     float: left;

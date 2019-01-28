@@ -44,7 +44,11 @@ const HashParserHOC = function (WrappedComponent) {
             let hashProjectId = hashMatch === null ? defaultProjectId : hashMatch[1];
             if(hashProjectId==defaultProjectId){
                 var paramMatch = window.location.href.match(/\?id=(\d+)/);
-                hashProjectId = paramMatch === null ? 0 : paramMatch[1];
+                hashProjectId = paramMatch === null ? defaultProjectId : paramMatch[1];
+            }
+            if(hashProjectId==defaultProjectId){
+                var paramMatch = window.location.href.match(/\/Projects\/(\d+)/i);
+                hashProjectId = paramMatch === null ? defaultProjectId : paramMatch[1];
             }
 
             this.props.setProjectId(hashProjectId.toString());

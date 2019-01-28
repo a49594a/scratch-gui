@@ -71,9 +71,9 @@ const vmManagerHOC = function (WrappedComponent) {
                     if(Blockey.GUI_CONFIG.MODE=='Puzzle'){
                         this.onPuzzleLoaded();
                     }
-                    else{
+                    /*else{
                         this.props.vm.updateSavedAssetMap();//配合saveProjectDiff                        
-                    }
+                    }*/
 
                     this.props.onLoadedProject(this.props.loadingState, this.props.canSave);
                     // Wrap in a setTimeout because skin loading in

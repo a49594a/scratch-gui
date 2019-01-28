@@ -161,7 +161,8 @@ class MenuBar extends React.Component {
             'handleCloseFileMenuAndThen',
             'handleLanguageMouseUp',
             'handleRestoreOption',
-            'restoreOptionMessage'
+            'restoreOptionMessage',
+            'loadMission'
         ]);
     }
     componentDidMount() {
@@ -230,7 +231,7 @@ class MenuBar extends React.Component {
                 success: (r) => {
                     this.props.vm.updateSavedAssetMap();//配合saveProjectDiff
                     Blockey.Utils.Alerter.info("保存成功");
-                    this.props.onClickSave();
+                    //this.props.onClickSave();
                     this.props.onRequestCloseFile();
                 }
             });
@@ -241,7 +242,7 @@ class MenuBar extends React.Component {
         this.props.onRequestCloseFile();
     }
     handleClickSeeCommunity (waitForUpdate) {
-        window.location = "/MProject?id=" + Blockey.INIT_DATA.project.id;
+        window.location = `/Projects/${Blockey.INIT_DATA.project.id}/`;
         //by yj
         return;
 
