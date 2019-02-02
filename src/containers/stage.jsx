@@ -163,7 +163,7 @@ class Stage extends React.Component {
     }
     handleDoubleClick (e) {
         //by yj
-        if(this.props.vm.runtime.puzzle)return;
+        if(Blockey.GUI_CONFIG.MODE=='Puzzle')return;
 
         const {x, y} = getEventXY(e);
         // Set editing target from cursor position, if clicking on a sprite.
@@ -321,7 +321,7 @@ class Stage extends React.Component {
     }
     onStartDrag (x, y) {
         //by yj
-        if(this.props.vm.runtime.puzzle)return;
+        if(Blockey.GUI_CONFIG.MODE=='Puzzle')return;
 
         if (this.state.dragId) return;
         const drawableId = this.renderer.pick(x, y);

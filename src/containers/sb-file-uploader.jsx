@@ -107,7 +107,7 @@ class SBFileUploader extends React.Component {
                         nonInteraction: true
                     });
                     // Remove the hash if any (without triggering a hash change event or a reload)
-                    history.replaceState({}, document.title, '.');
+                    //history.replaceState({}, document.title, '.');//by yj 
                     this.props.onLoadingFinished(this.props.loadingState, true);
                     // Reset the file input after project is loaded
                     // This is necessary in case the user wants to reload a project

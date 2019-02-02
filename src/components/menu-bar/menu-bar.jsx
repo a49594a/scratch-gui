@@ -9,7 +9,7 @@ import Box from '../box/box.jsx';
 import Button from '../button/button.jsx';
 import CommunityButton from './community-button.jsx';
 import ShareButton from './share-button.jsx';
-import {ComingSoonTooltip} from '../coming-soon/coming-soon.jsx';
+import { ComingSoonTooltip } from '../coming-soon/coming-soon.jsx';
 import Divider from '../divider/divider.jsx';
 import LanguageSelector from '../../containers/language-selector.jsx';
 import SaveStatus from './save-status.jsx';
@@ -217,35 +217,20 @@ class MenuBar extends React.Component {
         this.props.onRequestCloseFile();
     }
     handleClickRemix() {
-        this.props.onClickRemix();
-        this.props.onRequestCloseFile();
+        if (window.confirm("你确定要改编该作品吗？")) {
+            this.props.onClickRemix();
+            this.props.onRequestCloseFile();
+        }
     }
     handleClickSave() {
-        //by yj
-        if (!window.confirm('如果该作品原先为scratch2.0版本，保存后会永久转换为3.0版本。确定要保存吗？')) return;
-        this.props.vm.saveProjectDiff().then(file => {
-            const projectId = Blockey.INIT_DATA.project.id;
-            Blockey.Utils.ajax({
-                url: "/WebApi/Project/Upload",
-                data: { id: projectId, file: file },
-                success: (r) => {
-                    this.props.vm.updateSavedAssetMap();//配合saveProjectDiff
-                    Blockey.Utils.Alerter.info("保存成功");
-                    //this.props.onClickSave();
-                    this.props.onRequestCloseFile();
-                }
-            });
-        });
+        this.props.onClickSave();
+        this.props.onRequestCloseFile();
     }
     handleClickSaveAsCopy() {
         this.props.onClickSaveAsCopy();
         this.props.onRequestCloseFile();
     }
-    handleClickSeeCommunity (waitForUpdate) {
-        window.location = `/Projects/${Blockey.INIT_DATA.project.id}/`;
-        //by yj
-        return;
-
+    handleClickSeeCommunity(waitForUpdate) {
         if (this.props.canSave) { // save before transitioning to project page
             this.props.autoUpdateProject();
             waitForUpdate(true); // queue the transition to project page
@@ -253,23 +238,18 @@ class MenuBar extends React.Component {
             waitForUpdate(false); // immediately transition to project page
         }
     }
-    handleClickShare (waitForUpdate) {
-        this.props.onOpenPublish();
-        return;
-
-        if (!this.props.isShared) {
-            if (this.props.canShare) { // save before transitioning to project page
-                this.props.onShare();
-            }
-            if (this.props.canSave) { // save before transitioning to project page
-                this.props.autoUpdateProject();
-                waitForUpdate(true); // queue the transition to project page
-            } else {
-                waitForUpdate(false); // immediately transition to project page
-            }
+    handleClickShare(waitForUpdate) {
+        if (this.props.canShare) { // save before transitioning to project page
+            this.props.onShare();
+        }
+        if (this.props.canSave) { // save before transitioning to project page
+            this.props.autoUpdateProject();
+            waitForUpdate(true); // queue the transition to project page
+        } else {
+            waitForUpdate(false); // immediately transition to project page
         }
     }
-    handleRestoreOption (restoreFun) {
+    handleRestoreOption(restoreFun) {
         return () => {
             restoreFun();
             this.props.onRequestCloseEdit();
@@ -412,64 +392,49 @@ class MenuBar extends React.Component {
                                     place={this.props.isRtl ? 'left' : 'right'}
                                     onRequestClose={this.props.onRequestCloseFile}
                                 >
-                                    {false?(
-                                        <MenuSection>
+                                    <MenuItem
+                                        className={classNames({ [styles.disabled]: !this.props.canSave })}
+                                        onClick={this.props.canSave ? this.handleClickSave : null}
+                                    >
+                                        {saveNowMessage}
+                                    </MenuItem>
+                                    <MenuItem
+                                        className={classNames({ [styles.disabled]: !this.props.canRemix })}
+                                        onClick={this.props.canRemix ? this.handleClickRemix : null}
+                                    >
+                                        {remixMessage}
+                                    </MenuItem>
+                                    <SBFileUploader className={classNames({ [styles.disabled]: !this.props.canSaveToLocal })}
+                                        canSave={this.props.canSave} onUpdateProjectTitle={this.props.onUpdateProjectTitle}
+                                    >
+                                        {(className, renderFileInput, loadProject) => (
                                             <MenuItem
-                                                isRtl={this.props.isRtl}
-                                                onClick={this.handleClickNew}
+                                                className={className}
+                                                onClick={this.props.canSaveToLocal ? loadProject : null}
                                             >
-                                                {newProjectMessage}
+                                                <FormattedMessage
+                                                    defaultMessage="Load from your computer"
+                                                    description={
+                                                        'Menu bar item for uploading a project from your computer'
+                                                    }
+                                                    id="gui.menuBar.uploadFromComputer"
+                                                />
+                                                {renderFileInput()}
                                             </MenuItem>
-                                        </MenuSection>
-                                    ):null}
-                                    <MenuSection>
-                                        <MenuItem onClick={this.handleClickSave}>
-                                            {saveNowMessage}
+                                        )}
+                                    </SBFileUploader>
+                                    <SB3Downloader>{(className, downloadProject) => (
+                                        <MenuItem
+                                            className={classNames(className, { [styles.disabled]: !this.props.canSaveToLocal })}
+                                            onClick={this.props.canSaveToLocal ? this.handleCloseFileMenuAndThen(downloadProject) : null}
+                                        >
+                                            <FormattedMessage
+                                                defaultMessage="Save to your computer"
+                                                description="Menu bar item for downloading a project to your computer"
+                                                id="gui.menuBar.downloadToComputer"
+                                            />
                                         </MenuItem>
-                                        {this.props.canCreateCopy ? (
-                                            <MenuItem onClick={this.handleClickSaveAsCopy}>
-                                                {createCopyMessage}
-                                            </MenuItem>
-                                        ) : []}
-                                        {this.props.canRemix ? (
-                                            <MenuItem onClick={this.handleClickRemix}>
-                                                {remixMessage}
-                                            </MenuItem>
-                                        ) : []}
-                                    </MenuSection>
-                                    <MenuSection>
-                                        <SBFileUploader onUpdateProjectTitle={this.props.onUpdateProjectTitle}>
-                                            {(className, renderFileInput, loadProject) => (
-                                                <MenuItem
-                                                    className={className}
-                                                    onClick={loadProject}
-                                                >
-                                                    <FormattedMessage
-                                                        defaultMessage="Load from your computer"
-                                                        description={
-                                                            'Menu bar item for uploading a project from your computer'
-                                                        }
-                                                        id="gui.menuBar.uploadFromComputer"
-                                                    />
-                                                    {renderFileInput()}
-                                                </MenuItem>
-                                            )}
-                                        </SBFileUploader>
-                                        {Blockey.INIT_DATA.project.canSaveToLocal ? (
-                                            <SB3Downloader>{(className, downloadProject) => (
-                                                <MenuItem
-                                                    className={className}
-                                                    onClick={this.handleCloseFileMenuAndThen(downloadProject)}
-                                                >
-                                                    <FormattedMessage
-                                                        defaultMessage="Save to your computer"
-                                                        description="Menu bar item for downloading a project to your computer"
-                                                        id="gui.menuBar.downloadToComputer"
-                                                    />
-                                                </MenuItem>
-                                            )}</SB3Downloader>
-                                        ) : null}
-                                    </MenuSection>
+                                    )}</SB3Downloader>
                                 </MenuBarMenu>
                             </div>
                         ) : null}
@@ -548,26 +513,65 @@ class MenuBar extends React.Component {
                             >
                                 <ProjectTitleInput
                                     className={classNames(styles.titleFieldGrowable)}
-                                    onUpdateProjectTitle={this.props.onUpdateProjectTitle}
+                                    onUpdateProjectTitle={this.props.canSave ? this.props.onUpdateProjectTitle : null}
                                 />
                             </MenuBarItemTooltip>
                         </div>
                     ) : null}
                     {Blockey.GUI_CONFIG.MODE != 'Puzzle' ? (
                         <div className={classNames(styles.menuBarItem)}>
-                            <ShareButton onClick={this.handleClickShare} />
+                            {this.props.canShare ? (
+                                (this.props.isShowingProject || this.props.isUpdating) && (
+                                    <ProjectWatcher onDoneUpdating={this.props.onShare}>
+                                        {
+                                            waitForUpdate => (
+                                                <ShareButton
+                                                    className={styles.menuBarButton}
+                                                    isShared={this.props.isShared}
+                                                    /* eslint-disable react/jsx-no-bind */
+                                                    onClick={() => {
+                                                        this.handleClickShare(waitForUpdate);
+                                                    }}
+                                                /* eslint-enable react/jsx-no-bind */
+                                                />
+                                            )
+                                        }
+                                    </ProjectWatcher>
+                                )
+                            ) : []}
+                            {this.props.canRemix ? remixButton : []}
                         </div>
                     ) : null}
                     {Blockey.GUI_CONFIG.MODE != 'Puzzle' ? (
                         <div className={classNames(styles.menuBarItem, styles.communityButtonWrapper)}>
-                            <CommunityButton onClick={this.handleClickSeeCommunity} />
+                            {this.props.isShowingProject || this.props.isUpdating ? (
+                                <ProjectWatcher onDoneUpdating={this.props.onSeeCommunity}>
+                                    {
+                                        waitForUpdate => (
+                                            <CommunityButton
+                                                className={styles.menuBarButton}
+                                                /* eslint-disable react/jsx-no-bind */
+                                                onClick={() => {
+                                                    this.handleClickSeeCommunity(waitForUpdate);
+                                                }}
+                                            /* eslint-enable react/jsx-no-bind */
+                                            />
+                                        )
+                                    }
+                                </ProjectWatcher>
+                            ) : null}
                         </div>
                     ) : null}
                 </div>
 
                 {/* show the proper UI in the account menu, given whether the user is
                 logged in, and whether a session is available to log in with */}
-                <div className={styles.accountInfoWrapper}>
+                <div className={styles.accountInfoGroup}>
+                    <div className={styles.menuBarItem}>
+                        {this.props.canSave && (
+                            <SaveStatus />
+                        )}
+                    </div>
                     <div
                         id="account-nav"
                         place="left"
@@ -688,7 +692,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
     //by yj
-    onOpenPublish: () => dispatch(openPublish()),
+    onShare: () => dispatch(openPublish()),
     onOpenMissionHelp: () => dispatch(openMissionHelp()),
 
     autoUpdateProject: () => dispatch(autoUpdateProject()),
@@ -707,7 +711,7 @@ const mapDispatchToProps = dispatch => ({
     onClickRemix: () => dispatch(remixProject()),
     onClickSave: () => dispatch(manualUpdateProject()),
     onClickSaveAsCopy: () => dispatch(saveProjectAsCopy()),
-    onSeeCommunity: () => dispatch(setPlayer(true))
+    //onSeeCommunity: () => dispatch(setPlayer(true))
 });
 
 export default injectIntl(connect(

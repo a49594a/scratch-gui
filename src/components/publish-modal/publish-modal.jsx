@@ -25,20 +25,6 @@ const PublishModalComponent = props => (
                     value={props.summary}
                 />
             </Box>
-            <Box className={styles.label}>
-                <label>
-                    <input
-                        type="checkbox"
-                        name="updateThumb"
-                        onChange={props.onChange}
-                        checked={props.updateThumb}
-                    />
-                    更新缩略图
-                </label>
-            </Box>
-            <Box>
-                <img src={props.thumbDataUrl} className={styles.thumbImage} />
-            </Box>
             <Box className={styles.buttonRow}>
                 <button
                     className={styles.cancelButton}

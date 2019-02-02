@@ -2,7 +2,7 @@ import bindAll from 'lodash.bindall';
 import React from 'react';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import VM from 'scratch-vm';
 import xhr from 'xhr';
 
@@ -14,8 +14,8 @@ import {
     showAlertWithTimeout,
     showStandardAlert
 } from '../reducers/alerts';
-import {setAutoSaveTimeoutId} from '../reducers/timeout';
-import {setProjectUnchanged} from '../reducers/project-changed';
+import { setAutoSaveTimeoutId } from '../reducers/timeout';
+import { setProjectUnchanged } from '../reducers/project-changed';
 import {
     LoadingStates,
     autoUpdateProject,
@@ -44,25 +44,25 @@ import {
  */
 const ProjectSaverHOC = function (WrappedComponent) {
     class ProjectSaverComponent extends React.Component {
-        constructor (props) {
+        constructor(props) {
             super(props);
             bindAll(this, [
                 'leavePageConfirm',
                 'tryToAutoSave'
             ]);
         }
-        componentWillMount () {
+        componentWillMount() {
             if (typeof window === 'object') {
                 // Note: it might be better to use a listener instead of assigning onbeforeunload;
                 // but then it'd be hard to turn this listening off in our tests
                 window.onbeforeunload = e => this.leavePageConfirm(e);
             }
         }
-        componentDidUpdate (prevProps) {
+        componentDidUpdate(prevProps) {
             if (this.props.projectChanged && !prevProps.projectChanged) {
                 this.scheduleAutoSave();
             }
-            if (this.props.isUpdating && !prevProps.isUpdating) {
+            if (this.props.isUpdating && !prevProps.isUpdating) { //by yj
                 this.updateProjectToStorage();
             }
             if (this.props.isCreatingNew && !prevProps.isCreatingNew) {
@@ -98,14 +98,14 @@ const ProjectSaverHOC = function (WrappedComponent) {
                 this.props.onAutoUpdateProject();
             }
         }
-        componentWillUnmount () {
+        componentWillUnmount() {
             this.clearAutoSaveTimeout();
             // Cant unset the beforeunload because it might no longer belong to this component
             // i.e. if another of this component has been mounted before this one gets unmounted
             // which happens when going from project to editor view.
             // window.onbeforeunload = undefined; // eslint-disable-line no-undefined
         }
-        leavePageConfirm (e) {
+        leavePageConfirm(e) {
             if (this.props.projectChanged) {
                 // both methods of returning a value may be necessary for browser compatibility
                 (e || window.event).returnValue = true;
@@ -113,28 +113,28 @@ const ProjectSaverHOC = function (WrappedComponent) {
             }
             return; // Returning undefined prevents the prompt from coming up
         }
-        clearAutoSaveTimeout () {
+        clearAutoSaveTimeout() {
             if (this.props.autoSaveTimeoutId !== null) {
                 clearTimeout(this.props.autoSaveTimeoutId);
                 this.props.setAutoSaveTimeoutId(null);
             }
         }
-        scheduleAutoSave () {
+        scheduleAutoSave() {
             if (this.props.isShowingSaveable && this.props.autoSaveTimeoutId === null) {
                 const timeoutId = setTimeout(this.tryToAutoSave,
                     this.props.autoSaveIntervalSecs * 1000);
                 this.props.setAutoSaveTimeoutId(timeoutId);
             }
         }
-        tryToAutoSave () {
+        tryToAutoSave() {
             if (this.props.projectChanged && this.props.isShowingSaveable) {
                 this.props.onAutoUpdateProject();
             }
         }
-        isShowingCreatable (props) {
+        isShowingCreatable(props) {
             return props.canCreateNew && props.isShowingWithoutId;
         }
-        updateProjectToStorage () {
+        updateProjectToStorage() {
             this.props.onShowSavingAlert();
             return this.storeProject(this.props.reduxProjectId)
                 .then(() => {
@@ -150,7 +150,7 @@ const ProjectSaverHOC = function (WrappedComponent) {
                     this.props.onProjectError(err);
                 });
         }
-        createNewProjectToStorage () {
+        createNewProjectToStorage() {
             return this.storeProject(null)
                 .then(response => {
                     this.props.onCreatedProject(response.id.toString(), this.props.loadingState);
@@ -160,7 +160,7 @@ const ProjectSaverHOC = function (WrappedComponent) {
                     this.props.onProjectError(err);
                 });
         }
-        createCopyToStorage () {
+        createCopyToStorage() {
             this.props.onShowCreatingCopyAlert();
             return this.storeProject(null, {
                 original_id: this.props.reduxProjectId,
@@ -176,16 +176,15 @@ const ProjectSaverHOC = function (WrappedComponent) {
                     this.props.onProjectError(err);
                 });
         }
-        createRemixToStorage () {
+        createRemixToStorage() {
+            //by yj
             this.props.onShowCreatingRemixAlert();
-            return this.storeProject(null, {
-                original_id: this.props.reduxProjectId,
-                is_remix: 1,
-                title: this.props.reduxProjectTitle
+            return this.storeProject(this.props.reduxProjectId, {
+                isRemix: true
             })
                 .then(response => {
-                    this.props.onCreatedProject(response.id.toString(), this.props.loadingState);
                     this.props.onShowRemixSuccessAlert();
+                    window.location = `/Projects/${response.project.id}/Editor`;
                 })
                 .catch(err => {
                     this.props.onShowAlert('creatingError');
@@ -198,7 +197,33 @@ const ProjectSaverHOC = function (WrappedComponent) {
          * @return {Promise} - resolves with json object containing project's existing or new id
          * @param {?object} requestParams - object of params to add to request body
          */
-        storeProject (projectId, requestParams) {
+        storeProject(projectId, requestParams) {
+            //by yj
+            return new Promise((resolve, reject) => {
+                this.props.vm.postIOData('video', { forceTransparentPreview: true });
+                this.props.vm.renderer.requestSnapshot(dataURI => {
+                    this.props.vm.postIOData('video', { forceTransparentPreview: false });
+                    this.props.vm.saveProjectDiff(dataURItoBlob(dataURI)).then(file => {
+                        Blockey.Utils.ajax({
+                            url: `/WebApi/Projects/${projectId}/Upload`,
+                            data: {
+                                file: file,
+                                isRemix: !!(requestParams && requestParams.isRemix)
+                            },
+                            success: (r) => {
+                                this.props.vm.updateSavedAssetMap();//配合saveProjectDiff
+                                this.props.onSetProjectUnchanged();
+                                resolve(r);
+                            },
+                            error: (err) => {
+                                reject(err);
+                            }
+                        });
+                    });
+                });
+                this.props.vm.renderer.draw();
+            });
+
             requestParams = requestParams || {};
             this.clearAutoSaveTimeout();
             return Promise.all(this.props.vm.assets
@@ -273,11 +298,11 @@ const ProjectSaverHOC = function (WrappedComponent) {
          * Needs to happen _after_ save because the project must have an ID.
          * @param {!string} projectId - id of the project, must be defined.
          */
-        storeProjectThumbnail (projectId) {
+        storeProjectThumbnail(projectId) {
             try {
-                this.props.vm.postIOData('video', {forceTransparentPreview: true});
+                this.props.vm.postIOData('video', { forceTransparentPreview: true });
                 this.props.vm.renderer.requestSnapshot(dataURI => {
-                    this.props.vm.postIOData('video', {forceTransparentPreview: false});
+                    this.props.vm.postIOData('video', { forceTransparentPreview: false });
                     this.props.onUpdateProjectThumbnail(
                         projectId, dataURItoBlob(dataURI));
                 });
@@ -289,7 +314,7 @@ const ProjectSaverHOC = function (WrappedComponent) {
             }
         }
 
-        render () {
+        render() {
             const {
                 /* eslint-disable no-unused-vars */
                 autoSaveTimeoutId,
@@ -371,7 +396,7 @@ const ProjectSaverHOC = function (WrappedComponent) {
     };
     ProjectSaverComponent.defaultProps = {
         autoSaveIntervalSecs: 120,
-        onRemixing: () => {}
+        onRemixing: () => { }
     };
     const mapStateToProps = (state, ownProps) => {
         const loadingState = state.scratchGui.projectState.loadingState;

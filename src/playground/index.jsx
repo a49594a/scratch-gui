@@ -17,6 +17,21 @@ import styles from './index.css';
 // Register "base" page view
 analytics.pageview('/');
 
+//by yj
+import {compose} from 'redux';
+import HashParserHOC from '../lib/hash-parser-hoc.jsx';
+import TitledHOC from '../lib/titled-hoc.jsx';
+import GUI from '../containers/gui.jsx';
+if(Blockey.GUI_CONFIG && Blockey.GUI_CONFIG.MANUAL_RENDER){
+    const WrappedGui = compose(
+        AppStateHOC,
+        HashParserHOC,
+        TitledHOC
+    )(GUI);
+    Blockey.ScratchGUI = WrappedGui;
+}
+else{
+
 const appTarget = document.createElement('div');
 appTarget.className = styles.app;
 document.body.appendChild(appTarget);
@@ -32,4 +47,6 @@ if (supportedBrowser()) {
     const handleBack = () => {};
     // eslint-disable-next-line react/jsx-no-bind
     ReactDOM.render(<WrappedBrowserModalComponent onBack={handleBack} />, appTarget);
+}
+    
 }
