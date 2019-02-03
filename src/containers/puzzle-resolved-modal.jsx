@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import ResolvedModalComponent from '../components/puzzle-resolved-modal/resolved-modal.jsx';
 
 import { closePuzzleResolved } from '../reducers/modals';
+import { setProjectUnchanged } from '../reducers/project-changed';
 
 class ResolvedModal extends React.Component {
     constructor(props) {
@@ -20,14 +21,13 @@ class ResolvedModal extends React.Component {
         };*/
     }
     handleOK() {
-        //this.setState({ previewing: true });
-        //window.location.hash = "";
         this.props.onOK();
         var missions = this.props.puzzleData.missions;
         for (var i = 0; i < missions.length; i++) {
             if (missions[i].id == this.props.puzzleData.id) {
                 missions[i].isSolved = true;
                 if (i == missions.length - 1) {
+                    this.props.onSetProjectUnchanged();
                     window.location = "/User/Missions";
                 }
                 else {
@@ -38,7 +38,6 @@ class ResolvedModal extends React.Component {
         }
     }
     handleCancel() {
-        //window.location.replace('https://scratch.mit.edu');
         this.props.onCancel();
     }
     render() {
@@ -60,12 +59,9 @@ ResolvedModal.propTypes = {
 const mapStateToProps = () => ({});
 
 const mapDispatchToProps = dispatch => ({
-    onOK: () => {
-        dispatch(closePuzzleResolved());
-    },
-    onCancel: () => {
-        dispatch(closePuzzleResolved());
-    }
+    onOK: () => dispatch(closePuzzleResolved()),
+    onCancel: () => dispatch(closePuzzleResolved()),
+    onSetProjectUnchanged: () => dispatch(setProjectUnchanged()),
 });
 
 export default connect(

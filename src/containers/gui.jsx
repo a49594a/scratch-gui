@@ -160,6 +160,7 @@ const mapStateToProps = state => {
     return {
         //by yj
         puzzleResolvedVisible: state.scratchGui.modals.puzzleResolved,
+        onOpenPuzzleResolved: PropTypes.func,
 
         activeTabIndex: state.scratchGui.editorTab.activeTabIndex,
         alertsVisible: state.scratchGui.alerts.visible,

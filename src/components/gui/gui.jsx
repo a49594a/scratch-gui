@@ -56,6 +56,12 @@ let isRendererSupported = null;
 
 const GUIComponent = props => {
     const {
+        //by yj
+        canSaveToLocal,
+        puzzleResolvedVisible,
+        puzzleData,
+        onOpenPuzzleResolved,
+
         accountNavOpen,
         activeTabIndex,
         alertsVisible,
@@ -219,7 +225,7 @@ const GUIComponent = props => {
                     canEditTitle={canEditTitle}
                     canRemix={canRemix}
                     canSave={canSave}
-                    canSaveToLocal={props.canSaveToLocal/*by yj*/}
+                    canSaveToLocal={canSaveToLocal/*by yj*/}
                     canShare={canShare}
                     className={styles.menuBarPosition}
                     enableCommunity={enableCommunity}
@@ -360,6 +366,10 @@ const GUIComponent = props => {
 };
 
 GUIComponent.propTypes = {
+    //by yj
+    canSaveToLocal: PropTypes.bool,
+    puzzleData: PropTypes.any,
+
     accountNavOpen: PropTypes.bool,
     activeTabIndex: PropTypes.number,
     authorId: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]), // can be false

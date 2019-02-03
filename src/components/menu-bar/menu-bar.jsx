@@ -27,7 +27,6 @@ import TurboMode from '../../containers/turbo-mode.jsx';
 
 //by yj
 import MissionSelector from '../puzzle-mission-selector/mission-selector.jsx';
-import ProjectUploader from '../../containers/project-uploader.jsx';
 import aerfayingLogo from './aerfaying-logo.svg';
 import MissionHelpModal from '../../containers/mission-help-modal.jsx';
 import PublishModal from '../../containers/publish-modal.jsx';
@@ -505,7 +504,7 @@ class MenuBar extends React.Component {
                     {Blockey.GUI_CONFIG.MODE == 'Puzzle' && this.props.puzzleData && this.props.puzzleData.missions.length > 1 ? (
                         <MissionSelector className={styles.missionSelector} puzzleData={this.props.puzzleData} />
                     ) : null}
-                    {Blockey.GUI_CONFIG.MODE != 'Puzzle' ? (
+                    {Blockey.GUI_CONFIG.MODE != 'Puzzle' && this.props.canEditTitle ? (
                         <div className={classNames(styles.menuBarItem, styles.growable)}>
                             <MenuBarItemTooltip
                                 enable
@@ -513,10 +512,19 @@ class MenuBar extends React.Component {
                             >
                                 <ProjectTitleInput
                                     className={classNames(styles.titleFieldGrowable)}
-                                    onUpdateProjectTitle={this.props.canSave ? this.props.onUpdateProjectTitle : null}
+                                    onUpdateProjectTitle={this.props.onUpdateProjectTitle}
                                 />
                             </MenuBarItemTooltip>
                         </div>
+                    ) : null}
+                    {Blockey.GUI_CONFIG.MODE != 'Puzzle' && !this.props.canEditTitle ? (
+                        <AuthorInfo
+                            className={styles.authorInfo}
+                            imageUrl={this.props.authorThumbnailUrl}
+                            projectTitle={this.props.projectTitle}
+                            userId={this.props.authorId}
+                            username={this.props.authorUsername}
+                        />
                     ) : null}
                     {Blockey.GUI_CONFIG.MODE != 'Puzzle' ? (
                         <div className={classNames(styles.menuBarItem)}>
@@ -572,30 +580,20 @@ class MenuBar extends React.Component {
                             <SaveStatus />
                         )}
                     </div>
-                    <div
-                        id="account-nav"
-                        place="left"
-                    >
-                        <a href="/User">
-                            <div
-                                className={classNames(
-                                    styles.menuBarItem,
-                                    styles.hoverable,
-                                    styles.accountNavMenu
-                                )}
-                            >
-                                <img
-                                    className={styles.profileIcon}
-                                    src={Blockey.INIT_DATA.logedInUser.thumbUrl}
-                                />
-                                <span>{Blockey.INIT_DATA.logedInUser.username}</span>
-                                <img
-                                    className={styles.dropdownCaretIcon}
-                                    src={dropdownCaret}
-                                />
-                            </div>
-                        </a>
-                    </div>
+                    <AccountNav
+                        className={classNames(
+                            styles.menuBarItem,
+                            styles.hoverable,
+                            { [styles.active]: this.props.accountMenuOpen }
+                        )}
+                        isOpen={this.props.accountMenuOpen}
+                        isRtl={this.props.isRtl}
+                        menuBarMenuClassName={classNames(styles.menuBarMenu)}
+                        onClick={this.props.onClickAccount}
+                        onClose={this.props.onRequestCloseAccount}
+                        onLogOut={this.props.onLogOut}
+                        logedInUser={Blockey.INIT_DATA.logedInUser}
+                    />
                 </div>
                 {this.props.publishModalVisible ? (
                     <PublishModal vm={this.props.vm} />
@@ -609,6 +607,9 @@ class MenuBar extends React.Component {
 }
 
 MenuBar.propTypes = {
+    //by yj
+    canSaveToLocal: PropTypes.bool,
+
     accountMenuOpen: PropTypes.bool,
     authorId: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     authorThumbnailUrl: PropTypes.string,

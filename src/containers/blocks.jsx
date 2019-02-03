@@ -561,6 +561,9 @@ class Blocks extends React.Component {
     render () {
         /* eslint-disable no-unused-vars */
         const {
+            //by yj
+            puzzleData,
+            
             anyModalVisible,
             canUseCloud,
             customProceduresVisible,
@@ -622,6 +625,9 @@ class Blocks extends React.Component {
 }
 
 Blocks.propTypes = {
+    //by yj
+    puzzleData: PropTypes.any,
+
     anyModalVisible: PropTypes.bool,
     canUseCloud: PropTypes.bool,
     customProceduresVisible: PropTypes.bool,
