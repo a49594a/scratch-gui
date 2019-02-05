@@ -68,8 +68,9 @@ const ProjectFetcherHOC = function (WrappedComponent) {
             }
         }
         fetchProject (projectId, loadingState) {
+            var version=this.props.projectVersion;
             return storage
-                .load(storage.AssetType.Project, projectId, storage.DataFormat.JSON)
+                .load(storage.AssetType.Project, projectId+(version?'.'+version:''), storage.DataFormat.JSON)
                 .then(projectAsset => {
                     if (projectAsset) {
                         this.props.onFetchedProjectData(projectAsset.data, loadingState);

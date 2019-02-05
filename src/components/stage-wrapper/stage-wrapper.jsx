@@ -12,6 +12,9 @@ import styles from './stage-wrapper.css';
 
 const StageWrapperComponent = function (props) {
     const {
+        //by yj
+        isPhone,
+
         isRtl,
         isRendererSupported,
         loading,
@@ -20,12 +23,12 @@ const StageWrapperComponent = function (props) {
     } = props;
 
     //by yj
-    let isMobile = Blockey.GUI_CONFIG&&Blockey.GUI_CONFIG.IS_MOBILE;
+    //let isPhone = isPhone;// Blockey.GUI_CONFIG&&Blockey.GUI_CONFIG.IS_MOBILE;
     let isPuzzle = Blockey.GUI_CONFIG.MODE=='Puzzle';
 
     return (
         <Box className={styles.stageWrapper}>
-            {isPuzzle || isMobile ? null : (
+            {isPuzzle || isPhone ? null : (
                 <Box className={styles.stageMenuWrapper}>
                     <StageHeader
                         stageSize={stageSize}
@@ -33,7 +36,7 @@ const StageWrapperComponent = function (props) {
                     />
                 </Box>
             )}
-            <Box className={isMobile?styles.stageCanvasWrapperMobile:styles.stageCanvasWrapper}>
+            <Box className={isPhone?styles.stageCanvasWrapperMobile:styles.stageCanvasWrapper}>
                 {
                     isRendererSupported ?
                         <Stage
@@ -51,7 +54,7 @@ const StageWrapperComponent = function (props) {
                         puzzleData={props.puzzleData}
                     />
                 </Box>
-            ) : (isMobile ? (
+            ) : (isPhone ? (
                 <Box className={styles.stageMenuWrapper}>
                     <StageHeader
                         stageSize={stageSize}

@@ -20,7 +20,7 @@ if (process.env.NODE_ENV === 'production' && typeof window === 'object') {
 
 import styles from './player.css';
 
-const Player = ({ isPlayerOnly, onSeeInside, projectId }) => (
+const Player = ({ isPlayerOnly, onSeeInside, projectId, projectVersion,isPhone }) => (
     <Box
         className={classNames({
             [styles.stageOnly]: isPlayerOnly && false//by yj
@@ -30,6 +30,8 @@ const Player = ({ isPlayerOnly, onSeeInside, projectId }) => (
             enableCommunity
             isPlayerOnly={isPlayerOnly}
             projectId={projectId || Blockey.INIT_DATA.project.id}//by yj {projectId}
+            projectVersion={projectVersion}
+            isPhone={!!isPhone}
         />
     </Box>
 );

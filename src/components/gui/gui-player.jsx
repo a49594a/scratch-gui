@@ -23,6 +23,9 @@ let isRendererSupported = null;
 
 const GUIComponent = props => {
     const {
+        //by yj
+        isPhone,
+
         accountNavOpen,
         activeTabIndex,
         alertsVisible,
@@ -86,6 +89,7 @@ const GUIComponent = props => {
         return (
             <Box>
                 <StageWrapper
+                    isPhone={isPhone}//by yj
                     isRendererSupported={isRendererSupported}
                     stageSize={stageSize}
                     vm={vm}
