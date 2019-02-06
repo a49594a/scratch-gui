@@ -18,7 +18,7 @@ import dropdownCaret from './dropdown-caret.svg';
 import styles from './account-nav.css';
 
 const AccountNavComponent = ({
-    logedInUser,
+    loggedInUser,
     className,
     isOpen,
     isRtl,
@@ -36,10 +36,10 @@ const AccountNavComponent = ({
             >
                 <UserAvatar
                     className={styles.avatar}
-                    imageUrl={logedInUser.thumbUrl}
+                    imageUrl={loggedInUser.thumbUrl}
                 />
                 <span className={styles.profileName}>
-                    {logedInUser.username}
+                    {loggedInUser.username}
                 </span>
                 <div className={styles.dropdownCaretPosition}>
                     <img
@@ -56,13 +56,13 @@ const AccountNavComponent = ({
                 place={isRtl ? 'right' : 'left'}
                 onRequestClose={onClose}
             >
-                <MenuItemContainer href={`/Users/${logedInUser.id}`}>个人中心</MenuItemContainer>
-                <MenuItemContainer href={`/Users/${logedInUser.id}/Missions`}>我的任务</MenuItemContainer>
-                <MenuItemContainer href={`/Users/${logedInUser.id}/Projects`}>我的作品</MenuItemContainer>
-                <MenuItemContainer href={`/Users/${logedInUser.id}/Studios`}>我的工作室</MenuItemContainer>
-                <MenuItemContainer href={`/Users/${logedInUser.id}/Items`}>我的背包</MenuItemContainer>
-                <MenuItemContainer href={`/Users/${logedInUser.id}/CoursesFor${logedInUser.isTeacher ? "Teacher" : "Student"}`}>我的课程</MenuItemContainer>
-                <MenuItemContainer href={`/Users/${logedInUser.id}/Settings`}>账户设置</MenuItemContainer>
+                <MenuItemContainer href={`/Users/${loggedInUser.id}`}>个人中心</MenuItemContainer>
+                <MenuItemContainer href={`/Users/${loggedInUser.id}/Missions`}>我的任务</MenuItemContainer>
+                <MenuItemContainer href={`/Users/${loggedInUser.id}/Projects`}>我的作品</MenuItemContainer>
+                <MenuItemContainer href={`/Users/${loggedInUser.id}/Studios`}>我的工作室</MenuItemContainer>
+                <MenuItemContainer href={`/Users/${loggedInUser.id}/Items`}>我的背包</MenuItemContainer>
+                <MenuItemContainer href={`/Users/${loggedInUser.id}/CoursesFor${loggedInUser.isTeacher ? "Teacher" : "Student"}`}>我的课程</MenuItemContainer>
+                <MenuItemContainer href={`/Users/${loggedInUser.id}/Settings`}>账户设置</MenuItemContainer>
                 <MenuItemContainer href={`/User/Logout`}>退出</MenuItemContainer>
             </MenuBarMenu>
         </React.Fragment>

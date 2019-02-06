@@ -58,7 +58,7 @@ class HelpModal extends React.Component {
             $(this.elContent).html(help.content);
         }
         else if (help.contentType == 'video/bokecc') {
-            Blockey.ccVerificationCode = "Mission," + this.state.mission.id + "," + Blockey.INIT_DATA.logedInUser.id;
+            Blockey.ccVerificationCode = "Mission," + this.state.mission.id + "," + Blockey.Utils.getLoggedInUser().id;
             $(this.elContent).html('<script src="//p.bokecc.com/player?autoStart=true&width=100%&height=600&siteid=FFEB007F21BC8D4A&vid=' + help.content + '" type="text/javascript"></script>');
         }
         else if (help.contentType == 'xml/scratch') {

@@ -25,7 +25,7 @@ const HelpModal = function (props) {
     } = props;
     let helps = mission.helps || [];
     let help = helps.length > 0 ? helps[forOrder - 1] : null;
-    Blockey.ccVerificationCode = "Mission," + mission.id + "," + Blockey.INIT_DATA.logedInUser.id;
+    Blockey.ccVerificationCode = "Mission," + mission.id + "," + Blockey.Utils.getLoggedInUser().id;
     return (
         <Modal
             className={styles.modalContent}

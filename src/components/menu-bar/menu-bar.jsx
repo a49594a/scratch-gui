@@ -592,7 +592,7 @@ class MenuBar extends React.Component {
                         onClick={this.props.onClickAccount}
                         onClose={this.props.onRequestCloseAccount}
                         onLogOut={this.props.onLogOut}
-                        logedInUser={Blockey.INIT_DATA.logedInUser}
+                        loggedInUser={Blockey.Utils.getLoggedInUser()}
                     />
                 </div>
                 {this.props.publishModalVisible ? (
