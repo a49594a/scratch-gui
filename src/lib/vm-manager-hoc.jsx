@@ -39,7 +39,7 @@ const vmManagerHOC = function (WrappedComponent) {
             }
 
             //by yj
-            this.props.vm.runtime.puzzle={};
+            if(Blockey.GUI_CONFIG.MODE=='Puzzle')this.props.vm.runtime.puzzle={};
             this.props.vm.startPuzzle = function () {
                 this.runtime.startHats('event_whenflagclicked');
                 this.emit('PUZZLE_RUN_START');
@@ -71,9 +71,6 @@ const vmManagerHOC = function (WrappedComponent) {
                     if(Blockey.GUI_CONFIG.MODE=='Puzzle'){
                         this.onPuzzleLoaded();
                     }
-                    /*else{
-                        this.props.vm.updateSavedAssetMap();//配合saveProjectDiff                        
-                    }*/
 
                     this.props.onLoadedProject(this.props.loadingState, this.props.canSave);
                     // Wrap in a setTimeout because skin loading in

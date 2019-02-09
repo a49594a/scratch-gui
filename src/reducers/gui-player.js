@@ -155,5 +155,5 @@ export {
     initEmbedded,
     initFullScreen,
     initPlayer,
-    initTutorialCard
+    //initTutorialCard
 };

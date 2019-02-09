@@ -28,6 +28,7 @@ import wedoButtonImage from './peripheral-connection/wedo/wedo-button-illustrati
 //by yj
 import puzzleImage from './puzzle.png';
 import communityImage from './community.png';
+import kinectImage from './community.png';
 
 export default [
     {
@@ -126,6 +127,25 @@ export default [
                 defaultMessage="Puzzle blocks."
                 description="Description for the 'puzzle' extension"
                 id="gui.extension.puzzle.description"
+            />
+        ),
+        featured: true
+    },
+    {
+        name: (
+            <FormattedMessage
+                defaultMessage="Kinect"
+                description="Name for the 'Kinect' extension"
+                id="gui.extension.kinect.name"
+            />
+        ),
+        extensionId: 'kinect',
+        iconURL: kinectImage,
+        description: (
+            <FormattedMessage
+                defaultMessage="Kinect blocks."
+                description="Description for the 'Kinect' extension"
+                id="gui.extension.kinect.description"
             />
         ),
         featured: true

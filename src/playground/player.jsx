@@ -13,10 +13,11 @@ import AppStateHOC from '../lib/app-state-hoc-player.jsx';//by yj
 
 import { setPlayer } from '../reducers/mode';
 
-if (process.env.NODE_ENV === 'production' && typeof window === 'object') {
+//by yj
+/*if (process.env.NODE_ENV === 'production' && typeof window === 'object') {
     // Warn before navigating away
     window.onbeforeunload = () => true;
-}
+}*/
 
 import styles from './player.css';
 
@@ -27,6 +28,7 @@ const Player = ({ isPlayerOnly, onSeeInside, projectId, projectVersion,isPhone }
         })}
     >
         <GUI
+            showBranding={false}
             enableCommunity
             isPlayerOnly={isPlayerOnly}
             projectId={projectId || Blockey.INIT_DATA.project.id}//by yj {projectId}
