@@ -230,7 +230,7 @@ class MenuBar extends React.Component {
         this.props.onRequestCloseFile();
     }
     handleClickSeeCommunity(waitForUpdate) {
-        if (this.props.canSave) { // save before transitioning to project page
+        if (this.props.canSave && this.props.enableAutoSave/*by yj*/) { // save before transitioning to project page
             this.props.autoUpdateProject();
             waitForUpdate(true); // queue the transition to project page
         } else {

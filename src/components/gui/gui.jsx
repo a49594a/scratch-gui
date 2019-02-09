@@ -61,6 +61,8 @@ const GUIComponent = props => {
         puzzleResolvedVisible,
         puzzleData,
         onOpenPuzzleResolved,
+        enableAutoSave,
+        projectVersion,
 
         accountNavOpen,
         activeTabIndex,
@@ -226,6 +228,7 @@ const GUIComponent = props => {
                     canRemix={canRemix}
                     canSave={canSave}
                     canSaveToLocal={canSaveToLocal/*by yj*/}
+                    enableAutoSave={enableAutoSave/*by yj*/}
                     canShare={canShare}
                     className={styles.menuBarPosition}
                     enableCommunity={enableCommunity}
@@ -369,6 +372,8 @@ GUIComponent.propTypes = {
     //by yj
     canSaveToLocal: PropTypes.bool,
     puzzleData: PropTypes.any,
+    projectVersion: PropTypes.number,
+    enableAutoSave: PropTypes.bool,
 
     accountNavOpen: PropTypes.bool,
     activeTabIndex: PropTypes.number,

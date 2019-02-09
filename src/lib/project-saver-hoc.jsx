@@ -59,7 +59,7 @@ const ProjectSaverHOC = function (WrappedComponent) {
             }
         }
         componentDidUpdate(prevProps) {
-            if (this.props.projectChanged && !prevProps.projectChanged) {
+            if (this.props.projectChanged && !prevProps.projectChanged && this.props.enableAutoSave/*by yj*/) {
                 this.scheduleAutoSave();
             }
             if (this.props.isUpdating && !prevProps.isUpdating) { //by yj
