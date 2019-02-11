@@ -14,15 +14,15 @@ const TitledHOC = function (WrappedComponent) {
             ]);
             //by yj
             this.state = {
-                projectTitle: (Blockey.INIT_DATA.project&&Blockey.INIT_DATA.project.title) || null
+                projectTitle: this.props.projectTitle || null
             };
         }
         handleUpdateProjectTitle (newTitle) {
             //by yj
-            const projectId = Blockey.INIT_DATA.project.id;
+            const projectId = this.props.projectId;
             Blockey.Utils.ajax({
-                url: "/WebApi/Project/UpdateTitle",
-                data: { id: projectId, title: newTitle },
+                url: `/WebApi/Projects/${projectId}/UpdateTitle`,
+                data: { title: newTitle },
                 success: (r) => {
                     this.setState({ projectTitle: newTitle });
                 }
@@ -32,9 +32,9 @@ const TitledHOC = function (WrappedComponent) {
             return (
                 <WrappedComponent
                     canEditTitle
-                    projectTitle={this.state.projectTitle}
                     onUpdateProjectTitle={this.handleUpdateProjectTitle}
                     {...this.props}
+                    projectTitle={this.state.projectTitle}
                 />
             );
         }
