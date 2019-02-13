@@ -27,8 +27,11 @@ import wedoButtonImage from './peripheral-connection/wedo/wedo-button-illustrati
 
 //by yj
 import puzzleImage from './puzzle.png';
+import puzzleInsetImage from './puzzle-small.svg';
 import communityImage from './community.png';
-import kinectImage from './community.png';
+import communityInsetImage from './community-small.svg';
+import kinectImage from './kinect.png';
+import kinectInsetImage from './kinect-small.svg';
 
 export default [
     {
@@ -102,7 +105,9 @@ export default [
             />
         ),
         extensionId: 'community',
+        collaborator: '阿儿法营',
         iconURL: communityImage,
+        insetIconURL: communityInsetImage,
         description: (
             <FormattedMessage
                 defaultMessage="Community blocks."
@@ -121,7 +126,9 @@ export default [
             />
         ),
         extensionId: 'puzzle',
+        collaborator: '阿儿法营',
         iconURL: puzzleImage,
+        insetIconURL: puzzleInsetImage,
         description: (
             <FormattedMessage
                 defaultMessage="Puzzle blocks."
@@ -140,7 +147,9 @@ export default [
             />
         ),
         extensionId: 'kinect',
+        collaborator: '阿儿法营',
         iconURL: kinectImage,
+        insetIconURL: kinectInsetImage,
         description: (
             <FormattedMessage
                 defaultMessage="Kinect blocks."

@@ -2,6 +2,7 @@ import ScratchBlocks from 'scratch-blocks';
 
 //by yj
 import injectBlocks from '../lib/inject-blocks';
+var isInjected = false;
 
 /**
  * Connect scratch blocks with the vm
@@ -10,7 +11,10 @@ import injectBlocks from '../lib/inject-blocks';
  */
 export default function (vm) {
     //by yj
-    injectBlocks(ScratchBlocks);
+    if(!isInjected){
+        injectBlocks(ScratchBlocks);
+        isInjected=true;
+    }
 
     const jsonForMenuBlock = function (name, menuOptionsFn, colors, start) {
         return {

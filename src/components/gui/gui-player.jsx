@@ -87,9 +87,10 @@ const GUIComponent = props => {
         const stageSize = resolveStageSize(stageSizeMode, isFullSize);
 
         return (
-            <Box>
+            <Box dir={isRtl ? 'rtl' : 'ltr'}>
                 <StageWrapper
                     isPhone={isPhone}//by yj
+                    isRtl={isRtl}
                     isRendererSupported={isRendererSupported}
                     stageSize={stageSize}
                     vm={vm}
