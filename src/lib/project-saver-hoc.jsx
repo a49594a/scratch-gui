@@ -198,30 +198,45 @@ const ProjectSaverHOC = function (WrappedComponent) {
          * @param {?object} requestParams - object of params to add to request body
          */
         storeProject(projectId, requestParams) {
-            //by yj
-            return new Promise((resolve, reject) => {
-                this.props.vm.postIOData('video', { forceTransparentPreview: true });
-                this.props.vm.renderer.requestSnapshot(dataURI => {
-                    this.props.vm.postIOData('video', { forceTransparentPreview: false });
-                    this.props.vm.saveProjectDiff(dataURItoBlob(dataURI)).then(file => {
-                        Blockey.Utils.ajax({
-                            url: `/WebApi/Projects/${projectId}/Upload`,
-                            data: {
-                                file: file,
-                                isRemix: !!(requestParams && requestParams.isRemix)
-                            },
-                            success: (r) => {
-                                this.props.vm.updateSavedAssetMap();//配合saveProjectDiff
-                                this.props.onSetProjectUnchanged();
-                                resolve(r);
-                            },
-                            error: (err) => {
-                                reject(err);
-                            }
+            //by yj            
+            this.clearAutoSaveTimeout();
+            return Promise.all(this.props.vm.assets
+                .filter(asset => !asset.clean)
+                .map(
+                    asset => storage.store(
+                        asset.assetType,
+                        asset.dataFormat,
+                        asset.data,
+                        asset.assetId
+                    ).then(
+                        () => (asset.clean = true)
+                    )
+                )
+            ).then(() => {
+                return new Promise((resolve, reject) => {
+                    this.props.vm.postIOData('video', { forceTransparentPreview: true });
+                    this.props.vm.renderer.requestSnapshot(dataURI => {
+                        this.props.vm.postIOData('video', { forceTransparentPreview: false });
+                        this.props.vm.saveProjectDiff(dataURItoBlob(dataURI)).then(file => {
+                            Blockey.Utils.ajax({
+                                url: `/WebApi/Projects/${projectId}/Upload`,
+                                data: {
+                                    file: file,
+                                    isRemix: !!(requestParams && requestParams.isRemix)
+                                },
+                                success: (r) => {
+                                    this.props.vm.updateSavedAssetMap();//配合saveProjectDiff
+                                    this.props.onSetProjectUnchanged();
+                                    resolve(r);
+                                },
+                                error: (err) => {
+                                    reject(err);
+                                }
+                            });
                         });
                     });
+                    this.props.vm.renderer.draw();
                 });
-                this.props.vm.renderer.draw();
             });
 
             requestParams = requestParams || {};

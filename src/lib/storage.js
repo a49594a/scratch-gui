@@ -76,8 +76,9 @@ class Storage extends ScratchStorage {
             // assetId as part of the create URI. So, force the method to POST.
             // Then when storage finds this config to use for the "update", still POSTs
             method: 'post',
-            url: `${this.assetHost}/${asset.assetId}.${asset.dataFormat}`,
-            withCredentials: true
+            url: `${ASSET_SERVER}/Project/UploadAsset?name=${asset.assetId}.${asset.dataFormat}`,
+            //url: `${this.assetHost}/${asset.assetId}.${asset.dataFormat}`,
+            withCredentials: false
         };
     }
     setTranslatorFunction (translator) {
