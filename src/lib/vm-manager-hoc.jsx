@@ -51,6 +51,12 @@ const vmManagerHOC = function (WrappedComponent) {
                 });
                 this.emit('PUZZLE_RUN_RESET');
             };
+            Blockey.Utils.requestSnapshot = ()=>{
+                this.props.vm.renderer.requestSnapshot(dataURI => {
+                    this.props.vm.postIOData('video', { forceTransparentPreview: false });
+                    Blockey.Utils.setProjectSnapshot(dataURI);
+                });
+            };
         }
         componentDidUpdate (prevProps) {
             // if project is in loading state, AND fonts are loaded,
@@ -63,6 +69,12 @@ const vmManagerHOC = function (WrappedComponent) {
             if (!this.props.isPlayerOnly && !this.props.isStarted) {
                 this.props.vm.start();
             }
+        }
+        requestSnapshot(){
+            this.props.vm.renderer.requestSnapshot(dataURI => {
+                this.props.vm.postIOData('video', { forceTransparentPreview: false });
+                Blockey.Utils.setProjectSnapshot(dataURI);
+            });
         }
         loadProject () {
             return this.props.vm.loadProject(this.props.projectData)

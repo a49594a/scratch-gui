@@ -15,7 +15,9 @@ class PuzzlePane extends React.Component {
             'handleShotscreenClick',
             'handleSettingsClick',
             'handleSaveAnswerClick',
-            'handlePuzzleResolved'
+            'handleEditClick',
+            'handleEditTemplateClick',
+            'handlePuzzleResolved',
         ]);
     }
     componentDidMount() {
@@ -57,17 +59,26 @@ class PuzzlePane extends React.Component {
     handleSaveAnswerClick() {
         this.props.vm.emit("PUZZLE_SAVE_ANSWER");
     }
+    handleEditClick() {
+        window.location = `/Projects/${this.props.puzzleData.levelProjectId}/Editor`;
+    }
+    handleEditTemplateClick() {
+        window.location = `/Projects/${this.props.puzzleData.templateProjectId}/Editor`;
+    }
     render() {
         const {
             onActivateTab, // eslint-disable-line no-unused-vars
             ...componentProps
         } = this.props;
+        const templateProjectId = this.props.puzzleData ? this.props.puzzleData.templateProjectId : null;
         return (
             <PuzzlePaneComponent
                 {...componentProps}
                 onShotscreenClick={this.handleShotscreenClick}
                 onSettingsClick={this.handleSettingsClick}
                 onSaveAnswerClick={this.handleSaveAnswerClick}
+                onEditClick={this.handleEditClick}
+                onEditTemplateClick={templateProjectId ? this.handleEditTemplateClick : null}
             />
         );
     }

@@ -12,6 +12,8 @@ import styles from './puzzle-pane.css';
 import settingsIcon from './icon--settings.svg';
 import saveAnswerIcon from './icon--save-answer.svg';
 import shotscreenIcon from './icon--shotscreen.svg';
+import editIcon from './icon--edit.svg';
+import editTemplateIcon from './icon--edit-template.svg';
 
 import getCostumeUrl from '../../lib/get-costume-url';
 import PuzzleSettingsModal from '../../containers/puzzle-settings-modal.jsx';
@@ -31,6 +33,8 @@ const PuzzlePane = function (props) {
         onShotscreenClick,
         onSettingsClick,
         onSaveAnswerClick,
+        onEditClick,
+        onEditTemplateClick,
         puzzleData,
         ...componentProps
     } = props;
@@ -67,10 +71,6 @@ const PuzzlePane = function (props) {
                             img={settingsIcon}
                             moreButtons={[
                                 {
-                                    title: "谜题任务设置",
-                                    img: settingsIcon,
-                                    onClick: onSettingsClick
-                                }, {
                                     title: "保存标准答案",
                                     img: saveAnswerIcon,
                                     onClick: onSaveAnswerClick
@@ -78,6 +78,14 @@ const PuzzlePane = function (props) {
                                     title: "保存任务封面",
                                     img: shotscreenIcon,
                                     onClick: onShotscreenClick
+                                }, {
+                                    title: "编辑关卡",
+                                    img: editIcon,
+                                    onClick: onEditClick
+                                }, {
+                                    title: "编辑模板",
+                                    img: editTemplateIcon,
+                                    onClick: onEditTemplateClick
                                 }
                             ]}
                             title="设置"
