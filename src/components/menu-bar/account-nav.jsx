@@ -36,7 +36,7 @@ const AccountNavComponent = ({
             >
                 <UserAvatar
                     className={styles.avatar}
-                    imageUrl={loggedInUser.thumbUrl}
+                    imageUrl={Blockey.Utils.getUserThumbUrl(loggedInUser)}
                 />
                 <span className={styles.profileName}>
                     {loggedInUser.username}

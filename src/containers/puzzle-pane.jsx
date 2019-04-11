@@ -31,13 +31,9 @@ class PuzzlePane extends React.Component {
     handleShotscreenClick() {
         this.props.vm.runtime.renderer.draw();
         var imgData = this.props.vm.runtime.renderer.gl.canvas.toDataURL('image/png');
-        var postData = {
-            id: this.props.puzzleData.id,
-            img: imgData
-        };
         Blockey.Utils.ajax({
-            url: "/WebApi/Puzzle/saveShotscreen",
-            data: postData,
+            url: `/WebApi/Missions/${this.props.puzzleData.id}/updateThumb`,
+            data: { dataUrl: imgData },
             success: (e) => {
                 Blockey.Utils.Alerter.info("舞台截图保存成功！");
             }

@@ -5,6 +5,7 @@ import ScratchStorage from 'scratch-storage';
 //const ASSET_SERVER = 'https://cdn.assets.scratch.mit.edu';
 const PROJECT_SERVER = Blockey.PROJECT_SERVER;//'http://localhost:32265/';
 const ASSET_SERVER = Blockey.ASSET_SERVER;//'http://localhost:32265/';
+const CDN_SERVER = Blockey.CDN_SERVER;
 
 import defaultProject from './default-project';
 
@@ -66,7 +67,7 @@ class Storage extends ScratchStorage {
     }
     getAssetGetConfig (asset) {
         //by yj
-        return `${ASSET_SERVER}/Project/GetAsset?name=${asset.assetId}.${asset.dataFormat}`;
+        return `${CDN_SERVER}/Project/GetAsset?name=${asset.assetId}.${asset.dataFormat}`;
         //return `${this.assetHost}/internalapi/asset/${asset.assetId}.${asset.dataFormat}/get/`;
     }
     getAssetCreateConfig (asset) {
