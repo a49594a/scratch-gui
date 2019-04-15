@@ -15,6 +15,7 @@ const StageWrapperComponent = function (props) {
         //by yj
         isPhone,
 
+        isFullScreen,
         isRtl,
         isRendererSupported,
         loading,
@@ -62,13 +63,17 @@ const StageWrapperComponent = function (props) {
                     />
                 </Box>
             ) : null)}
+            {loading ? (
+                <Loader isFullScreen={isFullScreen} />
+            ) : null}
         </Box>
     );
 };
 
 StageWrapperComponent.propTypes = {
+    isFullScreen: PropTypes.bool,
     isRendererSupported: PropTypes.bool.isRequired,
-    isRtl: PropTypes.bool,
+    isRtl: PropTypes.bool.isRequired,
     loading: PropTypes.bool,
     stageSize: PropTypes.oneOf(Object.keys(STAGE_DISPLAY_SIZES)).isRequired,
     vm: PropTypes.instanceOf(VM).isRequired

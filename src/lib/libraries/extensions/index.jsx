@@ -1,29 +1,47 @@
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
 
-import musicImage from './music.png';
-import musicInsetImage from './music-small.svg';
-import penImage from './pen.png';
-import penInsetImage from './pen-small.svg';
-import videoImage from './video-sensing.png';
-import videoInsetImage from './video-sensing-small.svg';
-import translateImage from './translate.png';
-import translateInsetImage from './translate-small.png';
-import microbitImage from './microbit.png';
-import ev3Image from './ev3.png';
-import wedoImage from './wedo.png';
-import text2speechImage from './text2speech.png';
-import text2speechInsetImage from './text2speech-small.svg';
-import makeymakeyImage from './makeymakey.png';
-import makeymakeyInsetImage from './makeymakey-small.svg';
+import musicIconURL from './music/music.png';
+import musicInsetIconURL from './music/music-small.svg';
 
-import microbitPeripheralImage from './peripheral-connection/microbit/microbit-illustration.svg';
-import microbitMenuImage from './peripheral-connection/microbit/microbit-small.svg';
-import ev3PeripheralImage from './peripheral-connection/ev3/ev3-hub-illustration.svg';
-import ev3MenuImage from './peripheral-connection/ev3/ev3-small.svg';
-import wedoPeripheralImage from './peripheral-connection/wedo/wedo-illustration.svg';
-import wedoMenuImage from './peripheral-connection/wedo/wedo-small.svg';
-import wedoButtonImage from './peripheral-connection/wedo/wedo-button-illustration.svg';
+import penIconURL from './pen/pen.png';
+import penInsetIconURL from './pen/pen-small.svg';
+
+import videoSensingIconURL from './videoSensing/video-sensing.png';
+import videoSensingInsetIconURL from './videoSensing/video-sensing-small.svg';
+
+import text2speechIconURL from './text2speech/text2speech.png';
+import text2speechInsetIconURL from './text2speech/text2speech-small.svg';
+
+import translateIconURL from './translate/translate.png';
+import translateInsetIconURL from './translate/translate-small.png';
+
+import makeymakeyIconURL from './makeymakey/makeymakey.png';
+import makeymakeyInsetIconURL from './makeymakey/makeymakey-small.svg';
+
+import microbitIconURL from './microbit/microbit.png';
+import microbitInsetIconURL from './microbit/microbit-small.svg';
+import microbitConnectionIconURL from './microbit/microbit-illustration.svg';
+import microbitConnectionSmallIconURL from './microbit/microbit-small.svg';
+
+import ev3IconURL from './ev3/ev3.png';
+import ev3InsetIconURL from './ev3/ev3-small.svg';
+import ev3ConnectionIconURL from './ev3/ev3-hub-illustration.svg';
+import ev3ConnectionSmallIconURL from './ev3/ev3-small.svg';
+
+import wedo2IconURL from './wedo2/wedo.png'; // TODO: Rename file names to match variable/prop names?
+import wedo2InsetIconURL from './wedo2/wedo-small.svg';
+import wedo2ConnectionIconURL from './wedo2/wedo-illustration.svg';
+import wedo2ConnectionSmallIconURL from './wedo2/wedo-small.svg';
+import wedo2ConnectionTipIconURL from './wedo2/wedo-button-illustration.svg';
+
+import boostIconURL from './boost/boost.png';
+import boostInsetIconURL from './boost/boost-small.svg';
+
+import gdxforIconURL from './gdxfor/gdxfor.png';
+import gdxforInsetIconURL from './gdxfor/gdxfor-small.svg';
+import gdxforConnectionIconURL from './gdxfor/gdxfor-illustration.svg';
+import gdxforConnectionSmallIconURL from './gdxfor/gdxfor-small.svg';
 
 //by yj
 import puzzleImage from './puzzle.png';
@@ -43,8 +61,8 @@ export default [
             />
         ),
         extensionId: 'music',
-        iconURL: musicImage,
-        insetIconURL: musicInsetImage,
+        iconURL: musicIconURL,
+        insetIconURL: musicInsetIconURL,
         description: (
             <FormattedMessage
                 defaultMessage="Play instruments and drums."
@@ -63,8 +81,8 @@ export default [
             />
         ),
         extensionId: 'pen',
-        iconURL: penImage,
-        insetIconURL: penInsetImage,
+        iconURL: penIconURL,
+        insetIconURL: penInsetIconURL,
         description: (
             <FormattedMessage
                 defaultMessage="Draw with your sprites."
@@ -83,8 +101,8 @@ export default [
             />
         ),
         extensionId: 'videoSensing',
-        iconURL: videoImage,
-        insetIconURL: videoInsetImage,
+        iconURL: videoSensingIconURL,
+        insetIconURL: videoSensingInsetIconURL,
         description: (
             <FormattedMessage
                 defaultMessage="Sense motion with the camera."
@@ -170,8 +188,8 @@ export default [
         ),
         extensionId: 'text2speech',
         collaborator: 'Amazon Web Services',
-        iconURL: text2speechImage,
-        insetIconURL: text2speechInsetImage,
+        iconURL: text2speechIconURL,
+        insetIconURL: text2speechInsetIconURL,
         description: (
             <FormattedMessage
                 defaultMessage="Make your projects talk."
@@ -192,8 +210,8 @@ export default [
         ),
         extensionId: 'translate',
         collaborator: 'Google',
-        iconURL: translateImage,
-        insetIconURL: translateInsetImage,
+        iconURL: translateIconURL,
+        insetIconURL: translateInsetIconURL,
         description: (
             <FormattedMessage
                 defaultMessage="Translate text into many languages."
@@ -208,8 +226,8 @@ export default [
         name: 'Makey Makey',
         extensionId: 'makeymakey',
         collaborator: 'JoyLabz',
-        iconURL: makeymakeyImage,
-        insetIconURL: makeymakeyInsetImage,
+        iconURL: makeymakeyIconURL,
+        insetIconURL: makeymakeyInsetIconURL,
         description: (
             <FormattedMessage
                 defaultMessage="Make anything into a key."
@@ -223,8 +241,8 @@ export default [
         name: 'micro:bit',
         extensionId: 'microbit',
         collaborator: 'micro:bit',
-        iconURL: microbitImage,
-        insetIconURL: microbitMenuImage,
+        iconURL: microbitIconURL,
+        insetIconURL: microbitInsetIconURL,
         description: (
             <FormattedMessage
                 defaultMessage="Connect your projects with the world."
@@ -235,10 +253,11 @@ export default [
         featured: true,
         disabled: false,
         bluetoothRequired: true,
+        internetConnectionRequired: true,
         launchPeripheralConnectionFlow: true,
         useAutoScan: false,
-        peripheralImage: microbitPeripheralImage,
-        smallPeripheralImage: microbitMenuImage,
+        connectionIconURL: microbitConnectionIconURL,
+        connectionSmallIconURL: microbitConnectionSmallIconURL,
         connectingMessage: (
             <FormattedMessage
                 defaultMessage="Connecting"
@@ -252,8 +271,8 @@ export default [
         name: 'LEGO MINDSTORMS EV3',
         extensionId: 'ev3',
         collaborator: 'LEGO',
-        iconURL: ev3Image,
-        insetIconURL: ev3MenuImage,
+        iconURL: ev3IconURL,
+        insetIconURL: ev3InsetIconURL,
         description: (
             <FormattedMessage
                 defaultMessage="Build interactive robots and more."
@@ -264,10 +283,11 @@ export default [
         featured: true,
         disabled: false,
         bluetoothRequired: true,
+        internetConnectionRequired: true,
         launchPeripheralConnectionFlow: true,
         useAutoScan: false,
-        peripheralImage: ev3PeripheralImage,
-        smallPeripheralImage: ev3MenuImage,
+        connectionIconURL: ev3ConnectionIconURL,
+        connectionSmallIconURL: ev3ConnectionSmallIconURL,
         connectingMessage: (
             <FormattedMessage
                 defaultMessage="Connecting. Make sure the pin on your EV3 is set to 1234."
@@ -278,11 +298,11 @@ export default [
         helpLink: 'https://scratch.mit.edu/ev3'
     },
     {
-        name: 'LEGO WeDo 2.0',
+        name: 'LEGO Education WeDo 2.0',
         extensionId: 'wedo2',
         collaborator: 'LEGO',
-        iconURL: wedoImage,
-        insetIconURL: wedoMenuImage,
+        iconURL: wedo2IconURL,
+        insetIconURL: wedo2InsetIconURL,
         description: (
             <FormattedMessage
                 defaultMessage="Build with motors and sensors."
@@ -293,11 +313,12 @@ export default [
         featured: true,
         disabled: false,
         bluetoothRequired: true,
+        internetConnectionRequired: true,
         launchPeripheralConnectionFlow: true,
         useAutoScan: true,
-        peripheralImage: wedoPeripheralImage,
-        smallPeripheralImage: wedoMenuImage,
-        peripheralButtonImage: wedoButtonImage,
+        connectionIconURL: wedo2ConnectionIconURL,
+        connectionSmallIconURL: wedo2ConnectionSmallIconURL,
+        connectionTipIconURL: wedo2ConnectionTipIconURL,
         connectingMessage: (
             <FormattedMessage
                 defaultMessage="Connecting"
@@ -306,6 +327,53 @@ export default [
             />
         ),
         helpLink: 'https://scratch.mit.edu/wedo'
-
+    },
+    {
+        name: 'LEGO BOOST',
+        extensionId: 'boost',
+        collaborator: 'LEGO',
+        iconURL: boostIconURL,
+        insetIconURL: boostInsetIconURL,
+        description: (
+            <FormattedMessage
+                defaultMessage="Bring robotic creations to life."
+                description="Description for the 'LEGO BOOST' extension"
+                id="gui.extension.boost.description"
+            />
+        ),
+        featured: true,
+        disabled: true,
+        bluetoothRequired: true,
+        internetConnectionRequired: true
+    },
+    {
+        name: 'GoDirect Force & Acceleration',
+        extensionId: 'gdxfor',
+        collaborator: 'Vernier',
+        iconURL: gdxforIconURL,
+        insetIconURL: gdxforInsetIconURL,
+        description: (
+            <FormattedMessage
+                defaultMessage="Sense push, pull, motion, and spin."
+                description="Description for the Vernier Go Direct Force and Acceleration sensor extension"
+                id="gui.extension.gdxfor.description"
+            />
+        ),
+        featured: true,
+        disabled: false,
+        bluetoothRequired: true,
+        internetConnectionRequired: true,
+        launchPeripheralConnectionFlow: true,
+        useAutoScan: false,
+        connectionIconURL: gdxforConnectionIconURL,
+        connectionSmallIconURL: gdxforConnectionSmallIconURL,
+        connectingMessage: (
+            <FormattedMessage
+                defaultMessage="Connecting"
+                description="Message to help people connect to their force and acceleration sensor."
+                id="gui.extension.gdxfor.connectingMessage"
+            />
+        ),
+        helpLink: 'https://scratch.mit.edu/vernier'
     }
 ];

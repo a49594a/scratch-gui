@@ -122,18 +122,6 @@ const initTutorialCard = function (currentState, deckId) {
     );
 };
 
-const initPreviewInfo = function (currentState) {
-    return Object.assign(
-        {},
-        currentState,
-        {
-            modals: {
-                previewInfo: true // this key must match `MODAL_PREVIEW_INFO` in modals.js
-            }
-        }
-    );
-};
-
 const initTelemetryModal = function (currentState) {
     return Object.assign(
         {},
@@ -186,7 +174,6 @@ export {
     initEmbedded,
     initFullScreen,
     initPlayer,
-    initPreviewInfo,
     initTelemetryModal,
     initTutorialCard
 };

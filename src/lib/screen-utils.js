@@ -69,11 +69,14 @@ const getStageDimensions = (stageSize, isFullScreen) => {
         stageDimensions.width = stageDimensions.scale * stageDimensions.widthDefault;
     }
 
+    // Round off dimensions to prevent resampling/blurriness
+    stageDimensions.height = Math.round(stageDimensions.height);
+    stageDimensions.width = Math.round(stageDimensions.width);
     //by yj
     if (Blockey.GUI_CONFIG.IS_MOBILE) {
-        stageDimensions.width = Blockey.GUI_CONFIG.WRAPPER.offsetWidth
+        stageDimensions.width = Math.round(Blockey.GUI_CONFIG.WRAPPER.offsetWidth
             /*- STAGE_DIMENSION_DEFAULTS.spacingBorderAdjustment * 2*/
-             - 2;
+             - 2);
         stageDimensions.height = stageDimensions.width * .75;
         stageDimensions.scale = stageDimensions.width / stageDimensions.widthDefault;
     }

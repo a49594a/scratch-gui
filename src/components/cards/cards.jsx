@@ -12,6 +12,7 @@ import helpIcon from '../../lib/assets/icon--tutorials.svg';
 import closeIcon from './icon--close.svg';
 
 import {translateVideo} from '../../lib/libraries/decks/translate-video.js';
+import {translateImage} from '../../lib/libraries/decks/translate-image.js';
 
 const CardHeader = ({onCloseCards, onShowAll, totalSteps, step}) => (
     <div className={styles.headerButtons}>
@@ -68,11 +69,11 @@ const VideoStep = ({video, dragging}) => (
             allowFullScreen
             allowTransparency="true"
             frameBorder="0"
-            height="338"
+            height="257"
             scrolling="no"
             src={`https://fast.wistia.net/embed/iframe/${video}?seo=false&videoFoam=true`}
             title="📹"
-            width="600"
+            width="466"
         />
         <script
             async
@@ -275,7 +276,7 @@ const Cards = props => {
                                 />
                             ) : (
                                 <ImageStep
-                                    image={steps[step].image}
+                                    image={translateImage(steps[step].image, locale)}
                                     title={steps[step].title}
                                 />
                             )
