@@ -26,8 +26,6 @@ import PuzzlePane from '../../containers/puzzle-pane.jsx';
 //import StageWrapper from '../../containers/puzzle-stage-wrapper.jsx';
 
 import Backpack from '../../containers/backpack.jsx';
-import PreviewModal from '../../containers/preview-modal.jsx';
-import ImportModal from '../../containers/import-modal.jsx';
 import WebGlModal from '../../containers/webgl-modal.jsx';
 import TipsLibrary from '../../containers/tips-library.jsx';
 import Cards from '../../containers/cards.jsx';
@@ -118,7 +116,6 @@ const GUIComponent = props => {
         onTelemetryModalCancel,
         onTelemetryModalOptIn,
         onTelemetryModalOptOut,
-        previewInfoVisible,
         showComingSoon,
         soundsTabVisible,
         stageSizeMode,
@@ -153,14 +150,8 @@ const GUIComponent = props => {
                 className={styles.pageWrapper}
                 {...componentProps}
             >
-                {previewInfoVisible ? (
-                    <PreviewModal />
-                ) : null}
                 {loading ? (
                     <Loader />
-                ) : null}
-                {importInfoVisible ? (
-                    <ImportModal />
                 ) : null}
                 {isRendererSupported ? null : (
                     <WebGlModal />
@@ -281,7 +272,6 @@ GUIComponent.propTypes = {
     onTelemetryModalOptOut: PropTypes.func,
     onToggleLoginOpen: PropTypes.func,
     onUpdateProjectTitle: PropTypes.func,
-    previewInfoVisible: PropTypes.bool,
     renderLogin: PropTypes.func,
     showComingSoon: PropTypes.bool,
     soundsTabVisible: PropTypes.bool,

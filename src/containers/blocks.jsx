@@ -213,11 +213,6 @@ class Blocks extends React.Component {
             });
     }
 
-    //by yj
-    getToolboxXML() {
-        return this.__toolboxXML || this.props.toolboxXML;
-    }
-
     updateToolbox () {
         this.toolboxUpdateTimeout = false;
 
@@ -395,6 +390,16 @@ class Blocks extends React.Component {
         // Use try/catch because this requires digging pretty deep into the VM
         // Code inside intentionally ignores several error situations (no stage, etc.)
         // Because they would get caught by this try/catch
+        
+        //by yj
+        if(Blockey.GUI_CONFIG.MODE=='Puzzle'){
+            const toolboxTarget = this.props.vm.runtime.getSpriteTargetByName("@Toolbox");
+            if(toolboxTarget){
+                const toolboxXML = makePuzzleToolboxXML(toolboxTarget);
+                if (toolboxXML) return toolboxXML;
+            }
+        }
+
         try {
             let {editingTarget: target, runtime} = this.props.vm;
             const stage = runtime.getTargetForStage();
@@ -415,21 +420,9 @@ class Blocks extends React.Component {
     }
     onWorkspaceUpdate (data) {
         // When we change sprites, update the toolbox to have the new sprite's blocks
-
-        //by yj 显示谜题自定义toolbox
-        //TODO: need test
-        const toolboxTarget = Blockey.GUI_CONFIG.MODE=='Puzzle'?this.props.vm.runtime.getSpriteTargetByName("@Toolbox"):null;
-        if(toolboxTarget){
-            const toolboxXML = makePuzzleToolboxXML(toolboxTarget);
-            this.__toolboxXML = toolboxXML;
-            this.updateToolbox();
+        const toolboxXML = this.getToolboxXML();
+        if (toolboxXML) {
             this.props.updateToolboxState(toolboxXML);
-        }
-        else {
-            const toolboxXML = this.getToolboxXML();
-            if (toolboxXML) {
-                this.props.updateToolboxState(toolboxXML);
-            }
         }
 
         if (this.props.vm.editingTarget && !this.state.workspaceMetrics[this.props.vm.editingTarget.id]) {

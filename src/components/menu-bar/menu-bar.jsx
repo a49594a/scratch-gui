@@ -150,7 +150,7 @@ MenuItemTooltip.propTypes = {
 class MenuBar extends React.Component {
     constructor(props) {
         super(props);
-        bindAll(this, [,
+        bindAll(this, [
             //by yj
             'loadMission',
 

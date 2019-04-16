@@ -22,8 +22,8 @@ import { setPlayer } from '../reducers/mode';
 import styles from './player.css';
 
 const Player = ({isPlayerOnly, onSeeInside, projectId, projectVersion,isPhone}) => (
-    <Box className={classNames(isPlayerOnly && false/*by yj*/ ? styles.stageOnly : styles.editor)}>
-        {isPlayerOnly && <button onClick={onSeeInside}>{'See inside'}</button>}
+    <Box className={classNames(isPlayerOnly ? styles.stageOnly : styles.editor)}>
+        {/*isPlayerOnly && <button onClick={onSeeInside}>{'See inside'}</button>*/}
         <GUI
             showBranding={false}
             enableCommunity
