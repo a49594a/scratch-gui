@@ -93,7 +93,7 @@ const SpriteList = function (props) {
                                 onClick={onSelectSprite}
                                 onDeleteButtonClick={onDeleteSprite}
                                 onDuplicateButtonClick={onDuplicateSprite}
-                                onExportButtonClick={onExportSprite}
+                                onExportButtonClick={Blockey.INIT_DATA.userProject.canSaveToLocal?onExportSprite:null/*by yj*/}
                             />
                         </SortableAsset>
                     );
