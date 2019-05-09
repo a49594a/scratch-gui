@@ -14,17 +14,11 @@ const MODAL_CONNECTION = 'connectionModal';
 const MODAL_TIPS_LIBRARY = 'tipsLibrary';
 
 //by yj
-const MODAL_PUZZLE_LOADING = 'puzzleLoading';
-const MODAL_PUZZLE_RESOLVED = 'puzzleResolved';
-const MODAL_PUZZLE_SETTINGS = 'puzzleSettings';
 const MODAL_MISSION_HELP = 'missionHelp';
 const MODAL_PUBLISH = 'publish';
 
 const initialState = {
     //by yj
-    [MODAL_PUZZLE_LOADING]: true,
-    [MODAL_PUZZLE_RESOLVED]: false,
-    [MODAL_PUZZLE_SETTINGS]: false,
     [MODAL_MISSION_HELP]: false,
     [MODAL_PUBLISH]: false,
 
@@ -136,24 +130,6 @@ const closeConnectionModal = function () {
 };
 
 //by yj
-const openPuzzleLoading = function () {
-    return openModal(MODAL_PUZZLE_LOADING);
-};
-const closePuzzleLoading = function () {
-    return closeModal(MODAL_PUZZLE_LOADING);
-};
-const openPuzzleResolved = function () {
-    return openModal(MODAL_PUZZLE_RESOLVED);
-};
-const closePuzzleResolved = function () {
-    return closeModal(MODAL_PUZZLE_RESOLVED);
-};
-const openPuzzleSettings = function () {
-    return openModal(MODAL_PUZZLE_SETTINGS);
-};
-const closePuzzleSettings = function () {
-    return closeModal(MODAL_PUZZLE_SETTINGS);
-};
 const openMissionHelp = function () {
     return openModal(MODAL_MISSION_HELP);
 };
@@ -194,12 +170,6 @@ export {
     closeConnectionModal,
     
     //by yj
-    openPuzzleLoading,
-    closePuzzleLoading,
-    openPuzzleResolved,
-    closePuzzleResolved,
-    openPuzzleSettings,
-    closePuzzleSettings,
     openMissionHelp,
     closeMissionHelp,
     openPublish,

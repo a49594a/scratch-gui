@@ -34,7 +34,6 @@ import DragLayer from '../../containers/drag-layer.jsx';
 //by yj
 //import StageHeader from '../../containers/puzzle-stage-header.jsx';
 //import Stage from '../../containers/stage.jsx';
-import PuzzleResolvedModal from '../../containers/puzzle-resolved-modal.jsx';
 
 import layout, { STAGE_SIZE_MODES } from '../../lib/layout-constants';
 import { resolveStageSize } from '../../lib/screen-utils';
@@ -62,8 +61,6 @@ const GUIComponent = props => {
         //by yj
         puzzleData,
         puzzleLoadingVisible,
-        puzzleResolvedVisible,
-        onOpenPuzzleResolved,
 
         accountNavOpen,
         activeTabIndex,
@@ -174,9 +171,6 @@ const GUIComponent = props => {
                         onRequestClose={onRequestCloseBackdropLibrary}
                     />
                 ) : null}
-                {puzzleResolvedVisible ? (
-                    <PuzzleResolvedModal puzzleData={puzzleData} />
-                ) : null}
                 <MenuBar puzzleData={puzzleData} />
                 <Box className={styles.bodyWrapper}>
                     <Box className={styles.flexWrapper}>
@@ -220,8 +214,6 @@ const GUIComponent = props => {
 GUIComponent.propTypes = {
     //by yj
     puzzleData: PropTypes.object,
-    onOpenPuzzleResolved: PropTypes.func,
-    puzzleResolvedVisible: PropTypes.bool,
     
     accountNavOpen: PropTypes.bool,
     activeTabIndex: PropTypes.number,

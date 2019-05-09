@@ -245,10 +245,10 @@ class MenuBar extends React.Component {
         }
     }
     handleClickShare(waitForUpdate) {
-        if (this.props.canShare) { // save before transitioning to project page
+        /*if (this.props.canShare) { // save before transitioning to project page
             this.props.onShare();
-        }
-        if (this.props.canSave) { // save before transitioning to project page
+        }*/
+        if (this.props.canSave && this.props.projectChanged) { // save before transitioning to project page
             this.props.autoUpdateProject();
             waitForUpdate(true); // queue the transition to project page
         } else {
@@ -715,7 +715,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
     //by yj
-    onShare: () => dispatch(openPublish()),
+    //onShare: () => dispatch(openPublish()),
     onOpenMissionHelp: () => dispatch(openMissionHelp()),
 
     autoUpdateProject: () => dispatch(autoUpdateProject()),

@@ -56,9 +56,7 @@ const GUIComponent = props => {
     const {
         //by yj
         canSaveToLocal,
-        puzzleResolvedVisible,
         puzzleData,
-        onOpenPuzzleResolved,
         enableAutoSave,
         projectVersion,
 

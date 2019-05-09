@@ -16,7 +16,6 @@ import editIcon from './icon--edit.svg';
 import editTemplateIcon from './icon--edit-template.svg';
 
 import getCostumeUrl from '../../lib/get-costume-url';
-import PuzzleSettingsModal from '../../containers/puzzle-settings-modal.jsx';
 /*
  * Pane that contains the sprite selector, sprite info, stage selector,
  * and the new sprite, costume and backdrop buttons
@@ -50,11 +49,6 @@ const PuzzlePane = function (props) {
 
     return puzzleData ? (
         <div className={styles.puzzlePane}>
-            {props.puzzleSettingsVisible ? (
-                <PuzzleSettingsModal
-                    vm={vm}
-                    puzzleData={puzzleData} />
-            ) : null}
             <Box className={styles.puzzleInfo}>
                 <Box className={styles.scrollWrapper}>
                     {costumeURL ? (

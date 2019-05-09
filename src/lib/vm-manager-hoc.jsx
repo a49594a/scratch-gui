@@ -115,7 +115,6 @@ const vmManagerHOC = function (WrappedComponent) {
                     maxBlockCount: this.props.puzzleData.maxBlockCount,
                     attemptCount: 0,
                     stepInterval: this.props.puzzleData.stepInterval || 0.5,
-                    setResolved: this.setPuzzleResolved.bind(this),
                     isRuning: false,
                     preventComplete: false,
                 };
@@ -128,10 +127,6 @@ const vmManagerHOC = function (WrappedComponent) {
                 this.props.vm.emit("PUZZLE_LOADED");
                 this.setState({ loading: false });
             }
-        }
-        setPuzzleResolved() {
-            if (this.props.vm.runtime.puzzle.preventComplete) return;
-            this.props.vm.emit("PUZZLE_RESOLVED");
         }
         render () {
             const {
@@ -195,9 +190,6 @@ const vmManagerHOC = function (WrappedComponent) {
     };
 
     const mapDispatchToProps = dispatch => ({
-        //by yj
-        onOpenPuzzleResolved: () => dispatch(openPuzzleResolved()),
-
         onError: error => dispatch(projectError(error)),
         onLoadedProject: (loadingState, canSave) =>
             dispatch(onLoadedProject(loadingState, canSave, true)),

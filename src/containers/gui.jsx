@@ -40,7 +40,6 @@ import GUIComponent from '../components/gui/gui.jsx';
 import {setIsScratchDesktop} from '../lib/isScratchDesktop.js';
 
 //by yj
-import { openPuzzleResolved } from '../reducers/modals';
 import PuzzleFetcherHOC from '../lib/puzzle-fetcher-hoc.jsx';
 import PuzzleGUIComponent from '../components/gui/puzzle-gui.jsx';
 
@@ -164,10 +163,6 @@ GUI.defaultProps = {
 const mapStateToProps = state => {
     const loadingState = state.scratchGui.projectState.loadingState;
     return {
-        //by yj
-        puzzleResolvedVisible: state.scratchGui.modals.puzzleResolved,
-        onOpenPuzzleResolved: PropTypes.func,
-
         activeTabIndex: state.scratchGui.editorTab.activeTabIndex,
         alertsVisible: state.scratchGui.alerts.visible,
         backdropLibraryVisible: state.scratchGui.modals.backdropLibrary,
@@ -196,9 +191,6 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-    //by yj
-    onOpenPuzzleResolved: () => dispatch(openPuzzleResolved()),
-
     onExtensionButtonClick: () => dispatch(openExtensionLibrary()),
     onActivateTab: tab => dispatch(activateTab(tab)),
     onActivateCostumesTab: () => dispatch(activateTab(COSTUMES_TAB_INDEX)),

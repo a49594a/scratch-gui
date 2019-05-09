@@ -189,11 +189,7 @@ const ProjectSaverHOC = function (WrappedComponent) {
                 });
         }
         createRemixToStorage() {
-            //by yj
-            //TODO: need test
             this.props.onShowCreatingRemixAlert();
-            /*return this.storeProject(this.props.reduxProjectId, {
-                isRemix: true*/
             return this.storeProject(null, {
                 originalId: this.props.reduxProjectId,
                 isRemix: 1,
@@ -236,7 +232,7 @@ const ProjectSaverHOC = function (WrappedComponent) {
                         this.props.vm.postIOData('video', { forceTransparentPreview: false });
                         this.props.vm.saveProjectDiff(dataURItoBlob(dataURI)).then(file => {
                             Blockey.Utils.ajax({
-                                url: `/WebApi/Projects/${projectId}/Upload`,
+                                url: `/WebApi/Projects/${requestParams.originalId}/Upload`,
                                 data: {
                                     file: file,
                                     isRemix: !!(requestParams && requestParams.isRemix)

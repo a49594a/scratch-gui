@@ -6,7 +6,8 @@ import { connect } from 'react-redux';
 import ScratchBlocks from 'scratch-blocks';
 import PuzzlePaneComponent from '../components/puzzle-pane/puzzle-pane.jsx';
 
-import { openMissionHelp, openPuzzleSettings, openPuzzleResolved } from '../reducers/modals';
+import { openMissionHelp } from '../reducers/modals';
+import { setProjectUnchanged } from '../reducers/project-changed';
 
 class PuzzlePane extends React.Component {
     constructor(props) {
@@ -22,11 +23,11 @@ class PuzzlePane extends React.Component {
     }
     componentDidMount() {
         this.props.vm.addListener('PUZZLE_ANSWER_SAVED', this.props.onOpenMissionHelp);
-        this.props.vm.addListener('PUZZLE_RESOLVED', this.handlePuzzleResolved);
+        this.props.vm.runtime.addListener('MISSION_RESOLVED', this.handlePuzzleResolved);
     }
     componentWillUnmount() {
         this.props.vm.removeListener('PUZZLE_ANSWER_SAVED', this.props.onOpenMissionHelp);
-        this.props.vm.removeListener('PUZZLE_RESOLVED', this.handlePuzzleResolved);
+        this.props.vm.runtime.removeListener('MISSION_RESOLVED', this.handlePuzzleResolved);
     }
     handleShotscreenClick() {
         this.props.vm.runtime.renderer.draw();
@@ -41,16 +42,33 @@ class PuzzlePane extends React.Component {
     }
     handlePuzzleResolved() {
         var xmlText = ScratchBlocks.Xml.domToPrettyText(ScratchBlocks.Xml.workspaceToDom(ScratchBlocks.mainWorkspace));
-        Blockey.Utils.ajax({
-            url: "/Mission/SetResolved2",
-            data: { id: this.props.puzzleData.id, answer: xmlText },
-            success: (data) => {
-                this.props.onOpenPuzzleResolved();
-            }
-        });
+        Blockey.Utils.setMissionResolved(this.props.puzzleData.id, { answer: xmlText })
+            .then(() => {
+                var missions = this.props.puzzleData.missions;
+                for (var i = 0; i < missions.length; i++) {
+                    if (missions[i].id == this.props.puzzleData.id) {
+                        missions[i].isSolved = true;
+                        if (i == missions.length - 1) {
+                            this.props.onProjectUnchanged();
+                            window.location = "/User/Missions";
+                        }
+                        else {
+                            window.location.hash = "#" + missions[i + 1].id;
+                        }
+                        return;
+                    }
+                }
+            });
     }
     handleSettingsClick() {
-        this.props.onOpenPuzzleSettings();
+        var puzzleData = this.props.puzzleData;
+        let mission = puzzleData.missions.find(mission => mission.id == puzzleData.id);
+        Blockey.Utils.openMissionSettingsModal({
+            id: puzzleData.id,
+            onOk: ()=>{
+                window.location.reload(true);
+            }
+        });
     }
     handleSaveAnswerClick() {
         this.props.vm.emit("PUZZLE_SAVE_ANSWER");
@@ -107,16 +125,13 @@ const mapStateToProps = state => ({
     //spriteLibraryVisible: state.modals.spriteLibrary,
     //backdropLibraryVisible: state.modals.backdropLibrary
     //by yj
-    puzzle: state.scratchGui.puzzle,
-    puzzleSettingsVisible: state.scratchGui.modals.puzzleSettings,
+    puzzle: state.scratchGui.puzzle
 });
 const mapDispatchToProps = dispatch => ({
     //by yj
     onCloseMissionHelp: () => dispatch(closeMissionHelp()),
     onOpenMissionHelp: () => dispatch(openMissionHelp()),
-    onClosePuzzleSettings: () => dispatch(closePuzzleSettings()),
-    onOpenPuzzleSettings: () => dispatch(openPuzzleSettings()),
-    onOpenPuzzleResolved: () => dispatch(openPuzzleResolved()),
+    onProjectUnchanged: () => dispatch(setProjectUnchanged())
 });
 
 export default connect(
