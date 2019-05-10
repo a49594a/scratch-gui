@@ -232,7 +232,7 @@ const ProjectSaverHOC = function (WrappedComponent) {
                         this.props.vm.postIOData('video', { forceTransparentPreview: false });
                         this.props.vm.saveProjectDiff(dataURItoBlob(dataURI)).then(file => {
                             Blockey.Utils.ajax({
-                                url: `/WebApi/Projects/${requestParams.originalId}/Upload`,
+                                url: `/WebApi/Projects/${projectId||requestParams.originalId}/Upload`,
                                 data: {
                                     file: file,
                                     isRemix: !!(requestParams && requestParams.isRemix)
