@@ -58,7 +58,10 @@ const PuzzlePane = function (props) {
                             src={costumeURL}
                         />
                     ) : null}
-                    {puzzleData.descp}
+                    <div
+                        dangerouslySetInnerHTML={{ __html: Blockey.Utils.markdownToHtml(puzzleData.descp) }}
+                        style={{ wordBreak: 'break-all' }}
+                    ></div>
                     {puzzleData.isAdmin ? (
                         <ActionMenu
                             className={styles.addButton}

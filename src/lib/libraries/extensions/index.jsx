@@ -44,6 +44,8 @@ import gdxforConnectionIconURL from './gdxfor/gdxfor-illustration.svg';
 import gdxforConnectionSmallIconURL from './gdxfor/gdxfor-small.svg';
 
 //by yj
+import stringExtImage from './stringExt/string-ext.png';
+import stringExtInsetImage from './stringExt/string-ext-small.svg';
 import puzzleImage from './puzzle.png';
 import puzzleInsetImage from './puzzle-small.svg';
 import communityImage from './community.png';
@@ -114,6 +116,15 @@ export default [
     },
 
     //by yj
+    {
+        name: '字符串扩展',
+        extensionId: 'stringExt',
+        collaborator: '阿儿法营',
+        iconURL: stringExtImage,
+        insetIconURL: stringExtInsetImage,
+        description: '字符串操作扩展指令，包含字符编码转换等',
+        featured: true
+    },
     {
         name: (
             <FormattedMessage

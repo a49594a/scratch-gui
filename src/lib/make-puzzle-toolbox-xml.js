@@ -694,9 +694,9 @@ const makeToolboxXML = function (target) {
     for (let i = 0; i < scripts.length; i++) {
         //在谜题中隐藏控制脚本
         var block = target.blocks.getBlock(scripts[i]);
-        if (block.opcode == "event_whenbroadcastreceived"
-            && block.fields.BROADCAST_OPTION
-            && block.fields.BROADCAST_OPTION.value.substr(0, 1) == "@") continue;
+        if (block.opcode == "event_whenbroadcastreceived" &&
+            block.fields.BROADCAST_OPTION &&
+            block.fields.BROADCAST_OPTION.value.substr(0, 1) == "@") continue;
         if (block.opcode == "procedures_definition") continue;
         if (!topBlocks[block.opcode]) topBlocks[block.opcode] = [];
         topBlocks[block.opcode].push(target.blocks.blockToXML(scripts[i]));
@@ -715,13 +715,19 @@ const makeToolboxXML = function (target) {
                 }
             }
         }
-        if (count > 0) xmlString += blockOrders[i].categoryTag + tmpXml + '</category>';
+        if (count > 0) {
+            xmlString += blockOrders[i].categoryTag;
+            /*if (blockOrders[i].type == 'variable') {
+                var createVariable = '<button text="建立一个变量" callbackkey="CREATE_VARIABLE"></button>';
+                xmlString += createVariable;
+            }*/
+            xmlString += tmpXml + '</category>';
+        }
     }
     return `${xmlString}</xml>`;
 }
 
-const blockOrders = [
-    {
+const blockOrders = [{
         categoryTag: '<category name="动作" colour="#4C97FF" secondaryColour="#3373CC">',
         blocks: ['motion_movesteps', 'motion_turnright', 'motion_turnleft', 'motion_pointindirection', 'motion_pointtowards', 'motion_gotoxy', 'motion_goto', 'motion_glidesecstoxy', 'motion_changexby', 'motion_setx', 'motion_changeyby', 'motion_sety', 'motion_ifonedgebounce', 'motion_setrotationstyle', 'motion_xposition', 'motion_yposition', 'motion_direction'],
     },
@@ -755,11 +761,14 @@ const blockOrders = [
     },
     {
         categoryTag: '<category name="运算" colour="#40BF4A" secondaryColour="#389438">',
-        blocks: ['operator_add', 'operator_subtract', 'operator_multiply', 'operator_divide', 'operator_random', 'operator_lt', 'operator_equals', 'operator_gt', 'operator_and', 'operator_or', 'operator_not', 'operator_join', 'operator_letter_of', 'operator_length', 'operator_mod', 'operator_round', 'operator_mathop'],
+        blocks: ['operator_add', 'operator_subtract', 'operator_multiply', 'operator_divide', 'operator_random', 'operator_lt', 'operator_equals', 'operator_gt', 'operator_and', 'operator_or', 'operator_not', 'operator_join', 'operator_letter_of', 'operator_length', 'operator_mod', 'operator_round', 'operator_mathop', 'stringExt_charCodeAt', 'stringExt_fromCharCode'],
     },
     {
-        categoryTag: '<category name="变量" colour="#FF8C1A" secondaryColour="#DB6E00">',
-        blocks: ['data_variable', 'data_setvariableto', 'data_changevariableby', 'data_showvariable', 'data_hidevariable', 'data_listcontents', 'data_addtolist', 'data_deleteoflist', 'data_insertatlist', 'data_replaceitemoflist', 'data_itemoflist', 'data_lengthoflist', 'data_listcontainsitem', 'data_showlist', 'data_hidelist'],
+        type: 'variable',
+        categoryTag: '<category id="data" name="%{BKY_CATEGORY_VARIABLES}" colour="#FF8C1A" secondaryColour="#DB6E00">', // custom="VARIABLE"
+        blocks: ['data_variable', 'data_setvariableto', 'data_changevariableby', 'data_showvariable', 'data_hidevariable',
+            'data_listcontents', 'data_addtolist', 'data_deleteoflist', 'data_deletealloflist', 'data_insertatlist', 'data_replaceitemoflist', 'data_itemoflist', 'data_lengthoflist', 'data_listcontainsitem', 'data_showlist', 'data_hidelist'
+        ],
     },
     {
         categoryTag: '<category name="其他" colour="#FF6680" secondaryColour="#FF4D6A">',
