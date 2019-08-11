@@ -210,7 +210,7 @@ const StageHeaderComponent = function (props) {
                         <Controls vm={vm} />
                     ):null}
                     <div className={styles.stageSizeRow}>
-                        {Blockey.GUI_CONFIG.MODE!='Puzzle'? stageControls:null}
+                        {Blockey.GUI_CONFIG.MODE!='Puzzle'? stageControls:stageControls}
                         <div>
                             {Blockey.GUI_CONFIG.IS_MOBILE ? (
                                 <img
@@ -239,7 +239,7 @@ const StageHeaderComponent = function (props) {
                                 )}
                         </div>
                     </div>
-                    {slider}
+                    {stageSizeMode === STAGE_SIZE_MODES.small?null:slider}
                     {blocksInfo}
                     {Blockey.GUI_CONFIG.MODE=='Puzzle'?(
                         <Controls vm={vm} />
