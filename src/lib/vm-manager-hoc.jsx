@@ -71,6 +71,10 @@ const vmManagerHOC = function (WrappedComponent) {
                 this.props.vm.start();
             }
         }
+        componentWillUnmount () {
+            //by yj
+            this.props.vm.stopAll();
+        }
         requestSnapshot(){
             this.props.vm.renderer.requestSnapshot(dataURI => {
                 this.props.vm.postIOData('video', { forceTransparentPreview: false });
