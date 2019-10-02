@@ -23,6 +23,8 @@ import {
 import log from './log';
 import storage from './storage';
 
+import projectDecrypt from './project-decrypt';
+
 /* Higher Order Component to provide behavior for loading projects by id. If
  * there's no id, the default project is loaded.
  * @param {React.Component} WrappedComponent component to receive projectData prop
@@ -73,7 +75,8 @@ const ProjectFetcherHOC = function (WrappedComponent) {
                 .load(storage.AssetType.Project, projectId+(version?'.'+version:''), storage.DataFormat.JSON)
                 .then(projectAsset => {
                     if (projectAsset) {
-                        this.props.onFetchedProjectData(projectAsset.data, loadingState);
+                        var data = projectDecrypt(projectAsset.decodeText());
+                        this.props.onFetchedProjectData(data, loadingState);
                     } else {
                         // Treat failure to load as an error
                         // Throw to be caught by catch later on
