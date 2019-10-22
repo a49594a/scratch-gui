@@ -189,9 +189,16 @@ class MenuBar extends React.Component {
         }
         let mission = Blockey.INIT_DATA.mission;
         if (mission && mission.helps == null) {
+            let missionId = mission.id;
+            let levelId = null;
+            let idx = mission.id.indexOf('-');
+            if (idx > 0) {
+                missionId = mission.id.substr(0, idx);
+                levelId = mission.id.substr(idx + 1);
+            }
             Blockey.Utils.ajax({
                 url: '/WebApi/Mission/GetHelps',
-                data: { id: mission.id },
+                data: { id: levelId ? levelId : missionId },
                 success: r => {
                     mission.helps = r.data;
                     for (var i = 0; i < mission.helps.length; i++) {
@@ -261,14 +268,14 @@ class MenuBar extends React.Component {
             this.props.onRequestCloseEdit();
         };
     }
-    handleKeyPress (event) {
+    handleKeyPress(event) {
         const modifier = bowser.mac ? event.metaKey : event.ctrlKey;
         if (modifier && event.key === 's') {
             this.props.onClickSave();
             event.preventDefault();
         }
     }
-    handleSaveToComputer (downloadProjectCallback) {
+    handleSaveToComputer(downloadProjectCallback) {
         return () => {
             this.props.onRequestCloseFile();
             downloadProjectCallback();

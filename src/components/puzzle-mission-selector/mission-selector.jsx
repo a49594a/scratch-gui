@@ -14,6 +14,9 @@ const MissionSelector = function (props) {
         puzzleData,
         ...componentProps
     } = props;
+    var idx = ('' + puzzleData.id).indexOf('-');
+    var challengeId = idx > 0 ? puzzleData.id.substr(0, idx) : '';
+    var levelId = idx > 0 ? Number(puzzleData.id.substr(idx + 1)) : puzzleData.id;
     return (
         <div
             className={classNames(styles.container, className)}
@@ -22,13 +25,13 @@ const MissionSelector = function (props) {
                 {puzzleData.missions
                     .map(mission => (
                         <li
-                            className={mission.id === puzzleData.id ?
+                            className={mission.id === levelId ?
                                 classNames(styles.mission, styles.active, mission.isSolved ? styles.solved : null) :
                                 classNames(styles.mission, mission.isSolved ? styles.solved : null)}
                             id={mission.id}
                             key={mission.id}
                         >
-                            <a href={"#" + mission.id}></a>
+                            <a href={"#" + (challengeId ? challengeId + '-' : '') + mission.id}></a>
                         </li>
                     ))
                 }

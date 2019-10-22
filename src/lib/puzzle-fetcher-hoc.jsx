@@ -60,9 +60,10 @@ const PuzzleFetcherHOC = function (WrappedComponent) {
             }
         }
         fetchPuzzle(projectId, loadingState) {
+            let hasLevel = projectId.indexOf('-') > 0;
             return new Promise((resolve, reject) => {
                 Blockey.Utils.ajax({
-                    url: "/WebApi/Puzzle/Get",
+                    url: '/WebApi/Puzzle/Get',
                     data: { id: projectId },
                     loadingStyle: "none",
                     success: (puzzleData) => {

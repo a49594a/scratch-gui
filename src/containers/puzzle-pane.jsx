@@ -42,18 +42,23 @@ class PuzzlePane extends React.Component {
     }
     handlePuzzleResolved() {
         var xmlText = ScratchBlocks.Xml.domToPrettyText(ScratchBlocks.Xml.workspaceToDom(ScratchBlocks.mainWorkspace));
-        Blockey.Utils.setMissionResolved(this.props.puzzleData.id, { answer: xmlText })
+        var puzzleData = this.props.puzzleData;
+        var idx = ('' + puzzleData.id).indexOf('-');
+        var challengeId = idx > 0 ? puzzleData.id.substr(0, idx) : '';
+        var levelId = idx > 0 ? Number(puzzleData.id.substr(idx + 1)) : puzzleData.id;
+        Blockey.Utils.setMissionResolved(puzzleData.id, { answer: xmlText })
             .then(() => {
-                var missions = this.props.puzzleData.missions;
+                var missions = puzzleData.missions;
                 for (var i = 0; i < missions.length; i++) {
-                    if (missions[i].id == this.props.puzzleData.id) {
+                    if (missions[i].id == levelId) {
                         missions[i].isSolved = true;
                         if (i == missions.length - 1) {
                             this.props.onProjectUnchanged();
-                            window.location = "/User/Missions";
+                            var loggedInUser = Blockey.Utils.getContext().loggedInUser;
+                            window.location = `/Users/${loggedInUser.id}/Missions`;
                         }
                         else {
-                            window.location.hash = "#" + missions[i + 1].id;
+                            window.location.hash = "#" + (challengeId ? challengeId + '-' : '') + missions[i + 1].id;
                         }
                         return;
                     }
@@ -65,7 +70,7 @@ class PuzzlePane extends React.Component {
         let mission = puzzleData.missions.find(mission => mission.id == puzzleData.id);
         Blockey.Utils.openMissionSettingsModal({
             id: puzzleData.id,
-            onOk: ()=>{
+            onOk: () => {
                 window.location.reload(true);
             }
         });
