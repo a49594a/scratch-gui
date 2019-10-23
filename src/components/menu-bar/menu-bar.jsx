@@ -191,7 +191,7 @@ class MenuBar extends React.Component {
         if (mission && mission.helps == null) {
             let missionId = mission.id;
             let levelId = null;
-            let idx = mission.id.indexOf('-');
+            let idx = (""+mission.id).indexOf('-');
             if (idx > 0) {
                 missionId = mission.id.substr(0, idx);
                 levelId = mission.id.substr(idx + 1);

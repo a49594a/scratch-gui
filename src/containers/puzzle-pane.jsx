@@ -67,9 +67,13 @@ class PuzzlePane extends React.Component {
     }
     handleSettingsClick() {
         var puzzleData = this.props.puzzleData;
-        let mission = puzzleData.missions.find(mission => mission.id == puzzleData.id);
+        var tmpId=String(puzzleData.id);
+        var idx = tmpId.indexOf('-');
+        var challengeId = idx > 0 ? Number(tmpId.substr(0, idx)) : '';
+        var levelId = idx > 0 ? Number(tmpId.substr(idx + 1)) : puzzleData.id;
+        //let mission = puzzleData.missions.find(mission => mission.id == puzzleData.id);
         Blockey.Utils.openMissionSettingsModal({
-            id: puzzleData.id,
+            id: levelId,
             onOk: () => {
                 window.location.reload(true);
             }
