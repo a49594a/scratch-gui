@@ -32,8 +32,12 @@ class PuzzlePane extends React.Component {
     handleShotscreenClick() {
         this.props.vm.runtime.renderer.draw();
         var imgData = this.props.vm.runtime.renderer.gl.canvas.toDataURL('image/png');
+        var puzzleData=this.props.puzzleData;
+        var idx = ('' + puzzleData.id).indexOf('-');
+        var challengeId = idx > 0 ? puzzleData.id.substr(0, idx) : '';
+        var levelId = idx > 0 ? Number(puzzleData.id.substr(idx + 1)) : puzzleData.id;
         Blockey.Utils.ajax({
-            url: `/WebApi/Missions/${this.props.puzzleData.id}/updateThumb`,
+            url: `/WebApi/Missions/${levelId}/updateThumb`,
             data: { dataUrl: imgData },
             success: (e) => {
                 Blockey.Utils.Alerter.info("舞台截图保存成功！");

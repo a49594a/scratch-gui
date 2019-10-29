@@ -298,8 +298,12 @@ class Blocks extends React.Component {
             var xmlString = '<xml xmlns="http://www.w3.org/1999/xhtml">' + '<variables>';
             //${variables.map(v => v.toXML()).join()}
             xmlString += '</variables>' + this.props.vm.editingTarget.blocks.toXML(null, false) + '</xml>';
+            var puzzleData=this.props.puzzleData;
+            var idx = ('' + puzzleData.id).indexOf('-');
+            var challengeId = idx > 0 ? puzzleData.id.substr(0, idx) : '';
+            var levelId = idx > 0 ? Number(puzzleData.id.substr(idx + 1)) : puzzleData.id;
             let postData = {
-                forId: this.props.puzzleData.id,
+                forId: levelId,
                 content: xmlString,
             };
             Blockey.Utils.ajax({
