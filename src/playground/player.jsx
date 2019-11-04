@@ -25,7 +25,8 @@ const Player = ({isPlayerOnly, onSeeInside, projectId, projectVersion,isPhone}) 
     <Box className={classNames(isPlayerOnly ? styles.stageOnly : styles.editor)}>
         {/*isPlayerOnly && <button onClick={onSeeInside}>{'See inside'}</button>*/}
         <GUI
-            showBranding={false}
+            showBranding={false}//by yj
+            canEditTitle={false}//by yj
             enableCommunity
             isPlayerOnly={isPlayerOnly}
             projectId={projectId || Blockey.INIT_DATA.project.id}//by yj {projectId}
@@ -59,8 +60,7 @@ const ConnectedPlayer = connect(
 // ability to compose reducers.
 const WrappedPlayer = compose(
     AppStateHOC,
-    HashParserHOC,
-    //TitledHOC
+    HashParserHOC
 )(ConnectedPlayer);
 
 /* by yj

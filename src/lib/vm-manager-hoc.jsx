@@ -165,6 +165,7 @@ const vmManagerHOC = function (WrappedComponent) {
         fontsLoaded: PropTypes.bool,
         isLoadingWithId: PropTypes.bool,
         isPlayerOnly: PropTypes.bool,
+        isStarted: PropTypes.bool,
         loadingState: PropTypes.oneOf(LoadingStates),
         locale: PropTypes.string,
         messages: PropTypes.objectOf(PropTypes.string),
