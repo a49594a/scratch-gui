@@ -19,6 +19,7 @@ class PuzzlePane extends React.Component {
             'handleEditClick',
             'handleEditTemplateClick',
             'handlePuzzleResolved',
+            'handleTimeExpired',
         ]);
     }
     componentDidMount() {
@@ -32,7 +33,7 @@ class PuzzlePane extends React.Component {
     handleShotscreenClick() {
         this.props.vm.runtime.renderer.draw();
         var imgData = this.props.vm.runtime.renderer.gl.canvas.toDataURL('image/png');
-        var puzzleData=this.props.puzzleData;
+        var puzzleData = this.props.puzzleData;
         var idx = ('' + puzzleData.id).indexOf('-');
         var challengeId = idx > 0 ? puzzleData.id.substr(0, idx) : '';
         var levelId = idx > 0 ? Number(puzzleData.id.substr(idx + 1)) : puzzleData.id;
@@ -52,26 +53,25 @@ class PuzzlePane extends React.Component {
         var levelId = idx > 0 ? Number(puzzleData.id.substr(idx + 1)) : puzzleData.id;
         Blockey.Utils.setMissionResolved(puzzleData.id, { answer: xmlText })
             .then(() => {
+                var nextIdx = null;
                 var missions = puzzleData.missions;
                 for (var i = 0; i < missions.length; i++) {
                     if (missions[i].id == levelId) {
                         missions[i].isSolved = true;
-                        if (i == missions.length - 1) {
-                            this.props.onProjectUnchanged();
-                            var loggedInUser = Blockey.Utils.getContext().loggedInUser;
-                            window.location = `/Users/${loggedInUser.id}/Missions`;
-                        }
-                        else {
-                            window.location.hash = "#" + (challengeId ? challengeId + '-' : '') + missions[i + 1].id;
-                        }
-                        return;
                     }
+                    if (!missions[i].isSolved && nextIdx == null) {
+                        nextIdx = i;
+                    }
+                }
+                if (nextIdx != null) {
+                    this.props.onProjectUnchanged();
+                    window.location.hash = "#" + (challengeId ? challengeId + '-' : '') + missions[nextIdx].id;
                 }
             });
     }
     handleSettingsClick() {
         var puzzleData = this.props.puzzleData;
-        var tmpId=String(puzzleData.id);
+        var tmpId = String(puzzleData.id);
         var idx = tmpId.indexOf('-');
         var challengeId = idx > 0 ? Number(tmpId.substr(0, idx)) : '';
         var levelId = idx > 0 ? Number(tmpId.substr(idx + 1)) : puzzleData.id;
@@ -92,6 +92,29 @@ class PuzzlePane extends React.Component {
     handleEditTemplateClick() {
         window.location = `/Projects/${this.props.puzzleData.templateProjectId}/Editor`;
     }
+    handleTimeExpired() {
+        //Blockey.Utils.openUserMissionTimeExpiredModal();
+        var puzzleData = this.props.puzzleData;
+        var ctx = Blockey.Utils.getContext();
+        var objectiveProgress = 0;
+        for (var i = 0; i < puzzleData.missions.length; i++) {
+            if (puzzleData.missions[i].isSolved) objectiveProgress++;
+        }
+        var prompts = [{
+            type: 'UserMission',
+            content: {
+                id: puzzleData.id,
+                objectiveProgress: objectiveProgress,
+                mission: {
+                    type: puzzleData.missions.length > 1 ? 'Challenge' : 'Puzzle',
+                    objectiveCount: puzzleData.missions.length
+                },
+                userId: ctx.loggedInUser.id,
+                expireTime: puzzleData.expireTime
+            }
+        }];
+        Blockey.Utils.showUserPrompts(prompts);
+    }
     render() {
         const {
             onActivateTab, // eslint-disable-line no-unused-vars
@@ -106,6 +129,7 @@ class PuzzlePane extends React.Component {
                 onSaveAnswerClick={this.handleSaveAnswerClick}
                 onEditClick={this.handleEditClick}
                 onEditTemplateClick={templateProjectId ? this.handleEditTemplateClick : null}
+                onTimeExpired={this.handleTimeExpired}
             />
         );
     }

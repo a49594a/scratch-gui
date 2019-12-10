@@ -16,6 +16,46 @@ import editIcon from './icon--edit.svg';
 import editTemplateIcon from './icon--edit-template.svg';
 
 import getCostumeUrl from '../../lib/get-costume-url';
+
+class CountDown extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            timeLeft: props.expireTime - Date.now()
+        };
+    }
+    componentDidMount() {
+        this.pid = window.setInterval(() => {
+            let timeLeft = this.props.expireTime - Date.now();
+            if (timeLeft < 0) {
+                window.clearInterval(this.pid);
+                this.props.onTimeExpired();
+            }
+            this.setState({ timeLeft: timeLeft });
+        }, 1000);
+    }
+    componentWillUnmount() {
+        window.clearInterval(this.pid);
+    }
+    render() {
+        let seconds = this.state.timeLeft / 1000;
+        if (seconds < 0) seconds = 0;
+        let hours = Math.floor(seconds / 3600);
+        let minutes = Math.floor((seconds % 3600) / 60);
+        seconds = Math.floor(seconds % 60);
+        return (
+            <span>
+                剩余时间：
+            <span>{(hours < 10 ? "0" : "") + hours}</span>
+                :
+            <span>{(minutes < 10 ? "0" : "") + minutes}</span>
+                :
+            <span>{(seconds < 10 ? "0" : "") + seconds}</span>
+            </span>
+        );
+    }
+}
+
 /*
  * Pane that contains the sprite selector, sprite info, stage selector,
  * and the new sprite, costume and backdrop buttons
@@ -34,6 +74,7 @@ const PuzzlePane = function (props) {
         onSaveAnswerClick,
         onEditClick,
         onEditTemplateClick,
+        onTimeExpired,
         puzzleData,
         ...componentProps
     } = props;
@@ -51,6 +92,11 @@ const PuzzlePane = function (props) {
         <div className={styles.puzzlePane}>
             <Box className={styles.puzzleInfo}>
                 <Box className={styles.scrollWrapper}>
+                    {puzzleData.expireTime ? (
+                        <div style={{ textAlign: "center", padding: "0 0 4px 0", fontWeight: "bold", fontSize: "16px" }}>
+                            <CountDown expireTime={puzzleData.expireTime} onTimeExpired={onTimeExpired} />
+                        </div>
+                    ) : null}
                     {costumeURL ? (
                         <img
                             className={styles.sprite}

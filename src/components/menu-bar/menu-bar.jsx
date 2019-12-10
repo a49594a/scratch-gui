@@ -426,26 +426,26 @@ class MenuBar extends React.Component {
                                     >
                                         {remixMessage}
                                     </MenuItem>
-                                    <SBFileUploader className={classNames({ [styles.disabled]: !this.props.canSaveToLocal })}
-                                        canSave={this.props.canSave} onUpdateProjectTitle={this.props.onUpdateProjectTitle}
+                                    <SBFileUploader
+                                        canSave={this.props.canSave}
+                                        userOwnsProject={this.props.userOwnsProject}
                                     >
-                                        {(className, renderFileInput, loadProject) => (
+                                        {(className, renderFileInput, handleLoadProject) => (
                                             <MenuItem
-                                                className={className}
-                                                onClick={this.props.canSaveToLocal ? loadProject : null}
+                                                className={classNames({ [styles.disabled]: !this.props.canSaveToLocal })}
+                                                onClick={this.props.canSaveToLocal ? handleLoadProject : null}
                                             >
-                                                <FormattedMessage
-                                                    defaultMessage="Save to your computer"
-                                                    description="Menu bar item for downloading a project to your computer" // eslint-disable-line max-len
-                                                    id="gui.menuBar.downloadToComputer"
-                                                />
+                                                {/* eslint-disable max-len */}
+                                                {this.props.intl.formatMessage(sharedMessages.loadFromComputerTitle)}
+                                                {/* eslint-enable max-len */}
+                                                {renderFileInput()}
                                             </MenuItem>
                                         )}
                                     </SBFileUploader>
                                     <SB3Downloader>{(className, downloadProjectCallback) => (
                                         <MenuItem
                                             className={classNames(className, { [styles.disabled]: !this.props.canSaveToLocal })}
-                                            onClick={this.props.canSaveToLocal ? this.handleSaveToComputer(downloadProjectCallback) : null}
+                                            onClick={this.props.canSaveToLocal ? this.getSaveToComputerHandler(downloadProjectCallback) : null}
                                         >
                                             <FormattedMessage
                                                 defaultMessage="Save to your computer"
