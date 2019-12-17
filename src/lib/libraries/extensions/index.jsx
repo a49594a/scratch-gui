@@ -47,6 +47,8 @@ import gdxforConnectionIconURL from './gdxfor/gdxfor-illustration.svg';
 import gdxforConnectionSmallIconURL from './gdxfor/gdxfor-small.svg';
 
 //by yj
+import battleImage from './stringExt/string-ext.png';
+import battleInsetImage from './stringExt/string-ext-small.svg';
 import stringExtImage from './stringExt/string-ext.png';
 import stringExtInsetImage from './stringExt/string-ext-small.svg';
 import puzzleImage from './puzzle.png';
@@ -119,6 +121,15 @@ export default [
     },
 
     //by yj
+    {
+        name: '战场',
+        extensionId: 'battle',
+        collaborator: '阿儿法营',
+        iconURL: battleImage,
+        insetIconURL: battleInsetImage,
+        description: '策略对战类游戏扩展指令',
+        featured: true
+    },
     {
         name: '字符串扩展',
         extensionId: 'stringExt',

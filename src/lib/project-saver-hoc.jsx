@@ -217,7 +217,8 @@ const ProjectSaverHOC = function (WrappedComponent) {
          * @param {?object} requestParams - object of params to add to request body
          */
         storeProject(projectId, requestParams) {
-            //by yj            
+            //by yj
+            var extUtils = this.props.extUtils;
             this.clearAutoSaveTimeout();
             return Promise.all(this.props.vm.assets
                 .filter(asset => !asset.clean)
@@ -237,7 +238,7 @@ const ProjectSaverHOC = function (WrappedComponent) {
                     this.props.vm.renderer.requestSnapshot(dataURI => {
                         this.props.vm.postIOData('video', { forceTransparentPreview: false });
                         this.props.vm.saveProjectDiff(dataURItoBlob(dataURI)).then(file => {
-                            Blockey.Utils.ajax({
+                            extUtils.ajax({
                                 url: `/WebApi/Projects/${projectId||requestParams.originalId}/Upload`,
                                 data: {
                                     file: file,

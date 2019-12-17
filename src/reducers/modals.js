@@ -15,12 +15,10 @@ const MODAL_TIPS_LIBRARY = 'tipsLibrary';
 
 //by yj
 const MODAL_MISSION_HELP = 'missionHelp';
-const MODAL_PUBLISH = 'publish';
 
 const initialState = {
     //by yj
     [MODAL_MISSION_HELP]: false,
-    [MODAL_PUBLISH]: false,
 
     [MODAL_BACKDROP_LIBRARY]: false,
     [MODAL_CAMERA_CAPTURE]: false,
@@ -136,12 +134,6 @@ const openMissionHelp = function () {
 const closeMissionHelp = function () {
     return closeModal(MODAL_MISSION_HELP);
 };
-const openPublish = function () {
-    return openModal(MODAL_PUBLISH);
-};
-const closePublish = function () {
-    return closeModal(MODAL_PUBLISH);
-};
 
 export {
     reducer as default,
@@ -172,6 +164,4 @@ export {
     //by yj
     openMissionHelp,
     closeMissionHelp,
-    openPublish,
-    closePublish
 };

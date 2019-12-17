@@ -31,13 +31,14 @@ class PuzzlePane extends React.Component {
         this.props.vm.runtime.removeListener('MISSION_RESOLVED', this.handlePuzzleResolved);
     }
     handleShotscreenClick() {
+        var extUtils = this.props.extUtils;
         this.props.vm.runtime.renderer.draw();
         var imgData = this.props.vm.runtime.renderer.gl.canvas.toDataURL('image/png');
         var puzzleData = this.props.puzzleData;
         var idx = ('' + puzzleData.id).indexOf('-');
         var challengeId = idx > 0 ? puzzleData.id.substr(0, idx) : '';
         var levelId = idx > 0 ? Number(puzzleData.id.substr(idx + 1)) : puzzleData.id;
-        Blockey.Utils.ajax({
+        extUtils.ajax({
             url: `/WebApi/Missions/${levelId}/updateThumb`,
             data: { dataUrl: imgData },
             success: (e) => {
@@ -46,12 +47,13 @@ class PuzzlePane extends React.Component {
         });
     }
     handlePuzzleResolved() {
+        var extUtils = this.props.extUtils;
         var xmlText = ScratchBlocks.Xml.domToPrettyText(ScratchBlocks.Xml.workspaceToDom(ScratchBlocks.mainWorkspace));
         var puzzleData = this.props.puzzleData;
         var idx = ('' + puzzleData.id).indexOf('-');
         var challengeId = idx > 0 ? puzzleData.id.substr(0, idx) : '';
         var levelId = idx > 0 ? Number(puzzleData.id.substr(idx + 1)) : puzzleData.id;
-        Blockey.Utils.setMissionResolved(puzzleData.id, { answer: xmlText })
+        extUtils.setMissionResolved(puzzleData.id, { answer: xmlText })
             .then(() => {
                 var nextIdx = null;
                 var missions = puzzleData.missions;

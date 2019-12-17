@@ -34,8 +34,7 @@ import MenuBarHOC from '../../containers/menu-bar-hoc.jsx';
 import MissionSelector from '../puzzle-mission-selector/mission-selector.jsx';
 import aerfayingLogo from './aerfaying-logo.svg';
 import MissionHelpModal from '../../containers/mission-help-modal.jsx';
-import PublishModal from '../../containers/publish-modal.jsx';
-import { openMissionHelp, openPublish } from '../../reducers/modals';
+import { openMissionHelp } from '../../reducers/modals';
 
 import { openTipsLibrary } from '../../reducers/modals';
 import { setPlayer } from '../../reducers/mode';
@@ -180,6 +179,7 @@ class MenuBar extends React.Component {
         this.props.vm.removeListener('PUZZLE_LOADED', this.loadMission);
     }
     loadMission() {
+        var extUtils = this.props.extUtils;
         if (Blockey.GUI_CONFIG.MODE == 'Puzzle') {
             let missionId = location.hash.substr(1);
             if (!(Blockey.INIT_DATA.mission && Blockey.INIT_DATA.mission.id == missionId)) {
@@ -197,7 +197,7 @@ class MenuBar extends React.Component {
                 missionId = mission.id.substr(0, idx);
                 levelId = mission.id.substr(idx + 1);
             }
-            Blockey.Utils.ajax({
+            extUtils.ajax({
                 url: '/WebApi/Mission/GetHelps',
                 data: { id: levelId ? levelId : missionId },
                 success: r => {
@@ -614,9 +614,6 @@ class MenuBar extends React.Component {
                         loggedInUser={Blockey.Utils.getLoggedInUser()}
                     />
                 </div>
-                {this.props.publishModalVisible ? (
-                    <PublishModal vm={this.props.vm} />
-                ) : null}
                 {this.props.missionHelpModalVisible ? (
                     <MissionHelpModal vm={this.props.vm} />
                 ) : null}
@@ -627,6 +624,7 @@ class MenuBar extends React.Component {
 
 MenuBar.propTypes = {
     //by yj
+    extUtils: PropTypes.any,
     canSaveToLocal: PropTypes.bool,
 
     accountMenuOpen: PropTypes.bool,
@@ -701,7 +699,6 @@ const mapStateToProps = (state, ownProps) => {
         vm: state.scratchGui.vm,
         puzzleData: state.scratchGui.projectState.puzzleData,
         missionHelpModalVisible: state.scratchGui.modals.missionHelp,
-        publishModalVisible: state.scratchGui.modals.publish,
 
         accountMenuOpen: accountMenuOpen(state),
         fileMenuOpen: fileMenuOpen(state),
@@ -723,7 +720,6 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => ({
     //by yj
-    //onShare: () => dispatch(openPublish()),
     onOpenMissionHelp: () => dispatch(openMissionHelp()),
 
     autoUpdateProject: () => dispatch(autoUpdateProject()),

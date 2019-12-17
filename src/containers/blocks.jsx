@@ -295,6 +295,7 @@ class Blocks extends React.Component {
     }
     //by yj
     handlePuzzleSaveAnswer() {
+        var extUtils = this.props.extUtils;
         if (window.confirm("确定要将当前程序保存为标准答案吗？")) {
             var xmlString = '<xml xmlns="http://www.w3.org/1999/xhtml">' + '<variables>';
             //${variables.map(v => v.toXML()).join()}
@@ -307,7 +308,7 @@ class Blocks extends React.Component {
                 forId: levelId,
                 content: xmlString,
             };
-            Blockey.Utils.ajax({
+            extUtils.ajax({
                 url: "/WebApi/Mission/SaveHelpForAnswer",
                 data: postData,
                 success: (e) => {

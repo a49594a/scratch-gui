@@ -21,7 +21,7 @@ import { setPlayer } from '../reducers/mode';
 
 import styles from './player.css';
 
-const Player = ({isPlayerOnly, onSeeInside, projectId, projectVersion,isPhone}) => (
+const Player = ({isPlayerOnly, onSeeInside, projectId, projectVersion,isPhone,extUtils}) => (
     <Box className={classNames(isPlayerOnly ? styles.stageOnly : styles.editor)}>
         {/*isPlayerOnly && <button onClick={onSeeInside}>{'See inside'}</button>*/}
         <GUI
@@ -32,6 +32,7 @@ const Player = ({isPlayerOnly, onSeeInside, projectId, projectVersion,isPhone}) 
             projectId={projectId || Blockey.INIT_DATA.project.id}//by yj {projectId}
             projectVersion={projectVersion}
             isPhone={!!isPhone}
+            extUtils={extUtils}
         />
     </Box>
 );

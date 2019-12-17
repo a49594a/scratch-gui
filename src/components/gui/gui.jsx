@@ -55,6 +55,7 @@ let isRendererSupported = null;
 const GUIComponent = props => {
     const {
         //by yj
+        extUtils,
         canSaveToLocal,
         puzzleData,
         enableAutoSave,
@@ -222,6 +223,7 @@ const GUIComponent = props => {
                     canManageFiles={canManageFiles}
                     canRemix={canRemix}
                     canSave={canSave}
+                    extUtils={extUtils/*by yj*/}
                     canSaveToLocal={canSaveToLocal/*by yj*/}
                     enableAutoSave={enableAutoSave/*by yj*/}
                     canShare={canShare}
@@ -367,6 +369,7 @@ const GUIComponent = props => {
 
 GUIComponent.propTypes = {
     //by yj
+    extUtils: PropTypes.any,
     canSaveToLocal: PropTypes.bool,
     puzzleData: PropTypes.any,
     projectVersion: PropTypes.number,

@@ -93,12 +93,13 @@ class HelpModal extends React.Component {
         }
     }
     handleSelect(e) {
+        var extUtils = this.props.extUtils;
         let forOrder = e.currentTarget.getAttribute("data-order");
         let mission = this.state.mission;
         let help = mission.helps[forOrder - 1];
         if (help.forType == 'Mission.Hint' && !help.unlocked) {
             if (confirm('使用1个提示都会减少10%的任务奖励，确定要解锁这个提示吗?')) {
-                Blockey.Utils.ajax({
+                extUtils.ajax({
                     url: '/WebApi/Mission/UnlockHint',
                     data: { id: mission.id, helpId: help.id },
                     success: r => {

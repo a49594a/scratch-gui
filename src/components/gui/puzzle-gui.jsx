@@ -59,6 +59,7 @@ let isRendererSupported = null;
 const GUIComponent = props => {
     const {
         //by yj
+        extUtils,
         puzzleData,
         puzzleLoadingVisible,
 
@@ -171,7 +172,7 @@ const GUIComponent = props => {
                         onRequestClose={onRequestCloseBackdropLibrary}
                     />
                 ) : null}
-                <MenuBar puzzleData={puzzleData} />
+                <MenuBar puzzleData={puzzleData} extUtils={extUtils} />
                 <Box className={styles.bodyWrapper}>
                     <Box className={styles.flexWrapper}>
                         <Box className={classNames(styles.stageAndTargetWrapper, styles[stageSize])}>
@@ -179,12 +180,14 @@ const GUIComponent = props => {
                                 isRendererSupported={isRendererSupported}
                                 stageSize={stageSize}
                                 vm={vm}
+                                extUtils={extUtils}
                                 puzzleData={puzzleData}
                             />
                             <Box className={styles.targetWrapper}>
                                 <PuzzlePane
                                     stageSize={stageSize}
                                     vm={vm}
+                                    extUtils={extUtils}
                                     puzzleData={puzzleData}
                                 />
                             </Box>
@@ -200,6 +203,7 @@ const GUIComponent = props => {
                                     }}
                                     stageSize={stageSize}
                                     vm={vm}
+                                    extUtils={extUtils}
                                     puzzleData={puzzleData}
                                 />
                             </Box>
