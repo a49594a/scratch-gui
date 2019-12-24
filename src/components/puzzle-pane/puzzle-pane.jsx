@@ -75,6 +75,7 @@ const PuzzlePane = function (props) {
         onEditClick,
         onEditTemplateClick,
         onTimeExpired,
+        extUtils,
         puzzleData,
         ...componentProps
     } = props;
@@ -105,7 +106,7 @@ const PuzzlePane = function (props) {
                         />
                     ) : null}
                     <div
-                        dangerouslySetInnerHTML={{ __html: Blockey.Utils.markdownToHtml(puzzleData.descp) }}
+                        dangerouslySetInnerHTML={{ __html: extUtils.markdownToHtml(puzzleData.descp) }}
                         style={{ wordBreak: 'break-all' }}
                     ></div>
                     {puzzleData.isAdmin ? (

@@ -42,7 +42,7 @@ class PuzzlePane extends React.Component {
             url: `/WebApi/Missions/${levelId}/updateThumb`,
             data: { dataUrl: imgData },
             success: (e) => {
-                Blockey.Utils.Alerter.info("舞台截图保存成功！");
+                extUtils.Alerter.info("舞台截图保存成功！");
             }
         });
     }
@@ -72,13 +72,14 @@ class PuzzlePane extends React.Component {
             });
     }
     handleSettingsClick() {
+        var extUtils = this.props.extUtils;
         var puzzleData = this.props.puzzleData;
         var tmpId = String(puzzleData.id);
         var idx = tmpId.indexOf('-');
         var challengeId = idx > 0 ? Number(tmpId.substr(0, idx)) : '';
         var levelId = idx > 0 ? Number(tmpId.substr(idx + 1)) : puzzleData.id;
         //let mission = puzzleData.missions.find(mission => mission.id == puzzleData.id);
-        Blockey.Utils.openMissionSettingsModal({
+        extUtils.openMissionSettingsModal({
             id: levelId,
             onOk: () => {
                 window.location.reload(true);
@@ -95,9 +96,9 @@ class PuzzlePane extends React.Component {
         window.location = `/Projects/${this.props.puzzleData.templateProjectId}/Editor`;
     }
     handleTimeExpired() {
-        //Blockey.Utils.openUserMissionTimeExpiredModal();
+        var extUtils = this.props.extUtils;
         var puzzleData = this.props.puzzleData;
-        var ctx = Blockey.Utils.getContext();
+        var ctx = extUtils.getContext();
         var objectiveProgress = 0;
         for (var i = 0; i < puzzleData.missions.length; i++) {
             if (puzzleData.missions[i].isSolved) objectiveProgress++;
@@ -115,7 +116,7 @@ class PuzzlePane extends React.Component {
                 expireTime: puzzleData.expireTime
             }
         }];
-        Blockey.Utils.showUserPrompts(prompts);
+        extUtils.showUserPrompts(prompts);
     }
     render() {
         const {
