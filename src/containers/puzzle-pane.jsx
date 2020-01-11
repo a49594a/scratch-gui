@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import ScratchBlocks from 'scratch-blocks';
 import PuzzlePaneComponent from '../components/puzzle-pane/puzzle-pane.jsx';
 
-import { openMissionHelp } from '../reducers/modals';
 import { setProjectUnchanged } from '../reducers/project-changed';
 
 class PuzzlePane extends React.Component {
@@ -15,7 +14,6 @@ class PuzzlePane extends React.Component {
         bindAll(this, [
             'handleShotscreenClick',
             'handleSettingsClick',
-            'handleSaveAnswerClick',
             'handleEditClick',
             'handleEditTemplateClick',
             'handlePuzzleResolved',
@@ -23,11 +21,9 @@ class PuzzlePane extends React.Component {
         ]);
     }
     componentDidMount() {
-        this.props.vm.addListener('PUZZLE_ANSWER_SAVED', this.props.onOpenMissionHelp);
         this.props.vm.runtime.addListener('MISSION_RESOLVED', this.handlePuzzleResolved);
     }
     componentWillUnmount() {
-        this.props.vm.removeListener('PUZZLE_ANSWER_SAVED', this.props.onOpenMissionHelp);
         this.props.vm.runtime.removeListener('MISSION_RESOLVED', this.handlePuzzleResolved);
     }
     handleShotscreenClick() {
@@ -53,7 +49,9 @@ class PuzzlePane extends React.Component {
         var idx = ('' + puzzleData.id).indexOf('-');
         var challengeId = idx > 0 ? puzzleData.id.substr(0, idx) : '';
         var levelId = idx > 0 ? Number(puzzleData.id.substr(idx + 1)) : puzzleData.id;
-        extUtils.setMissionResolved(puzzleData.id, { answer: xmlText })
+        var puzzle = this.props.vm.runtime.puzzle;
+        var answer = { attemptCount: puzzle.attemptCount, blockCount: puzzle.blockCount, blocks: xmlText };
+        extUtils.setMissionResolved(puzzleData.id, answer)
             .then(() => {
                 var nextIdx = null;
                 var missions = puzzleData.missions;
@@ -85,9 +83,6 @@ class PuzzlePane extends React.Component {
                 window.location.reload(true);
             }
         });
-    }
-    handleSaveAnswerClick() {
-        this.props.vm.emit("PUZZLE_SAVE_ANSWER");
     }
     handleEditClick() {
         window.location = `/Projects/${this.props.puzzleData.levelProjectId}/Editor`;
@@ -129,7 +124,6 @@ class PuzzlePane extends React.Component {
                 {...componentProps}
                 onShotscreenClick={this.handleShotscreenClick}
                 onSettingsClick={this.handleSettingsClick}
-                onSaveAnswerClick={this.handleSaveAnswerClick}
                 onEditClick={this.handleEditClick}
                 onEditTemplateClick={templateProjectId ? this.handleEditTemplateClick : null}
                 onTimeExpired={this.handleTimeExpired}
@@ -168,9 +162,6 @@ const mapStateToProps = state => ({
     puzzle: state.scratchGui.puzzle
 });
 const mapDispatchToProps = dispatch => ({
-    //by yj
-    onCloseMissionHelp: () => dispatch(closeMissionHelp()),
-    onOpenMissionHelp: () => dispatch(openMissionHelp()),
     onProjectUnchanged: () => dispatch(setProjectUnchanged())
 });
 

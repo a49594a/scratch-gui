@@ -10,7 +10,6 @@ import ActionMenu from '../action-menu/action-menu.jsx';
 import styles from './puzzle-pane.css';
 
 import settingsIcon from './icon--settings.svg';
-import saveAnswerIcon from './icon--save-answer.svg';
 import shotscreenIcon from './icon--shotscreen.svg';
 import editIcon from './icon--edit.svg';
 import editTemplateIcon from './icon--edit-template.svg';
@@ -68,10 +67,8 @@ const PuzzlePane = function (props) {
         stage,
         sprites,
         vm,
-        onAnswerClick,
         onShotscreenClick,
         onSettingsClick,
-        onSaveAnswerClick,
         onEditClick,
         onEditTemplateClick,
         onTimeExpired,
@@ -115,10 +112,6 @@ const PuzzlePane = function (props) {
                             img={settingsIcon}
                             moreButtons={[
                                 {
-                                    title: "保存标准答案",
-                                    img: saveAnswerIcon,
-                                    onClick: onSaveAnswerClick
-                                }, {
                                     title: "保存任务封面",
                                     img: shotscreenIcon,
                                     onClick: onShotscreenClick

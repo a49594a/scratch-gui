@@ -47,7 +47,7 @@ import gdxforConnectionIconURL from './gdxfor/gdxfor-illustration.svg';
 import gdxforConnectionSmallIconURL from './gdxfor/gdxfor-small.svg';
 
 //by yj
-import battleImage from './stringExt/string-ext.png';
+import battleImage from './battle.png';
 import battleInsetImage from './battle-small.svg';
 import stringExtImage from './stringExt/string-ext.png';
 import stringExtInsetImage from './stringExt/string-ext-small.svg';

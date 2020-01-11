@@ -13,13 +13,7 @@ const MODAL_SOUND_RECORDER = 'soundRecorder';
 const MODAL_CONNECTION = 'connectionModal';
 const MODAL_TIPS_LIBRARY = 'tipsLibrary';
 
-//by yj
-const MODAL_MISSION_HELP = 'missionHelp';
-
 const initialState = {
-    //by yj
-    [MODAL_MISSION_HELP]: false,
-
     [MODAL_BACKDROP_LIBRARY]: false,
     [MODAL_CAMERA_CAPTURE]: false,
     [MODAL_COSTUME_LIBRARY]: false,
@@ -127,14 +121,6 @@ const closeConnectionModal = function () {
     return closeModal(MODAL_CONNECTION);
 };
 
-//by yj
-const openMissionHelp = function () {
-    return openModal(MODAL_MISSION_HELP);
-};
-const closeMissionHelp = function () {
-    return closeModal(MODAL_MISSION_HELP);
-};
-
 export {
     reducer as default,
     initialState as modalsInitialState,
@@ -160,8 +146,4 @@ export {
     closeTelemetryModal,
     closeTipsLibrary,
     closeConnectionModal,
-    
-    //by yj
-    openMissionHelp,
-    closeMissionHelp,
 };

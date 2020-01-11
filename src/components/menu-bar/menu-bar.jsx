@@ -33,8 +33,7 @@ import MenuBarHOC from '../../containers/menu-bar-hoc.jsx';
 //by yj
 import MissionSelector from '../puzzle-mission-selector/mission-selector.jsx';
 import aerfayingLogo from './aerfaying-logo.svg';
-import MissionHelpModal from '../../containers/mission-help-modal.jsx';
-import { openMissionHelp } from '../../reducers/modals';
+import ScratchBlocks from 'scratch-blocks';
 
 import { openTipsLibrary } from '../../reducers/modals';
 import { setPlayer } from '../../reducers/mode';
@@ -153,6 +152,9 @@ class MenuBar extends React.Component {
         bindAll(this, [
             //by yj
             'loadMission',
+            'handleOpenTutorials',
+            'importFromMainWorkspace',
+            'exportToMainWorkspace',
 
             'handleClickNew',
             'handleClickRemix',
@@ -188,28 +190,40 @@ class MenuBar extends React.Component {
                 };
             }
         }
-        let mission = Blockey.INIT_DATA.mission;
-        if (mission && mission.helps == null) {
-            let missionId = mission.id;
-            let levelId = null;
-            let idx = (""+mission.id).indexOf('-');
-            if (idx > 0) {
-                missionId = mission.id.substr(0, idx);
-                levelId = mission.id.substr(idx + 1);
-            }
-            extUtils.ajax({
-                url: '/WebApi/Mission/GetHelps',
-                data: { id: levelId ? levelId : missionId },
-                success: r => {
-                    mission.helps = r.data;
-                    for (var i = 0; i < mission.helps.length; i++) {
-                        if (mission.helps[i].forType == 'Mission.Course') {
-                            this.props.onOpenMissionHelp();
-                            break;
-                        }
-                    }
-                }
+
+        var { puzzleData } = this.props;
+        if (puzzleData && puzzleData.mode == 1 && puzzleData.levelMission.autoShowTutorial) {
+            this.handleOpenTutorials();
+        }
+    }
+    importFromMainWorkspace() {
+        var xmlString = '<xml xmlns="http://www.w3.org/1999/xhtml">' + '<variables>';
+        //${variables.map(v => v.toXML()).join()}
+        xmlString += '</variables>' + this.props.vm.editingTarget.blocks.toXML(null, false) + '</xml>';
+        return xmlString;
+    }
+    exportToMainWorkspace(content) {
+        var dom = ScratchBlocks.Xml.textToDom(content);
+        /*workspace.scrollX -= 240;
+        workspace.scrollY += 20;*/
+        ScratchBlocks.Xml.clearWorkspaceAndLoadFromXml(dom, this.props.vm._workspaceForPuzzle);
+        //ScratchBlocks.Xml.domToWorkspace(dom, ScratchBlocks.mainWorkspace);
+    }
+    handleOpenTutorials() {
+        var { extUtils, puzzleData } = this.props;
+        var context = extUtils.getContext();
+        var mission = Blockey.INIT_DATA.mission;
+        if (puzzleData) mission = puzzleData.levelMission;
+        if (mission) {
+            extUtils.openMissionHelpsModal({
+                ScratchBlocks: ScratchBlocks,
+                mission: mission,
+                importFromMainWorkspace: this.importFromMainWorkspace,
+                exportToMainWorkspace: this.exportToMainWorkspace
             });
+        }
+        else {
+            this.props.onOpenTipLibrary();
         }
     }
     handleClickNew () {
@@ -253,7 +267,7 @@ class MenuBar extends React.Component {
         /*if (this.props.canShare) { // save before transitioning to project page
             this.props.onShare();
         }*/
-        if (this.props.canSave && this.props.projectChanged) { // save before transitioning to project page
+        if (this.props.canSave) { // save before transitioning to project page
             this.props.autoUpdateProject();
             waitForUpdate(true); // queue the transition to project page
         } else {
@@ -359,6 +373,15 @@ class MenuBar extends React.Component {
                 {remixMessage}
             </Button>
         );
+        const MissionLevelNavigation = this.props.extUtils.MissionLevelNavigation;
+        var missionId, levelId, levels;
+        var { puzzleData } = this.props;
+        if (puzzleData) {
+            var idx = ('' + puzzleData.id).indexOf('-');
+            missionId = idx > 0 ? puzzleData.id.substr(0, idx) : '';
+            levelId = idx > 0 ? Number(puzzleData.id.substr(idx + 1)) : puzzleData.id;
+            levels = puzzleData.missions;
+        }
         return (
             <Box
                 className={classNames(
@@ -509,21 +532,26 @@ class MenuBar extends React.Component {
                         ) : null}
                     </div>
                     <Divider className={classNames(styles.divider)} />
-                    <div
-                        aria-label={this.props.intl.formatMessage(ariaMessages.tutorials)}
-                        className={classNames(styles.menuBarItem, styles.hoverable)}
-                        onClick={Blockey.INIT_DATA.mission ? this.props.onOpenMissionHelp : this.props.onOpenTipLibrary}
-                    >
-                        <img
-                            className={styles.helpIcon}
-                            src={helpIcon}
-                        />
-                        <FormattedMessage {...ariaMessages.tutorials} />
-                    </div>
-                    <Divider className={classNames(styles.divider)} />
-                    {Blockey.GUI_CONFIG.MODE == 'Puzzle' && this.props.puzzleData && this.props.puzzleData.missions.length > 1 ? (
-                        <MissionSelector className={styles.missionSelector} puzzleData={this.props.puzzleData} />
+                    {!(this.props.puzzleData && this.props.puzzleData.mode == 2) ? (
+                        <React.Fragment>
+                            <div
+                                aria-label={this.props.intl.formatMessage(ariaMessages.tutorials)}
+                                className={classNames(styles.menuBarItem, styles.hoverable)}
+                                onClick={this.handleOpenTutorials}
+                            >
+                                <img
+                                    className={styles.helpIcon}
+                                    src={helpIcon}
+                                />
+                                <FormattedMessage {...ariaMessages.tutorials} />
+                            </div>
+                            <Divider className={classNames(styles.divider)} />
+                        </React.Fragment>
                     ) : null}
+                    {Blockey.GUI_CONFIG.MODE == 'Puzzle' && this.props.puzzleData && this.props.puzzleData.missions.length > 1 ? (
+                        <MissionLevelNavigation missionId={missionId} levelId={levelId} levels={levels} />
+                    ) : null}
+                    {/*<MissionSelector className={styles.missionSelector} puzzleData={this.props.puzzleData} />*/}
                     {Blockey.GUI_CONFIG.MODE != 'Puzzle' && this.props.canEditTitle ? (
                         <div className={classNames(styles.menuBarItem, styles.growable)}>
                             <MenuBarItemTooltip
@@ -614,9 +642,6 @@ class MenuBar extends React.Component {
                         loggedInUser={Blockey.Utils.getLoggedInUser()}
                     />
                 </div>
-                {this.props.missionHelpModalVisible ? (
-                    <MissionHelpModal vm={this.props.vm} />
-                ) : null}
             </Box>
         );
     }
@@ -698,7 +723,6 @@ const mapStateToProps = (state, ownProps) => {
         //by yj
         vm: state.scratchGui.vm,
         puzzleData: state.scratchGui.projectState.puzzleData,
-        missionHelpModalVisible: state.scratchGui.modals.missionHelp,
 
         accountMenuOpen: accountMenuOpen(state),
         fileMenuOpen: fileMenuOpen(state),
@@ -719,9 +743,6 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-    //by yj
-    onOpenMissionHelp: () => dispatch(openMissionHelp()),
-
     autoUpdateProject: () => dispatch(autoUpdateProject()),
     onOpenTipLibrary: () => dispatch(openTipsLibrary()),
     onClickAccount: () => dispatch(openAccountMenu()),

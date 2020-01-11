@@ -55,7 +55,6 @@ class Blocks extends React.Component {
             //by yj
             "puzzleBlockListener",
             "puzzleFlyoutBlockListener",
-            "handlePuzzleSaveAnswer",
 
             'attachVM',
             'detachVM',
@@ -104,6 +103,8 @@ class Blocks extends React.Component {
             { rtl: this.props.isRtl, toolbox: /*by yj this.props.toolboxXML*/ this.getToolboxXML() }
         );
         this.workspace = this.ScratchBlocks.inject(this.blocks, workspaceConfig);
+        //by yj
+        this.props.vm._workspaceForPuzzle = this.workspace;
 
         // Register buttons under new callback keys for creating variables,
         // lists, and procedures from extensions.
@@ -271,7 +272,6 @@ class Blocks extends React.Component {
         //by yj
         if (Blockey.GUI_CONFIG.MODE == 'Puzzle') {
             this.flyoutWorkspace.addChangeListener(this.puzzleFlyoutBlockListener);
-            this.props.vm.addListener('PUZZLE_SAVE_ANSWER', this.handlePuzzleSaveAnswer);
         }
     }
     detachVM() {
@@ -290,42 +290,6 @@ class Blocks extends React.Component {
         //by yj
         if (Blockey.GUI_CONFIG.MODE == 'Puzzle') {
             this.flyoutWorkspace.removeChangeListener(this.puzzleFlyoutBlockListener);
-            this.props.vm.removeListener('PUZZLE_SAVE_ANSWER', this.handlePuzzleSaveAnswer);
-        }
-    }
-    //by yj
-    handlePuzzleSaveAnswer() {
-        var extUtils = this.props.extUtils;
-        if (window.confirm("确定要将当前程序保存为标准答案吗？")) {
-            var xmlString = '<xml xmlns="http://www.w3.org/1999/xhtml">' + '<variables>';
-            //${variables.map(v => v.toXML()).join()}
-            xmlString += '</variables>' + this.props.vm.editingTarget.blocks.toXML(null, false) + '</xml>';
-            var puzzleData=this.props.puzzleData;
-            var idx = ('' + puzzleData.id).indexOf('-');
-            var challengeId = idx > 0 ? puzzleData.id.substr(0, idx) : '';
-            var levelId = idx > 0 ? Number(puzzleData.id.substr(idx + 1)) : puzzleData.id;
-            let postData = {
-                forId: levelId,
-                content: xmlString,
-            };
-            extUtils.ajax({
-                url: "/WebApi/Mission/SaveHelpForAnswer",
-                data: postData,
-                success: (e) => {
-                    /*var answer = {
-                        contentType: 'xml/scratch',
-                        content: xmlString
-                    };
-                    var puzzleData = this.props.puzzleData;
-                    if (puzzleData.answers.length == 0) {
-                        puzzleData.answers.push(answer);
-                    }
-                    else {
-                        puzzleData.answers[0] = answer;
-                    }*/
-                    this.props.vm.emit("PUZZLE_ANSWER_SAVED");
-                }
-            });
         }
     }
 
