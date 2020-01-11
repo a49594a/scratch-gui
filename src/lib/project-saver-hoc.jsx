@@ -234,6 +234,7 @@ const ProjectSaverHOC = function (WrappedComponent) {
                 )
             ).then(() => {
                 return new Promise((resolve, reject) => {
+                    extUtils.Loader.start();
                     this.props.vm.postIOData('video', { forceTransparentPreview: true });
                     this.props.vm.renderer.requestSnapshot(dataURI => {
                         this.props.vm.postIOData('video', { forceTransparentPreview: false });
@@ -247,9 +248,11 @@ const ProjectSaverHOC = function (WrappedComponent) {
                                 success: (r) => {
                                     this.props.vm.updateSavedAssetMap();//配合saveProjectDiff
                                     this.props.onSetProjectUnchanged();
+                                    extUtils.Loader.end();
                                     resolve(r);
                                 },
                                 error: (err) => {
+                                    extUtils.Loader.end();
                                     reject(err);
                                 }
                             });
