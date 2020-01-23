@@ -44,6 +44,7 @@ const HashParserHOC = function (WrappedComponent) {
                 var paramMatch = window.location.href.match(/\?id=(\d+)/);
                 hashProjectId = paramMatch === null ? defaultProjectId : paramMatch[1];
             }
+            if(Blockey.GUI_CONFIG.MODE!='Puzzle')hashProjectId=defaultProjectId;
             if(hashProjectId==defaultProjectId){
                 var paramMatch = window.location.href.match(/\/Projects\/(\d+)/i);
                 hashProjectId = paramMatch === null ? defaultProjectId : paramMatch[1];
