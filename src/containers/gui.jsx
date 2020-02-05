@@ -42,12 +42,17 @@ import {setIsScratchDesktop} from '../lib/isScratchDesktop.js';
 //by yj
 import PuzzleFetcherHOC from '../lib/puzzle-fetcher-hoc.jsx';
 import PuzzleGUIComponent from '../components/gui/puzzle-gui.jsx';
+import alerts from '../lib/alerts/index.jsx';
 
 class GUI extends React.Component {
     componentDidMount () {
         setIsScratchDesktop(this.props.isScratchDesktop);
         this.props.onStorageInit(storage);
         this.props.onVmInit(this.props.vm);
+        //by yj
+        for (var i = 0; i < alerts.length; i++) {
+            if (alerts[i].alertId == 'savingError') alerts[i].showDownload = this.props.canSaveToLocal;
+        }
     }
     componentDidUpdate (prevProps) {
         if (this.props.projectId !== prevProps.projectId && this.props.projectId !== null) {
