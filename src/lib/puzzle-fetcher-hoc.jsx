@@ -72,7 +72,7 @@ const PuzzleFetcherHOC = function (WrappedComponent) {
                         let templateProjectData = null;
                         storage.load(storage.AssetType.Project, puzzleData.levelProjectId + "", storage.DataFormat.JSON)
                             .then((projectAsset) => {
-                                levelProjectData = JSON.parse(projectDecrypt(projectAsset.decodeText()));
+                                levelProjectData = JSON.parse(projectDecrypt(projectAsset));
                                 if (levelProjectData && (templateProjectData || !puzzleData.templateProjectId)) {
                                     var mergedData = this.puzzleMergeProject(levelProjectData, templateProjectData);
                                     this.props.onFetchedProjectData(mergedData, loadingState, puzzleData);
@@ -86,7 +86,7 @@ const PuzzleFetcherHOC = function (WrappedComponent) {
                         if (puzzleData.templateProjectId) {
                             storage.load(storage.AssetType.Project, puzzleData.templateProjectId + "", storage.DataFormat.JSON)
                                 .then((projectAsset) => {
-                                    templateProjectData = JSON.parse(projectDecrypt(projectAsset.decodeText()));
+                                    templateProjectData = JSON.parse(projectDecrypt(projectAsset));
                                     if (levelProjectData && (templateProjectData || !puzzleData.templateProjectId)) {
                                         var mergedData = this.puzzleMergeProject(levelProjectData, templateProjectData);
                                         this.props.onFetchedProjectData(mergedData, loadingState, puzzleData);

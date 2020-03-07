@@ -75,7 +75,7 @@ const ProjectFetcherHOC = function (WrappedComponent) {
                 .load(storage.AssetType.Project, projectId+(version?'.'+version:''), storage.DataFormat.JSON)
                 .then(projectAsset => {
                     if (projectAsset) {
-                        var data = projectDecrypt(projectAsset.decodeText());
+                        var data = projectDecrypt(projectAsset);
                         this.props.onFetchedProjectData(data, loadingState);
                     } else {
                         // Treat failure to load as an error
