@@ -106,6 +106,18 @@ const PuzzlePane = function (props) {
                         dangerouslySetInnerHTML={{ __html: extUtils.markdownToHtml(puzzleData.descp) }}
                         style={{ wordBreak: 'break-all' }}
                     ></div>
+                    {puzzleData.objectives ? (
+                        <div className={styles.objectives}>
+                            <div className={styles.label}>任务目标</div>
+                            <ul>
+                                {puzzleData.objectives.map(obj => {
+                                    return (
+                                        <li>{typeof (obj) == 'string' ? obj : obj.descp}</li>
+                                    );
+                                })}
+                            </ul>
+                        </div>
+                    ) : null}
                     {puzzleData.isAdmin ? (
                         <ActionMenu
                             className={styles.addButton}

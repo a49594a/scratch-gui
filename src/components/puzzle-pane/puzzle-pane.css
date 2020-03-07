@@ -54,6 +54,14 @@
     float: left;
 }
 
+.objectives .label{
+    font-weight: bold;
+}
+
+.objectives ul{
+    padding-left: 1.5em;
+    display: inline-block;
+}
 
 .scroll-wrapper {
     /*
