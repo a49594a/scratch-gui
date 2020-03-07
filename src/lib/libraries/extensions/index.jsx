@@ -57,6 +57,11 @@ import communityImage from './community.png';
 import communityInsetImage from './community-small.svg';
 import kinectImage from './kinect.png';
 import kinectInsetImage from './kinect-small.svg';
+import canvasIconURL from './canvas.png';
+import canvasInsetIconURL from './canvas-small.svg';
+import lazyAudioIconURL from './lazy-audio.png';
+import lazyAudioInsetIconURL from './lazy-audio-small.svg';
+import jsInsetIconURL from './js-small.svg';
 
 export default [
     {
@@ -122,6 +127,24 @@ export default [
 
     //by yj
     {
+        name: 'Lazy Audio',
+        extensionId: 'lazyAudio',
+        collaborator: '阿儿法营',
+        iconURL: lazyAudioIconURL,
+        insetIconURL: lazyAudioInsetIconURL,
+        description: '懒加载音乐扩展指令',
+        featured: true
+    },
+    {
+        name: 'Canvas',
+        extensionId: 'canvas',
+        collaborator: '阿儿法营',
+        iconURL: canvasIconURL,
+        insetIconURL: canvasInsetIconURL,
+        description: '高级画布扩展指令',
+        featured: true
+    },
+    {
         name: '战场',
         extensionId: 'battle',
         collaborator: '阿儿法营',
@@ -137,6 +160,15 @@ export default [
         iconURL: stringExtImage,
         insetIconURL: stringExtInsetImage,
         description: '字符串操作扩展指令，包含字符编码转换等',
+        featured: true
+    },
+    {
+        name: 'Javascript扩展',
+        extensionId: 'js',
+        collaborator: '阿儿法营',
+        iconURL: stringExtImage,
+        insetIconURL: jsInsetIconURL,
+        description: 'Javascript扩展指令，包含json解析和post数据发送等',
         featured: true
     },
     {
