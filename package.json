@@ -91,7 +91,7 @@
     "raw-loader": "^0.5.1",
     "react": "16.2.0",
     "react-contextmenu": "2.9.4",
-    "react-dom": "16.2.0",
+    "react-dom": "^16.13.0",
     "react-draggable": "3.0.5",
     "react-ga": "2.5.3",
     "react-intl": "2.9.0",
@@ -142,5 +142,8 @@
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/test/__mocks__/fileMock.js",
       "\\.(css|less)$": "<rootDir>/test/__mocks__/styleMock.js"
     }
+  },
+  "dependencies": {
+    "node-gyp": "^6.1.0"
   }
 }
