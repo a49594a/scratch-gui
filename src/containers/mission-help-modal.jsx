@@ -63,7 +63,7 @@ class HelpModal extends React.Component {
         }
         else if (help.contentType == 'xml/scratch') {
             let workspace = ScratchBlocks.inject(this.elContent, {
-                media: '/Content/gui/static/blocks-media/',
+                media: `${Blockey.CDN_SERVER}/static/gui/static/blocks-media/`,
                 toolbox: '<xml style="display: none"></xml>',
                 scrollbars: true,
                 zoom: {

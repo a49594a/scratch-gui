@@ -155,7 +155,7 @@ GUIComponent.propTypes = {
 GUIComponent.defaultProps = {
     backpackHost: null,
     backpackVisible: false,
-    basePath: '/Content/gui/',//by yj './'
+    basePath: './',
     canCreateNew: false,
     canRemix: false,
     canSave: false,

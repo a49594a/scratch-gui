@@ -12,7 +12,9 @@ var autoprefixer = require('autoprefixer');
 var postcssVars = require('postcss-simple-vars');
 var postcssImport = require('postcss-import');
 
-const STATIC_PATH = process.env.STATIC_PATH || '/static';
+//const STATIC_PATH = process.env.STATIC_PATH || '/static';
+//const STATIC_PATH = 'http://localhost:32265/static/gui/static';
+const STATIC_PATH = 'https://cdn.mozhua.org/static/gui/static';
 
 const base = {
     mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
@@ -25,7 +27,7 @@ const base = {
     output: {
         library: 'GUI',
         filename: '[name].js',
-        publicPath: '/Content/gui/'
+        publicPath: `${STATIC_PATH}/`
         //chunkFilename: 'chunks/[name].js'
     },
     externals: {
@@ -114,8 +116,8 @@ module.exports = [
             'react': 'React',
             'react-dom': 'ReactDOM',
             'scratch-vm': 'VirtualMachine',
-            //'scratch-paint': 'PaintEditor',
-            //'scratch-blocks': 'ScratchBlocks',
+            'scratch-paint': 'PaintEditor',
+            'scratch-blocks': 'ScratchBlocks',
             //React: 'react',
             //ReactDOM: 'react-dom'
         },
@@ -137,7 +139,8 @@ module.exports = [
                     test: /\.(svg|png|wav|gif|jpg)$/,
                     loader: 'file-loader',
                     options: {
-                        outputPath: 'static/assets/'
+                        outputPath: 'static/assets/',
+                        publicPath: `${STATIC_PATH}/assets/`
                     }
                 }
             ])
@@ -224,8 +227,7 @@ module.exports = [
                         loader: 'file-loader',
                         options: {
                             outputPath: 'static/assets/',
-                            publicPath: '/Content/gui/static/assets/'
-                            //publicPath: `${STATIC_PATH}/assets/`
+                            publicPath: `${STATIC_PATH}/assets/`
                         }
                     }
                 ])

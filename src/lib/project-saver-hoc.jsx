@@ -220,6 +220,17 @@ const ProjectSaverHOC = function (WrappedComponent) {
             //by yj
             var extUtils = this.props.extUtils;
             this.clearAutoSaveTimeout();
+            let assets = this.props.vm.assets.filter(asset => !asset.clean);
+            let isAllAssetValid = true;
+            assets.map(asset => {
+                if (asset.data.length > 8 * 1024 * 1024) isAllAssetValid = false;
+            });
+            if (!isAllAssetValid) {
+                return new Promise((resolve, reject) => {
+                    extUtils.Alerter.info("某个音乐或图片大小超过了8MB限制");
+                    reject("某个音乐或图片大小超过了8MB限制");
+                });
+            }
             return Promise.all(this.props.vm.assets
                 .filter(asset => !asset.clean)
                 .map(
