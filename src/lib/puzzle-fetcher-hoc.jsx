@@ -68,6 +68,7 @@ const PuzzleFetcherHOC = function (WrappedComponent) {
                     data: { id: projectId },
                     loadingStyle: "none",
                     success: (puzzleData) => {
+                        if (puzzleData.error) window.location = `/Missions/${projectId}/View`;
                         let levelProjectData = null;
                         let templateProjectData = null;
                         storage.load(storage.AssetType.Project, puzzleData.levelProjectId + "", storage.DataFormat.JSON)

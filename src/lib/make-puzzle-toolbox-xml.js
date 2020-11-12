@@ -599,12 +599,12 @@ const operators = function () {
         <block type="operator_contains" id="operator_contains">
           <value name="STRING1">
             <shadow type="text">
-              <field name="TEXT">hello</field>
+              <field name="TEXT">${apple}</field>
             </shadow>
           </value>
           <value name="STRING2">
             <shadow type="text">
-              <field name="TEXT">world</field>
+              <field name="TEXT">${letter}</field>
             </shadow>
           </value>
         </block>
@@ -761,7 +761,7 @@ const blockOrders = [{
     },
     {
         categoryTag: '<category name="运算" colour="#40BF4A" secondaryColour="#389438">',
-        blocks: ['operator_add', 'operator_subtract', 'operator_multiply', 'operator_divide', 'operator_random', 'operator_lt', 'operator_equals', 'operator_gt', 'operator_and', 'operator_or', 'operator_not', 'operator_join', 'operator_letter_of', 'operator_length', 'operator_mod', 'operator_round', 'operator_mathop', 'stringExt_charCodeAt', 'stringExt_fromCharCode'],
+        blocks: ['operator_add', 'operator_subtract', 'operator_multiply', 'operator_divide', 'operator_random', 'operator_lt', 'operator_equals', 'operator_gt', 'operator_and', 'operator_or', 'operator_not', 'operator_join', 'operator_letter_of', 'operator_length', 'operator_contains', 'operator_mod', 'operator_round', 'operator_mathop', 'stringExt_charCodeAt', 'stringExt_fromCharCode'],
     },
     {
         type: 'variable',

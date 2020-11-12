@@ -105,10 +105,12 @@ class PuzzlePane extends React.Component {
                 objectiveProgress: objectiveProgress,
                 mission: {
                     type: puzzleData.missions.length > 1 ? 'Challenge' : 'Puzzle',
-                    objectiveCount: puzzleData.missions.length
+                    objectiveCount: puzzleData.missions.length,
+                    mode: puzzleData.mode,
                 },
                 userId: ctx.loggedInUser.id,
-                expireTime: puzzleData.expireTime
+                expireTime: puzzleData.expireTime,
+                mode: puzzleData.mode,
             }
         }];
         extUtils.showUserPrompts(prompts);

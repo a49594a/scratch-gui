@@ -368,6 +368,7 @@ class Blocks extends React.Component {
                 const toolboxXML = makePuzzleToolboxXML(toolboxTarget);
                 if (toolboxXML) return toolboxXML;
             }
+            return '<xml xmlns="http://www.w3.org/1999/xhtml"><category name="动作" colour="#4C97FF" secondaryColour="#3373CC"></category></xml>';
         }
 
         try {

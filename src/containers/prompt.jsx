@@ -29,6 +29,9 @@ class Prompt extends React.Component {
         event.target.select();
     }
     handleOk () {
+        //by yj 禁止在谜题挑战中新建或修改以@符号开头的变量或消息名称，以防止作弊
+        if (Blockey.GUI_CONFIG.MODE == 'Puzzle' && this.state.inputValue.charAt(0) == '@') return;
+
         this.props.onOk(this.state.inputValue, {
             scope: this.state.globalSelected ? 'global' : 'local',
             isCloud: this.state.cloudSelected
