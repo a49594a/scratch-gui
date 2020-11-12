@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import classNames from 'classnames';
 import VM from 'scratch-vm';
 
 import Box from '../box/box.jsx';
@@ -28,7 +29,13 @@ const StageWrapperComponent = function (props) {
     let isPuzzle = Blockey.GUI_CONFIG.MODE=='Puzzle';
 
     return (
-        <Box className={styles.stageWrapper}>
+        <Box
+            className={classNames(
+                styles.stageWrapper,
+                {[styles.fullScreen]: isFullScreen}
+            )}
+            dir={isRtl ? 'rtl' : 'ltr'}
+        >
             {isPuzzle || isPhone ? null : (
                 <Box className={styles.stageMenuWrapper}>
                     <StageHeader

@@ -74,6 +74,7 @@ import profileIcon from './icon--profile.png';
 import remixIcon from './icon--remix.svg';
 import dropdownCaret from './dropdown-caret.svg';
 import languageIcon from '../language-selector/language-icon.svg';
+import aboutIcon from './icon--about.svg';
 
 import scratchLogo from './scratch-logo.svg';
 
@@ -144,6 +145,19 @@ MenuItemTooltip.propTypes = {
     className: PropTypes.string,
     id: PropTypes.string,
     isRtl: PropTypes.bool
+};
+
+const AboutButton = props => (
+    <Button
+        className={classNames(styles.menuBarItem, styles.hoverable)}
+        iconClassName={styles.aboutIcon}
+        iconSrc={aboutIcon}
+        onClick={props.onClick}
+    />
+);
+
+AboutButton.propTypes = {
+    onClick: PropTypes.func.isRequired
 };
 
 class MenuBar extends React.Component {
@@ -385,6 +399,8 @@ class MenuBar extends React.Component {
             levelId = idx > 0 ? Number(puzzleData.id.substr(idx + 1)) : puzzleData.id;
             levels = puzzleData.missions;
         }
+        // Show the About button only if we have a handler for it (like in the desktop app)
+        const aboutButton = this.props.onClickAbout ? <AboutButton onClick={this.props.onClickAbout} /> : null;
         return (
             <Box
                 className={classNames(
@@ -645,6 +661,8 @@ class MenuBar extends React.Component {
                         loggedInUser={Blockey.Utils.getLoggedInUser()}
                     />
                 </div>
+
+                {aboutButton}
             </Box>
         );
     }
@@ -682,6 +700,7 @@ MenuBar.propTypes = {
     locale: PropTypes.string.isRequired,
     loginMenuOpen: PropTypes.bool,
     logo: PropTypes.string,
+    onClickAbout: PropTypes.func,
     onClickAccount: PropTypes.func,
     onClickEdit: PropTypes.func,
     onClickFile: PropTypes.func,
