@@ -112,6 +112,7 @@ const mapStateToProps = (state, ownProps) => {
         error: state.scratchGui.projectState.error,
         importInfoVisible: state.scratchGui.modals.importInfo,
         isError: getIsError(loadingState),
+        isFullScreen: state.scratchGui.mode.isFullScreen,
         isPlayerOnly: state.scratchGui.mode.isPlayerOnly,
         isRtl: state.locales.isRtl,
         isShowingProject: getIsShowingProject(loadingState),

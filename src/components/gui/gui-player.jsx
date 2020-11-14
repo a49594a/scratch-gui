@@ -47,6 +47,7 @@ const GUIComponent = props => {
         enableCommunity,
         importInfoVisible,
         intl,
+        isFullScreen,
         isPlayerOnly,
         isRtl,
         isShared,
@@ -90,6 +91,7 @@ const GUIComponent = props => {
             <Box dir={isRtl ? 'rtl' : 'ltr'}>
                 <StageWrapper
                     isPhone={isPhone}//by yj
+                    isFullScreen={isFullScreen}
                     isRtl={isRtl}
                     isRendererSupported={isRendererSupported}
                     stageSize={stageSize}
@@ -124,6 +126,7 @@ GUIComponent.propTypes = {
     enableCommunity: PropTypes.bool,
     importInfoVisible: PropTypes.bool,
     intl: intlShape.isRequired,
+    isFullScreen: PropTypes.bool,
     isPlayerOnly: PropTypes.bool,
     isRtl: PropTypes.bool,
     isShared: PropTypes.bool,
