@@ -14,18 +14,18 @@ import ExtensionLibrary from './extension-library.jsx';
 import extensionData from '../lib/libraries/extensions/index.jsx';
 import CustomProcedures from './custom-procedures.jsx';
 import errorBoundaryHOC from '../lib/error-boundary-hoc.jsx';
-import {BLOCKS_DEFAULT_SCALE, STAGE_DISPLAY_SIZES} from '../lib/layout-constants';
+import { BLOCKS_DEFAULT_SCALE, STAGE_DISPLAY_SIZES } from '../lib/layout-constants';
 import DropAreaHOC from '../lib/drop-area-hoc.jsx';
 import DragConstants from '../lib/drag-constants';
 import defineDynamicBlock from '../lib/define-dynamic-block';
 
-import {connect} from 'react-redux';
-import {updateToolbox} from '../reducers/toolbox';
-import {activateColorPicker} from '../reducers/color-picker';
-import {closeExtensionLibrary, openSoundRecorder, openConnectionModal} from '../reducers/modals';
-import {activateCustomProcedures, deactivateCustomProcedures} from '../reducers/custom-procedures';
-import {setConnectionModalExtensionId} from '../reducers/connection-modal';
-import {updateMetrics} from '../reducers/workspace-metrics';
+import { connect } from 'react-redux';
+import { updateToolbox } from '../reducers/toolbox';
+import { activateColorPicker } from '../reducers/color-picker';
+import { closeExtensionLibrary, openSoundRecorder, openConnectionModal } from '../reducers/modals';
+import { activateCustomProcedures, deactivateCustomProcedures } from '../reducers/custom-procedures';
+import { setConnectionModalExtensionId } from '../reducers/connection-modal';
+import { updateMetrics } from '../reducers/workspace-metrics';
 
 import {
     activateTab,
@@ -431,7 +431,7 @@ class Blocks extends React.Component {
         }
 
         if (this.props.vm.editingTarget && this.props.workspaceMetrics.targets[this.props.vm.editingTarget.id]) {
-            const {scrollX, scrollY, scale} = this.props.workspaceMetrics.targets[this.props.vm.editingTarget.id];
+            const { scrollX, scrollY, scale } = this.props.workspaceMetrics.targets[this.props.vm.editingTarget.id];
             this.workspace.scrollX = scrollX;
             this.workspace.scrollY = scrollY;
             this.workspace.scale = scale;
@@ -450,20 +450,25 @@ class Blocks extends React.Component {
         let puzzle = this.props.vm.runtime.puzzle;
         let blockCount = null;
         let blockStackClicked = null;
-        if (/*type == "change" || type == "move" ||*/ type == "delete" || type == "create") {
-            blockCount = 0;
-            let blocks = this.workspace.getAllBlocks();
-            for (let i = 0; i < blocks.length; i++) {
-                if (blocks[i].isShadow_ || blocks[i].isInsertionMarker_) continue;
-                blockCount++;
+        if (type == "change" || type == "move" || type == "delete" || type == "create") {
+            if (type == "delete" || type == "create") {
+                blockCount = 0;
+                let blocks = this.workspace.getAllBlocks();
+                for (let i = 0; i < blocks.length; i++) {
+                    if (blocks[i].isShadow_ || blocks[i].isInsertionMarker_) continue;
+                    blockCount++;
+                }
+                puzzle.blockCount = blockCount;
             }
-            puzzle.blockCount = blockCount;
-            if (puzzle.maxBlockCount > 0 && puzzle.blockCount > puzzle.maxBlockCount) {
+            if (puzzle.started || (puzzle.maxBlockCount > 0 && puzzle.blockCount > puzzle.maxBlockCount)) {
                 puzzle.preventComplete = true;
             }
-            else if (!puzzle.started) {
+            else{
                 puzzle.preventComplete = false;
             }
+            /*else if (!puzzle.started) {
+                puzzle.preventComplete = false;
+            }*/
             this.props.vm.emit("PUZZLE_BLOCKS_CHANGED", {
                 type: evt.type,
             });
@@ -486,7 +491,7 @@ class Blocks extends React.Component {
     }
 
     // Update the toolbox with new blocks
-    handleExtensionAdded (categoryInfo) {
+    handleExtensionAdded(categoryInfo) {
         const defineBlocks = blockInfoArray => {
             if (blockInfoArray && blockInfoArray.length > 0) {
                 const staticBlocksJson = [];
@@ -539,7 +544,7 @@ class Blocks extends React.Component {
             this.props.updateToolboxState(toolboxXML);
         }
     }
-    handleBlocksInfoUpdate (categoryInfo) {
+    handleBlocksInfoUpdate(categoryInfo) {
         // @todo Later we should replace this to avoid all the warnings from redefining blocks.
         this.handleExtensionAdded(categoryInfo);
     }
