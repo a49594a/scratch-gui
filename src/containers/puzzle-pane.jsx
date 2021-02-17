@@ -42,7 +42,7 @@ class PuzzlePane extends React.Component {
             }
         });
     }
-    handlePuzzleResolved() {
+    handlePuzzleResolved(args) {
         var extUtils = this.props.extUtils;
         var xmlText = ScratchBlocks.Xml.domToPrettyText(ScratchBlocks.Xml.workspaceToDom(ScratchBlocks.mainWorkspace));
         var puzzleData = this.props.puzzleData;
@@ -50,7 +50,7 @@ class PuzzlePane extends React.Component {
         var challengeId = idx > 0 ? puzzleData.id.substr(0, idx) : '';
         var levelId = idx > 0 ? Number(puzzleData.id.substr(idx + 1)) : puzzleData.id;
         var puzzle = this.props.vm.runtime.puzzle;
-        var answer = { attemptCount: puzzle.attemptCount, blockCount: puzzle.blockCount, blocks: xmlText };
+        var answer = { score: args.score, attemptCount: puzzle.attemptCount, blockCount: puzzle.blockCount, blocks: xmlText };
         extUtils.setMissionResolved(puzzleData.id, answer)
             .then(() => {
                 var nextIdx = null;

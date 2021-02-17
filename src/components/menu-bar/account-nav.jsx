@@ -61,7 +61,7 @@ const AccountNavComponent = ({
                 <MenuItemContainer href={`/Users/${loggedInUser.id}/Projects`}>我的作品</MenuItemContainer>
                 <MenuItemContainer href={`/Users/${loggedInUser.id}/Studios`}>我的工作室</MenuItemContainer>
                 <MenuItemContainer href={`/Users/${loggedInUser.id}/Items`}>我的背包</MenuItemContainer>
-                <MenuItemContainer href={`/Users/${loggedInUser.id}/CoursesFor${loggedInUser.isTeacher ? "Teacher" : "Student"}`}>我的课程</MenuItemContainer>
+                <MenuItemContainer href={`/Users/${loggedInUser.id}/My/Courses${loggedInUser.isTeacher ? "Teach" : "Study"}`}>我的课程</MenuItemContainer>
                 <MenuItemContainer href={`/Users/${loggedInUser.id}/Settings`}>账户设置</MenuItemContainer>
                 <MenuItemContainer href={`/User/Logout`}>退出</MenuItemContainer>
             </MenuBarMenu>

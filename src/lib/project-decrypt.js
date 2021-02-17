@@ -25,7 +25,7 @@ function Uint8ToString(u8a) {
 }
 const projectDecrypt = (projectAsset) => {
     try {
-        var password = "A479542825F3B48865C4E47AF6A026F22D853DEC2B3248DF268599BF89EF78B9";
+        var password = "4A9745825F24883B657AFC4E4626A0F2253D8DE48C2B32D85F26989E9BFF78B9";
         var key = CryptoJS.enc.Utf8.parse(password.substr(0, 32));
         var iv = CryptoJS.enc.Utf8.parse(password.substr(0, 16));
         var b64encoded = btoa(Uint8ToString(projectAsset.data));

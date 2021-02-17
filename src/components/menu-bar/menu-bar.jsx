@@ -33,6 +33,7 @@ import MenuBarHOC from '../../containers/menu-bar-hoc.jsx';
 //by yj
 import MissionSelector from '../puzzle-mission-selector/mission-selector.jsx';
 import aerfayingLogo from './aerfaying-logo.svg';
+import gitblockLogo from './gitblock-logo.svg';
 import ScratchBlocks from 'scratch-blocks';
 
 import { openTipsLibrary } from '../../reducers/modals';
@@ -392,7 +393,8 @@ class MenuBar extends React.Component {
         );
         const MissionLevelNavigation = this.props.extUtils.MissionLevelNavigation;
         var missionId, levelId, levels;
-        var { puzzleData } = this.props;
+        var { puzzleData, extUtils } = this.props;
+        var extUtilsCtx = extUtils.getContext();
         if (puzzleData) {
             var idx = ('' + puzzleData.id).indexOf('-');
             missionId = idx > 0 ? puzzleData.id.substr(0, idx) : '';
@@ -412,12 +414,12 @@ class MenuBar extends React.Component {
                     <div className={styles.fileGroup}>
                         <div className={classNames(styles.menuBarItem)}>
                             <img
-                                alt="阿儿法营魔抓社区"
+                                alt={extUtils.getSiteName()}
                                 className={classNames(styles.scratchLogo, {
                                     [styles.clickable]: typeof this.props.onClickLogo !== 'undefined'
                                 })}
                                 draggable={false}
-                                src={aerfayingLogo}
+                                src={extUtils.getNormalizedDomain() == "aerfaying.com" ? aerfayingLogo : gitblockLogo}
                                 onClick={this.props.onClickLogo}
                             />
                         </div>
@@ -646,7 +648,8 @@ class MenuBar extends React.Component {
                             <SaveStatus />
                         )}
                     </div>
-                    <AccountNav
+                    <extUtils.UserNav loggedInUser={extUtilsCtx.loggedInUser} onLogout={extUtils.logout} onOpenLogin={extUtils.openLogin} onOpenRegister={extUtils.openRegister} />
+                    {/*<AccountNav
                         className={classNames(
                             styles.menuBarItem,
                             styles.hoverable,
@@ -659,7 +662,7 @@ class MenuBar extends React.Component {
                         onClose={this.props.onRequestCloseAccount}
                         onLogOut={this.props.onLogOut}
                         loggedInUser={Blockey.Utils.getLoggedInUser()}
-                    />
+                    />*/}
                 </div>
 
                 {aboutButton}
