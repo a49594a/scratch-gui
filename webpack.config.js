@@ -13,8 +13,8 @@ var postcssVars = require('postcss-simple-vars');
 var postcssImport = require('postcss-import');
 
 //const STATIC_PATH = process.env.STATIC_PATH || '/static';
-//const STATIC_PATH = 'http://localhost:32265/static/gui/static';
-const STATIC_PATH = 'https://cdn.gitblock.cn/static/gui/static';
+const STATIC_PATH = 'http://localhost:32265/static/gui/static';
+//const STATIC_PATH = 'https://cdn.gitblock.cn/static/gui/static';
 
 const base = {
     mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
@@ -29,10 +29,6 @@ const base = {
         filename: '[name].js',
         publicPath: `${STATIC_PATH}/`
         //chunkFilename: 'chunks/[name].js'
-    },
-    externals: {
-        React: 'react',
-        ReactDOM: 'react-dom'
     },
     resolve: {
         symlinks: false
@@ -221,8 +217,8 @@ module.exports = [
                 publicPath: `${STATIC_PATH}/`
             },
             externals: {
-                React: 'react',
-                ReactDOM: 'react-dom'
+                'react': 'react',
+                'react-dom': 'react-dom'
             },
             module: {
                 rules: base.module.rules.concat([
