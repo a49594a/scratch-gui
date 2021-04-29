@@ -351,6 +351,56 @@ class MenuBar extends React.Component {
             }
         }
     }
+    buildAboutMenu (onClickAbout) {
+        if (!onClickAbout) {
+            // hide the button
+            return null;
+        }
+        if (typeof onClickAbout === 'function') {
+            // make a button which calls a function
+            return <AboutButton onClick={onClickAbout} />;
+        }
+        // assume it's an array of objects
+        // each item must have a 'title' FormattedMessage and a 'handleClick' function
+        // generate a menu with items for each object in the array
+        return (
+            <div
+                className={classNames(styles.menuBarItem, styles.hoverable, {
+                    [styles.active]: this.props.aboutMenuOpen
+                })}
+                onMouseUp={this.props.onRequestOpenAbout}
+            >
+                <img
+                    className={styles.aboutIcon}
+                    src={aboutIcon}
+                />
+                <MenuBarMenu
+                    className={classNames(styles.menuBarMenu)}
+                    open={this.props.aboutMenuOpen}
+                    place={this.props.isRtl ? 'right' : 'left'}
+                    onRequestClose={this.props.onRequestCloseAbout}
+                >
+                    {
+                        onClickAbout.map(itemProps => (
+                            <MenuItem
+                                key={itemProps.title}
+                                isRtl={this.props.isRtl}
+                                onClick={this.wrapAboutMenuCallback(itemProps.onClick)}
+                            >
+                                {itemProps.title}
+                            </MenuItem>
+                        ))
+                    }
+                </MenuBarMenu>
+            </div>
+        );
+    }
+    wrapAboutMenuCallback (callback) {
+        return () => {
+            callback();
+            this.props.onRequestCloseAbout();
+        };
+    }
     render() {
         const saveNowMessage = (
             <FormattedMessage
@@ -472,22 +522,12 @@ class MenuBar extends React.Component {
                                     >
                                         {remixMessage}
                                     </MenuItem>
-                                    <SBFileUploader
-                                        canSave={this.props.canSave}
-                                        userOwnsProject={this.props.userOwnsProject}
+                                    <MenuItem
+                                        className={classNames({ [styles.disabled]: !this.props.canSaveToLocal })}
+                                        onClick={this.props.canSaveToLocal ? this.props.onStartSelectingFileUpload : null}
                                     >
-                                        {(className, renderFileInput, handleLoadProject) => (
-                                            <MenuItem
-                                                className={classNames({ [styles.disabled]: !this.props.canSaveToLocal })}
-                                                onClick={this.props.canSaveToLocal ? handleLoadProject : null}
-                                            >
-                                                {/* eslint-disable max-len */}
-                                                {this.props.intl.formatMessage(sharedMessages.loadFromComputerTitle)}
-                                                {/* eslint-enable max-len */}
-                                                {renderFileInput()}
-                                            </MenuItem>
-                                        )}
-                                    </SBFileUploader>
+                                        {this.props.intl.formatMessage(sharedMessages.loadFromComputerTitle)}
+                                    </MenuItem>
                                     <SB3Downloader>{(className, downloadProjectCallback) => (
                                         <MenuItem
                                             className={classNames(className, { [styles.disabled]: !this.props.canSaveToLocal })}
